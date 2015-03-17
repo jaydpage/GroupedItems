@@ -1,0 +1,14 @@
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\GroupedItemsTake2.exe
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\GroupedItemsTake2.pdb
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\nunit.framework.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\nunit.framework.xml
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csprojResolveAssemblyReference.cache
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\MainWindow.baml
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\MainWindow.g.cs
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\App.g.cs
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2_MarkupCompile.cache
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.g.resources
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.Properties.Resources.resources
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csproj.GenerateResource.Cache
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.exe
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.pdb

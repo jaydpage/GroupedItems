@@ -1,0 +1,9 @@
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Tests.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Tests.pdb
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\nunit.framework.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\nunit.framework.xml
+D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.pdb
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\GroupedItemsTake2.exe
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\GroupedItemsTake2.pdb
