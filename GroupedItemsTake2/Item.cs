@@ -1,3 +1,5 @@
+using System;
+
 namespace GroupedItemsTake2
 {
     public class Item : IItem
@@ -6,6 +8,7 @@ namespace GroupedItemsTake2
         {
             Parent = parent;
             Name = name;
+            UID = Guid.NewGuid().ToString();
         }
         public string Name { get; set; }
         public IDislpayItem Parent { get; private set; }
@@ -22,6 +25,8 @@ namespace GroupedItemsTake2
                 return Parent == null ? Level.Ungrouped : Level.Child;
             }
         }
+
+        public string UID { get; private set; }
 
         public object Clone()
         {

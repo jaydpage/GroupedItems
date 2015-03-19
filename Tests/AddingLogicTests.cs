@@ -71,8 +71,9 @@ namespace Tests
             var selectedItems1 = new List<IDislpayItem>();
             var group1 = CreateGroup();
             var item2 = CreateItem();
+            displayCollection1.AddItem(group1, selectedItems);
             selectedItems1.Add(group1);
-            displayCollection1.AddItem(item2, selectedItems1);
+            displayCollection1.InsertItem(item2, selectedItems1);
             Assert.AreEqual(Level.Child, item2.Level);
             Assert.AreEqual(item2.Parent, group1);
         }

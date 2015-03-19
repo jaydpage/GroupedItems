@@ -10,7 +10,7 @@ namespace GroupedItemsTake2
         public void AddItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
         {
             if (!selectedItems.Any()) Add(item);
-            else if (GroupingLogic.AreAnySelectedItemsUngrouped(selectedItems)) Add(item);
+            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(selectedItems)) Add(item);
             else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(selectedItems))
             {
                 AddToGroup(item, GroupingLogic.GetSelectedItemGroup(selectedItems.First()));
@@ -21,7 +21,7 @@ namespace GroupedItemsTake2
         {
             var lowestSelectedIndex = GetLowestSelectedIndex(selectedItems);
             if (!selectedItems.Any()) Insert(lowestSelectedIndex, item);
-            else if (GroupingLogic.AreAnySelectedItemsUngrouped(selectedItems)) Insert(lowestSelectedIndex, item);
+            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(selectedItems)) Insert(lowestSelectedIndex, item);
             else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(selectedItems))
             {
                 AddToGroup(item, GroupingLogic.GetSelectedItemGroup(selectedItems.First()));
@@ -30,13 +30,13 @@ namespace GroupedItemsTake2
 
         public void GroupItems(IGroup group, IEnumerable<IDislpayItem> selectedItems)
         {
-            var itemsToGroup = GroupingLogic.CreateItemsToGroup(selectedItems);
+            var itemsToGroup = GroupingLogic.CreateItemsToGroup(selectedItems).ToList();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
             }
             InsertItem(group, selectedItems);
-            RemoveItems(selectedItems);
+            RemoveItems(GroupingLogic.GetItemsToRemove(selectedItems));
         }
 
         private void RemoveItems(IEnumerable<IDislpayItem> selectedItems)
@@ -61,7 +61,7 @@ namespace GroupedItemsTake2
                 if (!Contains(item)) continue;
                 if (index < lowestIndex) lowestIndex = index;
             }
-            return lowestIndex;
+            return lowestIndex < 0 ? 0 : lowestIndex;
         }
 
         private void AddToGroup(IDislpayItem item, IGroup group)

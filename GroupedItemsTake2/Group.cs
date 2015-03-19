@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace GroupedItemsTake2
         {
             Parent = parent;
             Name = name;
+            UID = Guid.NewGuid().ToString();
             Items = new ObservableCollection<IDislpayItem>();
         }
 
@@ -63,6 +65,8 @@ namespace GroupedItemsTake2
                 return Level.Parent;
             }
         }
+
+        public string UID { get; private set; }
 
         private bool HasNoChildren()
         {

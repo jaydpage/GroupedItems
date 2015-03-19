@@ -8,7 +8,7 @@ namespace GroupedItemsTake2
         IDislpayItem Parent { get; }
         void SetParent(IDislpayItem parent);
         Level Level { get; }
-
+        string UID { get; }
     }
 
     public enum Level

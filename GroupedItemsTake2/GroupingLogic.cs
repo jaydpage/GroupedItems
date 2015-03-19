@@ -7,11 +7,11 @@ namespace GroupedItemsTake2
 {
     public static class GroupingLogic
     {
-        public static bool AreAnySelectedItemsUngrouped(IEnumerable<IDislpayItem> selected)
+        public static bool AreAnySelectedItemsAtTheTopLevel(IEnumerable<IDislpayItem> selected)
         {
-            return selected.Any(x => x.Level == Level.Ungrouped);
+            return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
         }
-
+        
         public static bool AreSelectedItemsOfTheSameGroup(IEnumerable<IDislpayItem> selectedItems)
         {
             if (!selectedItems.Any()) return false;
@@ -32,6 +32,11 @@ namespace GroupedItemsTake2
             var selectedDistinct = GetDistinctItemsToGroup(selectedItems);
             itemsToGroup.AddRange(selectedDistinct.Select(item => (IDislpayItem)item.Clone()));
             return itemsToGroup;
+        } 
+        
+        public static IEnumerable<IDislpayItem> GetItemsToRemove(IEnumerable<IDislpayItem> selectedItems)
+        {
+            return GetDistinctItemsToGroup(selectedItems);
         }
 
         private static IEnumerable<IDislpayItem> GetDistinctItemsToGroup(IEnumerable<IDislpayItem> items)
@@ -73,7 +78,7 @@ namespace GroupedItemsTake2
             {
                 if (IsItemAChild(item))
                 {
-                    if (allSelectedGroups.All(x => x != item.Parent))
+                    if (allSelectedGroups.All(x => x.UID != item.Parent.UID))
                         itemsWithoutSelectedGroups.Add(item);
                 }
                 else
@@ -87,7 +92,7 @@ namespace GroupedItemsTake2
         private static IDislpayItem GetTopLevelSelectedItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
         {
             if (item.Parent == null) return item;
-            if (selectedItems.Any(x => x == item.Parent))
+            if (selectedItems.Any(x => x.UID == item.Parent.UID))
                 return GetTopLevelSelectedItem(item.Parent, selectedItems);
 
             return item;
