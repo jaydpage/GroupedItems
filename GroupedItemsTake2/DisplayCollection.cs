@@ -41,7 +41,7 @@ namespace GroupedItemsTake2
 
         private void RemoveItems(IEnumerable<IDislpayItem> selectedItems)
         {
-            foreach (var selectedItem in selectedItems)
+            foreach (var selectedItem in selectedItems.ToList())
             {
                 if(GroupingLogic.IsItemAChild(selectedItem))
                 {

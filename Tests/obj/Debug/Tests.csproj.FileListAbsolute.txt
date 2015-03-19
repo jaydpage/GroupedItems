@@ -7,3 +7,9 @@ D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.dll
 D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.pdb
 D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\GroupedItemsTake2.exe
 D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\GroupedItemsTake2.pdb
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Telerik.Windows.Controls.GridView.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Microsoft.Practices.Composite.Presentation.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Telerik.Windows.Data.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Telerik.Windows.Controls.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Telerik.Windows.Controls.Input.dll
+D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\Microsoft.Practices.Composite.dll

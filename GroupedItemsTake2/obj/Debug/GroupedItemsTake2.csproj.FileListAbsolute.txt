@@ -3,8 +3,6 @@ D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\GroupedItemsTake2.pdb
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\nunit.framework.dll
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\nunit.framework.xml
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csprojResolveAssemblyReference.cache
-D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\MainWindow.baml
-D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\MainWindow.g.cs
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\App.g.cs
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2_MarkupCompile.cache
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.g.resources
@@ -12,3 +10,17 @@ D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.Pro
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csproj.GenerateResource.Cache
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.exe
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.pdb
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Microsoft.Practices.Composite.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Microsoft.Practices.Composite.Presentation.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Controls.Data.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Controls.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Controls.GridView.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Controls.Navigation.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Data.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Themes.Windows7.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Controls.Input.dll
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\bin\Debug\Telerik.Windows.Controls.Navigation.xml
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\MainView.g.cs
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2_MarkupCompile.lref
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\MainView.baml

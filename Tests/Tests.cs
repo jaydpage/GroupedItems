@@ -27,7 +27,7 @@ namespace Tests
             var group = CreateGroup();
             group.Add(item);
             var expected = 1;
-            Assert.AreEqual(expected, group.Count);
+            Assert.AreEqual(expected, group.Count());
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Tests
             var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
-            Assert.AreEqual(group.First(), item);
+            Assert.AreEqual(group.Items.First(), item);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace Tests
             var group = CreateGroup();
             group.Add(group1);
             var expected = 1;
-            Assert.AreEqual(expected, group.Count);
+            Assert.AreEqual(expected, group.Count());
         }
         
         [Test]
@@ -134,7 +134,7 @@ namespace Tests
 
             Assert.That(group3.Contains(group));
             Assert.That(group3.Contains(item6));
-            Assert.That(group3.Count == 2);
+            Assert.That(group3.Count() == 2);
 
         }
 

@@ -4,26 +4,38 @@ using System.Linq;
 
 namespace GroupedItemsTake2
 {
-    public class Group : ObservableCollection<IDislpayItem>, IGroup
+    public class Group : IGroup
     {
         public string Name { get; set; }
         public IDislpayItem Parent { get; private set; }
+        public ObservableCollection<IDislpayItem> Items { get; private set; } 
 
         public Group(string name, IDislpayItem parent)
         {
             Parent = parent;
             Name = name;
+            Items = new ObservableCollection<IDislpayItem>();
         }
 
-        public new void Add(IDislpayItem item)
+        public void Add(IDislpayItem item)
         {
             Items.Add(item);
             item.SetParent(this);
         }
 
-        public new void Remove(IDislpayItem item)
+        public void Remove(IDislpayItem item)
         {
             Items.Remove(item);
+        }
+
+        public int Count()
+        {
+            return Items.Count;
+        }
+
+        public bool Contains(IDislpayItem item)
+        {
+            return Items.Contains(item);
         }
 
         public void AddRange(IEnumerable<IDislpayItem> items)

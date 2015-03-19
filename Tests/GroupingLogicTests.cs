@@ -52,10 +52,10 @@ namespace Tests
             Assert.That(!displayCollection.Contains(item1));
             Assert.That(!displayCollection.Contains(item2));
             Assert.That(displayCollection.Contains(group));
-            Assert.That(group.Count == 3);
-            Assert.AreEqual(group, group[0].Parent);
-            Assert.AreEqual(group, group[1].Parent);
-            Assert.AreEqual(group, group[2].Parent);
+            Assert.That(group.Items.Count == 3);
+            Assert.AreEqual(group, group.Items[0].Parent);
+            Assert.AreEqual(group, group.Items[1].Parent);
+            Assert.AreEqual(group, group.Items[2].Parent);
             Assert.AreEqual(group.Level, Level.Parent);
             Assert.AreEqual(group.Level, Level.Parent);
             Assert.AreEqual(group, displayCollection[expectedIndex]);
@@ -87,13 +87,13 @@ namespace Tests
             displayCollection.Add(item2);
             displayCollection.GroupItems(newgroup, selectedItems);
 
-            Assert.That(newgroup.Count == 3);
-            Assert.AreEqual(newgroup, newgroup[0].Parent);
-            Assert.AreEqual(newgroup, newgroup[1].Parent);
-            Assert.AreEqual(newgroup, newgroup[2].Parent);
-            Assert.AreEqual(newgroup[0].Level, Level.ParentChild);
-            Assert.AreEqual(newgroup[1].Level, Level.Child);
-            Assert.AreEqual(newgroup[2].Level, Level.Child);
+            Assert.That(newgroup.Count() == 3);
+            Assert.AreEqual(newgroup, newgroup.Items[0].Parent);
+            Assert.AreEqual(newgroup, newgroup.Items[1].Parent);
+            Assert.AreEqual(newgroup, newgroup.Items[2].Parent);
+            Assert.AreEqual(newgroup.Items[0].Level, Level.ParentChild);
+            Assert.AreEqual(newgroup.Items[1].Level, Level.Child);
+            Assert.AreEqual(newgroup.Items[2].Level, Level.Child);
         }
         
         [Test]
@@ -115,13 +115,13 @@ namespace Tests
             displayCollection.Add(group);
             displayCollection.GroupItems(newgroup, selectedItems);
 
-            Assert.AreEqual(newgroup, newgroup[0].Parent);
-            Assert.AreEqual(newgroup, newgroup[1].Parent);
+            Assert.AreEqual(newgroup, newgroup.Items[0].Parent);
+            Assert.AreEqual(newgroup, newgroup.Items[1].Parent);
             Assert.AreEqual(group, newgroup.Parent);
             Assert.AreEqual(group.Level, Level.Parent);
             Assert.AreEqual(newgroup.Level, Level.ParentChild);
-            Assert.AreEqual(newgroup[0].Level, Level.Child);
-            Assert.AreEqual(newgroup[1].Level, Level.Child);
+            Assert.AreEqual(newgroup.Items[0].Level, Level.Child);
+            Assert.AreEqual(newgroup.Items[1].Level, Level.Child);
         }
 
         [Test]
@@ -251,10 +251,10 @@ namespace Tests
             displayCollection.Add(group);
             displayCollection.GroupItems(newgroup, selectedItems);
 
-            Assert.AreEqual(1, group.Count);
-            Assert.AreEqual(newgroup, group[0]);
-            Assert.AreEqual(item0.Name, newgroup[0].Name);
-            Assert.AreEqual(item.Name, newgroup[1].Name);
+            Assert.AreEqual(1, group.Count());
+            Assert.AreEqual(newgroup, group.Items[0]);
+            Assert.AreEqual(item0.Name, newgroup.Items[0].Name);
+            Assert.AreEqual(item.Name, newgroup.Items[1].Name);
         }
     }
 }

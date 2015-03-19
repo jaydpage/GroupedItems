@@ -11,6 +11,7 @@ namespace GroupedItemsTake2
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }
