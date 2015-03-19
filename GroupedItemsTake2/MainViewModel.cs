@@ -29,7 +29,6 @@ namespace GroupedItemsTake2
         {
             _items = new DisplayCollection();;
             AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
-            //RemoveCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
             //DuplicateCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
             //EditCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
             //MoveUpCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());

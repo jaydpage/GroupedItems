@@ -22,7 +22,7 @@ namespace GroupedItemsTake2
         public static IGroup GetSelectedItemGroup(IDislpayItem selectedItem)
         {
             if (selectedItem.Level == Level.Ungrouped) return null;
-            if (selectedItem.Level == Level.Child) return selectedItem.Parent as IGroup;
+            if (IsItemAChild(selectedItem)) return selectedItem.Parent as IGroup;
             return selectedItem as IGroup;
         }
 

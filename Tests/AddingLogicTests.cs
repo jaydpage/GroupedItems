@@ -66,16 +66,14 @@ namespace Tests
             Assert.AreEqual(Level.Child, item1.Level);
             Assert.AreEqual(item1.Parent, group);
 
-
             var displayCollection1 = new DisplayCollection();
-            var selectedItems1 = new List<IDislpayItem>();
             var group1 = CreateGroup();
             var item2 = CreateItem();
-            displayCollection1.AddItem(group1, selectedItems);
+            var selectedItems1 = new List<IDislpayItem>();
             selectedItems1.Add(group1);
+            displayCollection1.Add(group1);
             displayCollection1.InsertItem(item2, selectedItems1);
-            Assert.AreEqual(Level.Child, item2.Level);
-            Assert.AreEqual(item2.Parent, group1);
+            Assert.AreEqual(Level.Ungrouped, item2.Level);
         }
         
         [Test]

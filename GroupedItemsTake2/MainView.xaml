@@ -29,16 +29,27 @@
 
             <telerik:RadTreeListView.InputBindings>
                 <KeyBinding Key="INSERT" Command="{Binding AddCommand}" />
-                <KeyBinding Key="DELETE" Command="{Binding RemoveCommand}" />
                 <KeyBinding Key="ENTER" Command="{Binding AddCommand}" />
                 <KeyBinding Key="ENTER" Modifiers="Control" Command="{Binding EditCommand}" />
                 <KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
                 <KeyBinding Key="D" Modifiers="Control" Command="{Binding DuplicateCommand}" />
             </telerik:RadTreeListView.InputBindings>
             <telerik:RadTreeListView.Columns>
-                <telerik:GridViewDataColumn x:Name="NameColumn" Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Name}" Tag="Name">
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Name}">
                     <telerik:GridViewDataColumn.Header>
                         <TextBlock Text="Name"/>
+                    </telerik:GridViewDataColumn.Header>
+                </telerik:GridViewDataColumn>
+                
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Level}">
+                    <telerik:GridViewDataColumn.Header>
+                        <TextBlock Text="Level"/>
+                    </telerik:GridViewDataColumn.Header>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding UID}">
+                    <telerik:GridViewDataColumn.Header>
+                        <TextBlock Text="Uid"/>
                     </telerik:GridViewDataColumn.Header>
                 </telerik:GridViewDataColumn>
                 
