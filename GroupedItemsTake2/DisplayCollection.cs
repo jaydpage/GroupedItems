@@ -69,5 +69,42 @@ namespace GroupedItemsTake2
             group.Add(item);
         }
 
+        public void MoveUp(IEnumerable<IDislpayItem> selectedItems)
+        {
+            var items = selectedItems.OrderBy(IndexOf).ToList();
+
+            while (items.Any())
+            {
+                var current = items.First();
+                var index = IndexOf(current);
+                items.Remove(current);
+                if (index <= 0) return;
+                RemoveAt(index);
+                Insert(index - 1, current);
+            }
+        }
+        
+        public void MoveDown(IEnumerable<IDislpayItem> selectedItems)
+        {
+            var items = selectedItems.OrderByDescending(IndexOf).ToList();
+
+            while (items.Any())
+            {
+                var current = items.First();
+                var index = IndexOf(current);
+                items.Remove(current);
+                if (index >= Count - 1) return;
+                RemoveAt(index);
+                Insert(index + 1, current);
+            }
+        }
+
+        public void Duplicate(ObservableCollection<IDislpayItem> selectedItems)
+        {
+            foreach (var item in selectedItems)
+            {
+                AddItem(item.Copy(), selectedItems);
+            }
+        }
     }
 }

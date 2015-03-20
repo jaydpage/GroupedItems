@@ -13,7 +13,10 @@
             <RowDefinition Height ="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <telerik:RadButton Content="Add Item" Command="{Binding AddCommand}"/>
+        <StackPanel Orientation="Horizontal">
+            <telerik:RadButton Content="Add Item" Command="{Binding AddCommand}"/>
+            <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}"/>
+        </StackPanel>
         <telerik:RadTreeListView x:Name="InputItemsList"
 						  Grid.Row="1"                                                                                                      
 						  ItemsSource="{Binding Items}"                                                                                                      

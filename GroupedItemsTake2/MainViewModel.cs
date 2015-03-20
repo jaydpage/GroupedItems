@@ -29,12 +29,27 @@ namespace GroupedItemsTake2
         {
             _items = new DisplayCollection();;
             AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
-            //DuplicateCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
-            //EditCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
-            //MoveUpCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
+            DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => true);
+            MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => IsItemSelected());
             GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => IsItemSelected());
-            //MoveDownCommand = new DelegateCommand<object>(obj => ItemEdit(), x => IsItemSelected());
+            MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected());
 
+        }
+
+        private void DuplicateItem()
+        {
+            if (!IsItemSelected()) return;
+            Items.Duplicate(SelectedItems);
+        }
+
+        private void MoveDown()
+        {
+            Items.MoveDown(SelectedItems);
+        }
+
+        private void MoveUp()
+        {
+            Items.MoveUp(SelectedItems);
         }
 
         private void GroupItems()

@@ -7,6 +7,7 @@ namespace GroupedItemsTake2
         string Name { get; set; }
         IDislpayItem Parent { get; }
         void SetParent(IDislpayItem parent);
+        IDislpayItem Copy(); 
         Level Level { get; }
         string UID { get; }
     }

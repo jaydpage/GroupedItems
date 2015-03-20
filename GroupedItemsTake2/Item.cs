@@ -18,6 +18,11 @@ namespace GroupedItemsTake2
             Parent = parent;
         }
 
+        public IDislpayItem Copy()
+        {
+            return new Item(Name, Parent){UID = Guid.NewGuid().ToString()};
+        }
+
         public Level Level
         {
             get

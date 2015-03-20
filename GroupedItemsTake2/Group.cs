@@ -53,20 +53,15 @@ namespace GroupedItemsTake2
             Parent = parent;
         }
 
-        public Level Level
+        public IDislpayItem Copy()
         {
-            get
+            var newGroup = new Group(Name, Parent) { UID = Guid.NewGuid().ToString()};
+            foreach (var item in Items)
             {
-                var parent = Parent as Group;
-
-                if (HasParent(parent) && HasChildren()) return Level.ParentChild;
-                if (HasNoParent(parent) && HasChildren()) return Level.Parent;
-                if (HasParent(parent) && HasNoChildren()) return Level.ParentChild;
-                return Level.Parent;
+                newGroup.Add(item.Copy());
             }
+            return newGroup;
         }
-
-        public string UID { get; private set; }
 
         private bool HasNoChildren()
         {
@@ -92,5 +87,20 @@ namespace GroupedItemsTake2
         {
             return MemberwiseClone();
         }
+
+        public Level Level
+        {
+            get
+            {
+                var parent = Parent as Group;
+
+                if (HasParent(parent) && HasChildren()) return Level.ParentChild;
+                if (HasNoParent(parent) && HasChildren()) return Level.Parent;
+                if (HasParent(parent) && HasNoChildren()) return Level.ParentChild;
+                return Level.Parent;
+            }
+        }
+
+        public string UID { get; private set; }
     }
 }
