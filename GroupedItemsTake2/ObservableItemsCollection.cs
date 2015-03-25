@@ -8,6 +8,7 @@ namespace GroupedItemsTake2
 {
     public class ObservableItemsCollection : ObservableCollection<IDislpayItem>
     {
+        private ObservableCollection<IDislpayItem> _selectedItems;
 
         public void MoveItemsDown(IEnumerable<IDislpayItem> selectedItems)
         {
@@ -36,6 +37,16 @@ namespace GroupedItemsTake2
                 RemoveAt(index);
                 Insert(index - 1, current);
             }
+        }
+
+        public ObservableCollection<IDislpayItem> SelectedItems
+        {
+            get
+            {
+                return _selectedItems ??
+                     (_selectedItems = new ObservableCollection<IDislpayItem>());
+            }
+            set { _selectedItems = value; }
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using GroupedItemsTake2.Annotations;
 using Microsoft.Practices.Composite.Presentation.Commands;
 
@@ -20,7 +17,6 @@ namespace GroupedItemsTake2
         public DelegateCommand<object> MoveDownCommand { get; private set; }
 
         private DisplayCollection _items;
-        private ObservableCollection<IDislpayItem> _selectedItems;
         private IDislpayItem _selectedItem;
         private int itemCount = 1;
         private int groupCount = 1;
@@ -39,30 +35,30 @@ namespace GroupedItemsTake2
         private void DuplicateItem()
         {
             if (!IsItemSelected()) return;
-            Items.Duplicate(SelectedItems);
+            Items.Duplicate();
         }
 
         private void MoveDown()
         {
-            Items.MoveDown(SelectedItems);
+            Items.MoveDown();
         }
 
         private void MoveUp()
         {
-            Items.MoveUp(SelectedItems);
+            Items.MoveUp();
         }
 
         private void GroupItems()
         {
             var group = new Group("Group " + groupCount, null);
             groupCount++;
-            Items.GroupItems(group, SelectedItems);
+            Items.GroupItems(group);
         }
 
 
         private void AddItem()
         {
-            Items.AddItem(new Item("Item" + itemCount, null), SelectedItems);
+            Items.AddItem(new Item("Item" + itemCount, null));
             itemCount++;
         }
 
@@ -85,12 +81,8 @@ namespace GroupedItemsTake2
 
         public ObservableCollection<IDislpayItem> SelectedItems
         {
-            get
-            {
-                return _selectedItems ??
-                     (_selectedItems = new ObservableCollection<IDislpayItem>());
-            }
-            set { _selectedItems = value; }
+            get { return Items.SelectedItems; }
+            set { Items.SelectedItems = value; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -7,55 +7,55 @@ namespace GroupedItemsTake2
 {
     public class DisplayCollection : ObservableItemsCollection
     {
-        public void AddItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
+        public void AddItem(IDislpayItem item)
         {
-            if (!selectedItems.Any()) Add(item);
-            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(selectedItems)) Add(item);
-            else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(selectedItems))
+            if (!SelectedItems.Any()) Add(item);
+            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Add(item);
+            else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                AddToGroup(item, GroupingLogic.GetSelectedItemGroup(selectedItems.First()));
+                AddToGroup(item, GroupingLogic.GetSelectedItemGroup(SelectedItems.First()));
             }
         }
         
-        public void InsertItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
+        public void InsertItem(IDislpayItem item)
         {
-            var lowestSelectedIndex = GetLowestSelectedIndex(selectedItems);
-            if (!selectedItems.Any()) Insert(lowestSelectedIndex, item);
-            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(selectedItems)) Insert(lowestSelectedIndex, item);
-            else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(selectedItems))
+            var lowestSelectedIndex = GetLowestSelectedIndex();
+            if (!SelectedItems.Any()) Insert(lowestSelectedIndex, item);
+            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Insert(lowestSelectedIndex, item);
+            else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                AddToGroup(item, GroupingLogic.GetSelectedItemGroup(selectedItems.First()));
+                AddToGroup(item, GroupingLogic.GetSelectedItemGroup(SelectedItems.First()));
             }
         }
 
-        public void GroupItems(IGroup group, IEnumerable<IDislpayItem> selectedItems)
+        public void GroupItems(IGroup group)
         {
-            var itemsToGroup = GroupingLogic.CreateItemsToGroup(selectedItems).ToList();
+            var itemsToGroup = GroupingLogic.CreateItemsToGroup(SelectedItems).ToList();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
             }
-            InsertItem(group, selectedItems);
-            RemoveItems(GroupingLogic.GetItemsToRemove(selectedItems));
+            InsertItem(group);
+            RemoveItems(GroupingLogic.GetItemsToRemove(SelectedItems));
         }
 
-        private void RemoveItems(IEnumerable<IDislpayItem> selectedItems)
+        private void RemoveItems(IEnumerable<IDislpayItem> items)
         {
-            foreach (var selectedItem in selectedItems.ToList())
+            foreach (var item in items.ToList())
             {
-                if(GroupingLogic.IsItemAChild(selectedItem))
+                if(GroupingLogic.IsItemAChild(item))
                 {
-                    var group = selectedItem.Parent as IGroup;
-                    if (group != null) group.Remove(selectedItem);
+                    var group = item.Parent as IGroup;
+                    if (group != null) group.Remove(item);
                 }
-                else Remove(selectedItem);
+                else Remove(item);
             }
         }
 
-        private int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selectedItems)
+        private int GetLowestSelectedIndex()
         {
             var lowestIndex = int.MaxValue;
-            foreach (var item in selectedItems)
+            foreach (var item in SelectedItems)
             {
                 var index = IndexOf(item);
                 if (!Contains(item)) continue;
@@ -69,10 +69,10 @@ namespace GroupedItemsTake2
             group.Add(item);
         }
 
-        public void MoveUp(IEnumerable<IDislpayItem> selectedItems)
+        public void MoveUp()
         {
-            var items = selectedItems.OrderBy(IndexOf).ToList();
-            var childItems = selectedItems.Where(GroupingLogic.IsItemAChild);
+            var items = SelectedItems.OrderBy(IndexOf).ToList();
+            var childItems = SelectedItems.Where(GroupingLogic.IsItemAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
             MoveItemsUp(ungroupedItems);
@@ -81,10 +81,10 @@ namespace GroupedItemsTake2
             group.MoveItemsUp(childItems);
         }
 
-        public void MoveDown(IEnumerable<IDislpayItem> selectedItems)
+        public void MoveDown()
         {
-            var items = selectedItems.OrderBy(IndexOf).ToList();
-            var childItems = selectedItems.Where(GroupingLogic.IsItemAChild);
+            var items = SelectedItems.OrderBy(IndexOf).ToList();
+            var childItems = SelectedItems.Where(GroupingLogic.IsItemAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
             MoveItemsDown(ungroupedItems);
@@ -93,11 +93,11 @@ namespace GroupedItemsTake2
             group.MoveItemsDown(childItems);
         }
 
-        public void Duplicate(ObservableCollection<IDislpayItem> selectedItems)
+        public void Duplicate()
         {
-            foreach (var item in selectedItems)
+            foreach (var item in SelectedItems)
             {
-                AddItem(item.Copy(), selectedItems);
+                AddItem(item.Copy());
             }
         }
     }

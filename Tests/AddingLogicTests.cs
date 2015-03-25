@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GroupedItemsTake2;
 using NUnit.Framework;
 
@@ -20,11 +21,12 @@ namespace Tests
         [Test]
         public void givenNoSelectedItems_ItemThatIsAddedShouldBeUngrouped()
         {
-            var selectedItems = new List<IDislpayItem>();
+            var selectedItems = new ObservableCollection<IDislpayItem>();
             var displayCollection = new DisplayCollection();
+            displayCollection.SelectedItems = selectedItems;
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItem(item, selectedItems);
+            displayCollection.AddItem(item);
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -32,12 +34,13 @@ namespace Tests
         [Test]
         public void givenAnyUngroupedSelectedItems_ItemThatIsAddedShouldBeUngrouped()
         {
-            var selectedItems = new List<IDislpayItem>();
+            var selectedItems = new ObservableItemsCollection();
             selectedItems.Add(CreateItem());
             var displayCollection = new DisplayCollection();
+            displayCollection.SelectedItems = selectedItems;
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItem(item, selectedItems);
+            displayCollection.AddItem(item);
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -45,7 +48,7 @@ namespace Tests
         [Test]
         public void givenSelectedItemsOfSameGroup_ItemThatIsAddedShouldBeAChildOfTheSameGroup()
         {
-            var selectedItems = new List<IDislpayItem>();
+            var selectedItems = new ObservableCollection<IDislpayItem>();
             var group = CreateGroup();
             var item = CreateItem();
             var item4 = CreateItem();
@@ -61,25 +64,27 @@ namespace Tests
             selectedItems.Add(item6);
 
             var displayCollection = new DisplayCollection();
+            displayCollection.SelectedItems = selectedItems;
             var item1 = CreateItem();
-            displayCollection.AddItem(item1, selectedItems);
+            displayCollection.AddItem(item1);
             Assert.AreEqual(Level.Child, item1.Level);
             Assert.AreEqual(item1.Parent, group);
 
             var displayCollection1 = new DisplayCollection();
             var group1 = CreateGroup();
             var item2 = CreateItem();
-            var selectedItems1 = new List<IDislpayItem>();
+            var selectedItems1 = new ObservableCollection<IDislpayItem>();
             selectedItems1.Add(group1);
+            displayCollection1.SelectedItems = selectedItems1;
             displayCollection1.Add(group1);
-            displayCollection1.InsertItem(item2, selectedItems1);
+            displayCollection1.InsertItem(item2);
             Assert.AreEqual(Level.Ungrouped, item2.Level);
         }
         
         [Test]
         public void givenSelectedItemsOfDifferentLevels_ItemThatIsAddedAsUngrouped()
         {
-            var selectedItems = new List<IDislpayItem>();
+            var selectedItems = new ObservableCollection<IDislpayItem>();
             var group = CreateGroup();
             var item = CreateItem();
             var item4 = CreateItem();
@@ -94,8 +99,9 @@ namespace Tests
             selectedItems.Add(group);
 
             var displayCollection = new DisplayCollection();
+            displayCollection.SelectedItems = selectedItems;
             var item1 = CreateItem();
-            displayCollection.AddItem(item1, selectedItems);
+            displayCollection.AddItem(item1);
             Assert.AreEqual(Level.Ungrouped, item1.Level);
         }
 
