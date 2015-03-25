@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace GroupedItemsTake2
@@ -37,6 +35,7 @@ namespace GroupedItemsTake2
             }
             InsertItem(group);
             RemoveItems(GroupingLogic.GetItemsToRemove(SelectedItems));
+            UpdateSelectedItems(new List<IDislpayItem>{group});
         }
 
         private void RemoveItems(IEnumerable<IDislpayItem> items)
@@ -76,9 +75,12 @@ namespace GroupedItemsTake2
             var ungroupedItems = items.Except(childItems).ToList();
 
             MoveItemsUp(ungroupedItems);
-            if (!childItems.Any()) return;
-            var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
-            group.MoveItemsUp(childItems);
+            if (childItems.Any())
+            {
+                var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
+                group.MoveItemsUp(childItems);
+            }
+            UpdateSelectedItems(items);
         }
 
         public void MoveDown()
@@ -88,9 +90,12 @@ namespace GroupedItemsTake2
             var ungroupedItems = items.Except(childItems).ToList();
 
             MoveItemsDown(ungroupedItems);
-            if (!childItems.Any()) return;
-            var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
-            group.MoveItemsDown(childItems);
+            if (childItems.Any())
+            {
+                var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
+                group.MoveItemsDown(childItems);
+            }
+            UpdateSelectedItems(items);
         }
 
         public void Duplicate()

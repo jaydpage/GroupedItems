@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
 {
@@ -37,6 +38,12 @@ namespace GroupedItemsTake2
                 RemoveAt(index);
                 Insert(index - 1, current);
             }
+        }
+
+        public void UpdateSelectedItems(IEnumerable<IDislpayItem> items)
+        {
+            SelectedItems.Clear();
+            SelectedItems.AddRange(items);
         }
 
         public ObservableCollection<IDislpayItem> SelectedItems
