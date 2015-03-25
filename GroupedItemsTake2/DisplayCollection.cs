@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GroupedItemsTake2
 {
-    public class DisplayCollection : ObservableCollection<IDislpayItem>
+    public class DisplayCollection : ObservableItemsCollection
     {
         public void AddItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
         {
@@ -72,31 +72,25 @@ namespace GroupedItemsTake2
         public void MoveUp(IEnumerable<IDislpayItem> selectedItems)
         {
             var items = selectedItems.OrderBy(IndexOf).ToList();
+            var childItems = selectedItems.Where(GroupingLogic.IsItemAChild);
+            var ungroupedItems = items.Except(childItems).ToList();
 
-            while (items.Any())
-            {
-                var current = items.First();
-                var index = IndexOf(current);
-                items.Remove(current);
-                if (index <= 0) return;
-                RemoveAt(index);
-                Insert(index - 1, current);
-            }
+            MoveItemsUp(ungroupedItems);
+            if (!childItems.Any()) return;
+            var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
+            group.MoveItemsUp(childItems);
         }
-        
+
         public void MoveDown(IEnumerable<IDislpayItem> selectedItems)
         {
-            var items = selectedItems.OrderByDescending(IndexOf).ToList();
+            var items = selectedItems.OrderBy(IndexOf).ToList();
+            var childItems = selectedItems.Where(GroupingLogic.IsItemAChild);
+            var ungroupedItems = items.Except(childItems).ToList();
 
-            while (items.Any())
-            {
-                var current = items.First();
-                var index = IndexOf(current);
-                items.Remove(current);
-                if (index >= Count - 1) return;
-                RemoveAt(index);
-                Insert(index + 1, current);
-            }
+            MoveItemsDown(ungroupedItems);
+            if (!childItems.Any()) return;
+            var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
+            group.MoveItemsDown(childItems);
         }
 
         public void Duplicate(ObservableCollection<IDislpayItem> selectedItems)

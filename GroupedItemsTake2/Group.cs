@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace GroupedItemsTake2
@@ -9,20 +8,30 @@ namespace GroupedItemsTake2
     {
         public string Name { get; set; }
         public IDislpayItem Parent { get; private set; }
-        public ObservableCollection<IDislpayItem> Items { get; private set; } 
+        public ObservableItemsCollection Items { get; private set; } 
 
         public Group(string name, IDislpayItem parent)
         {
             Parent = parent;
             Name = name;
             UID = Guid.NewGuid().ToString();
-            Items = new ObservableCollection<IDislpayItem>();
+            Items = new ObservableItemsCollection();
         }
 
         public void Add(IDislpayItem item)
         {
             Items.Add(item);
             item.SetParent(this);
+        }
+
+        public void MoveItemsUp(IEnumerable<IDislpayItem> items)
+        {
+            Items.MoveItemsUp(items);
+        }
+
+        public void MoveItemsDown(IEnumerable<IDislpayItem> items)
+        {
+           Items.MoveItemsDown(items);
         }
 
         public void Remove(IDislpayItem item)

@@ -43,7 +43,7 @@
                         <TextBlock Text="Name"/>
                     </telerik:GridViewDataColumn.Header>
                 </telerik:GridViewDataColumn>
-                
+
                 <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Level}">
                     <telerik:GridViewDataColumn.Header>
                         <TextBlock Text="Level"/>
@@ -55,7 +55,7 @@
                         <TextBlock Text="Uid"/>
                     </telerik:GridViewDataColumn.Header>
                 </telerik:GridViewDataColumn>
-                
+
             </telerik:RadTreeListView.Columns>
             <telerik:RadContextMenu.ContextMenu>
                 <telerik:RadContextMenu>
