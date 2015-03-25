@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
 {
     public class DisplayCollection : ObservableItemsCollection
     {
+        private ObservableCollection<IDislpayItem> _selectedItems;
+
         public void AddItem(IDislpayItem item)
         {
             if (!SelectedItems.Any()) Add(item);
@@ -17,12 +21,12 @@ namespace GroupedItemsTake2
         
         public void InsertItem(IDislpayItem item)
         {
-            var lowestSelectedIndex = GetLowestSelectedIndex();
+            var lowestSelectedIndex = GetLowestSelectedIndex(SelectedItems);
             if (!SelectedItems.Any()) Insert(lowestSelectedIndex, item);
             else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Insert(lowestSelectedIndex, item);
             else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                AddToGroup(item, GroupingLogic.GetSelectedItemGroup(SelectedItems.First()));
+                InsertInGroup(item, GroupingLogic.GetSelectedItemGroup(SelectedItems.First()));
             }
         }
 
@@ -51,21 +55,14 @@ namespace GroupedItemsTake2
             }
         }
 
-        private int GetLowestSelectedIndex()
-        {
-            var lowestIndex = int.MaxValue;
-            foreach (var item in SelectedItems)
-            {
-                var index = IndexOf(item);
-                if (!Contains(item)) continue;
-                if (index < lowestIndex) lowestIndex = index;
-            }
-            return lowestIndex < 0 ? 0 : lowestIndex;
-        }
-
         private void AddToGroup(IDislpayItem item, IGroup group)
         {
             group.Add(item);
+        }
+        
+        private void InsertInGroup(IDislpayItem item, IGroup group)
+        {
+            group.Insert(item, SelectedItems);
         }
 
         public void MoveUp()
@@ -104,6 +101,22 @@ namespace GroupedItemsTake2
             {
                 AddItem(item.Copy());
             }
+        }
+
+        public void UpdateSelectedItems(IEnumerable<IDislpayItem> items)
+        {
+            SelectedItems.Clear();
+            SelectedItems.AddRange(items);
+        }
+
+        public ObservableCollection<IDislpayItem> SelectedItems
+        {
+            get
+            {
+                return _selectedItems ??
+                     (_selectedItems = new ObservableCollection<IDislpayItem>());
+            }
+            set { _selectedItems = value; }
         }
     }
 }

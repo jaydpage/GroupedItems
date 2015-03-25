@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
 {
     public class ObservableItemsCollection : ObservableCollection<IDislpayItem>
     {
-        private ObservableCollection<IDislpayItem> _selectedItems;
-
         public void MoveItemsDown(IEnumerable<IDislpayItem> selectedItems)
         {
             var items = selectedItems.OrderByDescending(IndexOf).ToList();
@@ -40,20 +35,18 @@ namespace GroupedItemsTake2
             }
         }
 
-        public void UpdateSelectedItems(IEnumerable<IDislpayItem> items)
+        public int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selectedItems)
         {
-            SelectedItems.Clear();
-            SelectedItems.AddRange(items);
+            var lowestIndex = int.MaxValue;
+            foreach (var item in selectedItems)
+            {
+                var index = IndexOf(item);
+                if (!Contains(item)) continue;
+                if (index < lowestIndex) lowestIndex = index;
+            }
+            return lowestIndex < 0 ? 0 : lowestIndex;
         }
 
-        public ObservableCollection<IDislpayItem> SelectedItems
-        {
-            get
-            {
-                return _selectedItems ??
-                     (_selectedItems = new ObservableCollection<IDislpayItem>());
-            }
-            set { _selectedItems = value; }
-        }
+        
     }
 }
