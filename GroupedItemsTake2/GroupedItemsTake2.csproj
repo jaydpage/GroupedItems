@@ -92,9 +92,9 @@
     </Compile>
     <Compile Include="DisplayCollection.cs" />
     <Compile Include="Group.cs" />
-    <Compile Include="GroupingLogic.cs" />
     <Compile Include="IDislpayItem.cs" />
     <Compile Include="IGroup.cs" />
+    <Compile Include="IGroupingLogic.cs" />
     <Compile Include="IItem.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemMultiSelectBehavior.cs" />

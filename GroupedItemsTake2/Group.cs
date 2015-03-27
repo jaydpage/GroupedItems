@@ -30,6 +30,13 @@ namespace GroupedItemsTake2
             Items.Insert(lowestSelectedIndex, item);
             item.SetParent(this);
         }
+        
+        public void InsertAtParentIndex(IDislpayItem item)
+        {
+            var index = Items.IndexOf(item.Parent);
+            Items.Insert(index, item);
+            item.SetParent(this);
+        }
 
         public void MoveItemsUp(IEnumerable<IDislpayItem> items)
         {

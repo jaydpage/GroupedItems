@@ -16,6 +16,7 @@
         <StackPanel Orientation="Horizontal">
             <telerik:RadButton Content="Add Item" Command="{Binding AddCommand}"/>
             <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}"/>
+            <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}"/>
         </StackPanel>
         <telerik:RadTreeListView x:Name="InputItemsList"
 						  Grid.Row="1"                                                                                                      
@@ -33,6 +34,7 @@
             <telerik:RadTreeListView.InputBindings>
                 <KeyBinding Key="INSERT" Command="{Binding AddCommand}" />
                 <KeyBinding Key="ENTER" Command="{Binding AddCommand}" />
+                <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
                 <KeyBinding Key="ENTER" Modifiers="Control" Command="{Binding EditCommand}" />
                 <KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
                 <KeyBinding Key="D" Modifiers="Control" Command="{Binding DuplicateCommand}" />
@@ -60,6 +62,7 @@
             <telerik:RadContextMenu.ContextMenu>
                 <telerik:RadContextMenu>
                     <telerik:RadMenuItem Header="Group" Command="{Binding GroupCommand}"/>
+                    <telerik:RadMenuItem Header="Un Group" Command="{Binding UnGroupCommand}"/>
                     <telerik:RadMenuSeparatorItem/>
                     <telerik:RadMenuItem Header="Move Up" Command="{Binding MoveUpCommand}"/>
                     <telerik:RadMenuItem Header="Move Down" Command="{Binding MoveDownCommand}"/>

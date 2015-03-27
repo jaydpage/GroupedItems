@@ -8,6 +8,7 @@ namespace GroupedItemsTake2
         ObservableItemsCollection Items { get; }
         void Add(IDislpayItem item);
         void Insert(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems);
+        void InsertAtParentIndex(IDislpayItem item);
         void MoveItemsUp(IEnumerable<IDislpayItem> items);
         void MoveItemsDown(IEnumerable<IDislpayItem> items);
         void Remove(IDislpayItem item);

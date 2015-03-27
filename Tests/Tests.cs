@@ -31,6 +31,22 @@ namespace Tests
         }
 
         [Test]
+        public void RemovingFromAGroupTest()
+        {
+            var item = CreateItem();
+            var group = CreateGroup();
+            group.Add(item);
+
+            Assert.That(group.Contains(item));
+
+            group.Remove(item);
+
+            Assert.That(!group.Contains(item));
+            Assert.That(group.Count() == 0);
+
+        }
+
+        [Test]
         public void GroupedItemKnowsItsParent()
         {
             var item = CreateItem();

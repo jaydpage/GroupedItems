@@ -9,6 +9,8 @@ namespace Tests
     [TestFixture]
     public class GroupingLogicTests
     {
+        ObservableItemsCollection _collection = new ObservableItemsCollection();
+
         private static Item CreateItem(string name = "item")
         {
             return new Item(name, null);
@@ -147,8 +149,8 @@ namespace Tests
             var selectedItems2 = new List<IDislpayItem>();
             selectedItems2.Add(item0);
 
-            Assert.AreEqual(true, GroupingLogic.AreAnySelectedItemsAtTheTopLevel(selectedItems));
-            Assert.AreEqual(false, GroupingLogic.AreAnySelectedItemsAtTheTopLevel(selectedItems2));
+            Assert.AreEqual(true, _collection.AreAnySelectedItemsAtTheTopLevel(selectedItems));
+            Assert.AreEqual(false, _collection.AreAnySelectedItemsAtTheTopLevel(selectedItems2));
 
         }
 
@@ -176,8 +178,8 @@ namespace Tests
             selectedItems.Add(item0);
             selectedItems.Add(item);
 
-            Assert.AreEqual(false, GroupingLogic.AreSelectedItemsOfTheSameGroup(selectedItems));
-            Assert.AreEqual(true, GroupingLogic.AreSelectedItemsOfTheSameGroup(selectedItems2));
+            Assert.AreEqual(false, _collection.AreSelectedItemsOfTheSameGroup(selectedItems));
+            Assert.AreEqual(true, _collection.AreSelectedItemsOfTheSameGroup(selectedItems2));
         }
         
         [Test]
@@ -195,9 +197,9 @@ namespace Tests
             selectedItems.Add(item0);
             selectedItems.Add(item);
 
-            Assert.AreEqual(group, GroupingLogic.GetSelectedItemGroup(selectedItems[0]));
-            Assert.AreEqual(group, GroupingLogic.GetSelectedItemGroup(selectedItems[1]));
-            Assert.AreEqual(group, GroupingLogic.GetSelectedItemGroup(selectedItems[2]));
+            Assert.AreEqual(group, _collection.GetItemGroup(selectedItems[0]));
+            Assert.AreEqual(group, _collection.GetItemGroup(selectedItems[1]));
+            Assert.AreEqual(group, _collection.GetItemGroup(selectedItems[2]));
 
         }
         
@@ -226,7 +228,7 @@ namespace Tests
             displayCollection.AddItem(item1);
             displayCollection.AddItem(item2);
 
-            var itemsToGroup = GroupingLogic.CreateItemsToGroup(selectedItems).ToList();
+            var itemsToGroup = _collection.CreateItemsToGroup(selectedItems).ToList();
 
             Assert.AreEqual(3, itemsToGroup.Count());
             Assert.AreEqual(Level.Parent, itemsToGroup[0].Level);
@@ -344,12 +346,6 @@ namespace Tests
 
             Assert.AreEqual(cgroup2.UID, cgroup2.Items.First(x => x.Name == "Item3").Parent.UID);
             Assert.AreEqual(cgroup2.UID, cgroup2.Items.First(x => x.Name == "Item4").Parent.UID);
-
-
-
-
-
-
         }
     }
 }

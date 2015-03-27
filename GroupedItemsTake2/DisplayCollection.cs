@@ -12,10 +12,10 @@ namespace GroupedItemsTake2
         public void AddItem(IDislpayItem item)
         {
             if (!SelectedItems.Any()) Add(item);
-            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Add(item);
-            else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(SelectedItems))
+            else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Add(item);
+            else if (AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                AddToGroup(item, GroupingLogic.GetSelectedItemGroup(SelectedItems.First()));
+                AddToGroup(item, GetItemGroup(SelectedItems.First()));
             }
         }
         
@@ -23,36 +23,57 @@ namespace GroupedItemsTake2
         {
             var lowestSelectedIndex = GetLowestSelectedIndex(SelectedItems);
             if (!SelectedItems.Any()) Insert(lowestSelectedIndex, item);
-            else if (GroupingLogic.AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Insert(lowestSelectedIndex, item);
-            else if (GroupingLogic.AreSelectedItemsOfTheSameGroup(SelectedItems))
+            else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Insert(lowestSelectedIndex, item);
+            else if (AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                InsertInGroup(item, GroupingLogic.GetSelectedItemGroup(SelectedItems.First()));
+                InsertInGroup(item, GetItemGroup(SelectedItems.First()));
             }
         }
 
         public void GroupItems(IGroup group)
         {
-            var itemsToGroup = GroupingLogic.CreateItemsToGroup(SelectedItems).ToList();
+            var itemsToGroup = CreateItemsToGroup(SelectedItems).ToList();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
             }
             InsertItem(group);
-            RemoveItems(GroupingLogic.GetItemsToRemove(SelectedItems));
+            RemoveItems(GetItemsToRemove(SelectedItems));
             UpdateSelectedItems(new List<IDislpayItem>{group});
+        }
+        
+        public void Ungroup()
+        {
+            var itemsToGroup = CreateItemsToGroup(SelectedItems).ToList();
+            RemoveItems(GetGroupedItemsToRemove(SelectedItems));
+            foreach (var item in itemsToGroup)
+            {
+                if (IsItemUngrouped(item)) continue;
+                if (!DoesItemHaveAGrandParent(item))
+                {
+                    Insert(IndexOf(item.Parent), item);
+                    item.SetParent(null);
+                }
+                else InsertInGroupParentIndex(item, GetItemGroup(item.Parent));
+            }
         }
 
         private void RemoveItems(IEnumerable<IDislpayItem> items)
         {
             foreach (var item in items.ToList())
             {
-                if(GroupingLogic.IsItemAChild(item))
-                {
-                    var group = item.Parent as IGroup;
-                    if (group != null) group.Remove(item);
-                }
-                else Remove(item);
+                RemoveItem(item);
             }
+        }
+
+        private void RemoveItem(IDislpayItem item)
+        {
+            if (IsItemAChild(item))
+            {
+                var group = item.Parent as IGroup;
+                if (group != null) group.Remove(item);
+            }
+            else Remove(item);
         }
 
         private void AddToGroup(IDislpayItem item, IGroup group)
@@ -64,17 +85,27 @@ namespace GroupedItemsTake2
         {
             group.Insert(item, SelectedItems);
         }
+        
+        private void InsertInGroupParentIndex(IDislpayItem item, IGroup group)
+        {
+            group.InsertAtParentIndex(item);
+        }
+
+        public void Delete()
+        {
+            RemoveItems(SelectedItems);
+        }
 
         public void MoveUp()
         {
             var items = SelectedItems.OrderBy(IndexOf).ToList();
-            var childItems = SelectedItems.Where(GroupingLogic.IsItemAChild);
+            var childItems = SelectedItems.Where(IsItemAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
             MoveItemsUp(ungroupedItems);
             if (childItems.Any())
             {
-                var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
+                var group = GetItemGroup(childItems.First());
                 group.MoveItemsUp(childItems);
             }
             UpdateSelectedItems(items);
@@ -83,13 +114,13 @@ namespace GroupedItemsTake2
         public void MoveDown()
         {
             var items = SelectedItems.OrderBy(IndexOf).ToList();
-            var childItems = SelectedItems.Where(GroupingLogic.IsItemAChild);
+            var childItems = SelectedItems.Where(IsItemAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
             MoveItemsDown(ungroupedItems);
             if (childItems.Any())
             {
-                var group = GroupingLogic.GetSelectedItemGroup(childItems.First());
+                var group = GetItemGroup(childItems.First());
                 group.MoveItemsDown(childItems);
             }
             UpdateSelectedItems(items);

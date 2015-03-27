@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddingLogicTests.cs" />
+    <Compile Include="DeletionAndUngroupingTests.cs" />
     <Compile Include="GroupingLogicTests.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
