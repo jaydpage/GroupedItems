@@ -74,6 +74,10 @@ namespace GroupedItemsTake2
         public void SetParent(IDislpayItem parent)
         {
             Parent = parent;
+            foreach (var item in Items)
+            {
+                item.SetParent(this);
+            }
         }
 
         public IDislpayItem Copy()

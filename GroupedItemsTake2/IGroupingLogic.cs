@@ -16,5 +16,6 @@ namespace GroupedItemsTake2
         void MoveItemsDown(IEnumerable<IDislpayItem> selectedItems);
         void MoveItemsUp(IEnumerable<IDislpayItem> selectedItems);
         int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selectedItems);
+        IEnumerable<IDislpayItem> GetTopLevelSelectedParents(IEnumerable<IDislpayItem> items);
     }
 }

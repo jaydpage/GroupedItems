@@ -14,6 +14,7 @@ namespace GroupedItemsTake2
         public DelegateCommand<object> EditCommand { get; private set; }
         public DelegateCommand<object> MoveUpCommand { get; private set; }
         public DelegateCommand<object> GroupCommand { get; private set; }
+        public DelegateCommand<object> UnGroupCommand { get; private set; }
         public DelegateCommand<object> MoveOutOfGroupCommand { get; private set; }
         public DelegateCommand<object> MoveDownCommand { get; private set; }
         public DelegateCommand<object> DeleteCommand { get; private set; }
@@ -30,6 +31,7 @@ namespace GroupedItemsTake2
             DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => true);
             MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => IsItemSelected);
             GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => IsItemSelected);
+            UnGroupCommand = new DelegateCommand<object>(obj => UngroupItems(), x => IsItemSelected);
             MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => IsItemSelected);
             MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected);
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => true);
@@ -63,9 +65,14 @@ namespace GroupedItemsTake2
             Items.GroupItems(group);
         }
         
+        private void UngroupItems()
+        {
+            Items.UnGroupSelectedItems();
+        }
+        
         private void MoveOutOfGroup()
         {
-            Items.MoveOutOfGroup();
+            Items.MoveItemsOutOfGroup(Items.SelectedItems);
         }
 
 

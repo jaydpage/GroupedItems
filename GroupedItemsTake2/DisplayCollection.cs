@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
@@ -41,11 +42,25 @@ namespace GroupedItemsTake2
             RemoveItems(GetItemsToRemove(SelectedItems));
             UpdateSelectedItems(new List<IDislpayItem>{group});
         }
-        
-        public void MoveOutOfGroup()
+
+        public void UnGroupSelectedItems()
         {
-            var itemsToGroup = CreateItemsToGroup(SelectedItems).ToList();
-            RemoveItems(GetGroupedItemsToRemove(SelectedItems));
+            var selectedParents = GetTopLevelSelectedParents(SelectedItems);
+            foreach (var selectedParent in selectedParents)
+            {
+                UnGroup(selectedParent as IGroup);
+            }
+        }
+
+        public void MoveSelectedItemsOutOfGroup()
+        {
+            MoveItemsOutOfGroup(SelectedItems);
+        }
+        
+        public void MoveItemsOutOfGroup(ObservableCollection<IDislpayItem> observableCollection)
+        {
+            var itemsToGroup = CreateItemsToGroup(observableCollection).ToList();
+            RemoveItems(GetGroupedItemsToRemove(observableCollection));
             foreach (var item in itemsToGroup)
             {
                 if (IsItemAtTheTopLevel(item)) continue;
@@ -56,6 +71,12 @@ namespace GroupedItemsTake2
                 }
                 else InsertInGroupAtParentIndex(item, GetItemGroup(item.Parent));
             }
+        }
+
+        private void UnGroup(IGroup group)
+        {
+            MoveItemsOutOfGroup(group.Items);
+            RemoveItem(group);
         }
 
         private void RemoveItems(IEnumerable<IDislpayItem> items)

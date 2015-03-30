@@ -62,6 +62,7 @@
             <telerik:RadContextMenu.ContextMenu>
                 <telerik:RadContextMenu>
                     <telerik:RadMenuItem Header="Group" Command="{Binding GroupCommand}"/>
+                    <telerik:RadMenuItem Header="Ungroup" Command="{Binding UnGroupCommand}"/>
                     <telerik:RadMenuItem Header="Move Out of Group" Command="{Binding MoveOutOfGroupCommand}"/>
                     <telerik:RadMenuSeparatorItem/>
                     <telerik:RadMenuItem Header="Move Up" Command="{Binding MoveUpCommand}"/>

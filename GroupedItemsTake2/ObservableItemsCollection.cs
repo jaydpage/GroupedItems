@@ -76,14 +76,14 @@ namespace GroupedItemsTake2
             return topSelectedParents.Concat(itemsWithNoSelectedParents).Distinct();
         }
 
-        private IEnumerable<IDislpayItem> GetTopLevelSelectedParents(IEnumerable<IDislpayItem> items)
+        public IEnumerable<IDislpayItem> GetTopLevelSelectedParents(IEnumerable<IDislpayItem> items)
         {
             var itemGroups = new List<IDislpayItem>();
             foreach (var item in items)
             {
                 if (!IsItemAParent(item)) continue;
                 var topGroup = GetTopLevelSelectedItem(item, items);
-                if (itemGroups.All(x => x != topGroup)) itemGroups.Add(topGroup);
+                if (itemGroups.All(x => x.UID != topGroup.UID)) itemGroups.Add(topGroup);
             }
             return itemGroups;
         }
