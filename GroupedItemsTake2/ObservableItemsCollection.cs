@@ -61,7 +61,7 @@ namespace GroupedItemsTake2
             return selectedItem as IGroup;
         }
 
-        public IEnumerable<IDislpayItem> CreateItemsToGroup(IEnumerable<IDislpayItem> selectedItems)
+        public IEnumerable<IDislpayItem> GetDistinctItems(IEnumerable<IDislpayItem> selectedItems)
         {
             var itemsToGroup = new List<IDislpayItem>();
             var selectedDistinct = GetDistinctItemsToGroup(selectedItems);

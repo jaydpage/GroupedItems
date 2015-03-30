@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using GroupedItemsTake2;
 using NUnit.Framework;
 
@@ -162,6 +165,21 @@ namespace Tests
             group1.Add(group);
             var expected = Level.ParentChild;
             Assert.AreEqual(expected, group.Level);
+        }
+
+        [Test]
+        public void CutAndPasteTest()
+        {
+            var group = CreateGroup();
+            var displayCollection = new DisplayCollection();
+            displayCollection.AddItem(group);
+            displayCollection.SelectedItems = new ObservableCollection<IDislpayItem> { group };
+
+            Assert.That(displayCollection.Any(x => x.UID == group.UID));
+            displayCollection.CutSelectedItems();
+            Assert.That(displayCollection.All(x => x.UID != group.UID));
+            displayCollection.PasteItems();
+            Assert.That(displayCollection.Any(x => x.UID == group.UID));
         }
     }
 }

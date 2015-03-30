@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
 using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
@@ -9,14 +10,29 @@ namespace GroupedItemsTake2
     public class DisplayCollection : ObservableItemsCollection
     {
         private ObservableCollection<IDislpayItem> _selectedItems;
+        private List<IDislpayItem> _cutItems;
 
         public void AddItem(IDislpayItem item)
         {
-            if (!SelectedItems.Any()) Add(item);
-            else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Add(item);
+            if (!SelectedItems.Any()) AddAsUngrouped(item);
+            else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) AddAsUngrouped(item);
             else if (AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
                 AddToGroup(item, GetItemGroup(SelectedItems.First()));
+            }
+        }
+
+        private void AddAsUngrouped(IDislpayItem item)
+        {
+            item.SetParent(null);
+            Add(item);
+        }
+
+        private void AddItems(IEnumerable<IDislpayItem> items)
+        {
+            foreach (var item in items)
+            {
+                AddItem(item);
             }
         }
         
@@ -31,9 +47,9 @@ namespace GroupedItemsTake2
             }
         }
 
-        public void GroupItems(IGroup group)
+        public void GroupSelectedItems(IGroup group)
         {
-            var itemsToGroup = CreateItemsToGroup(SelectedItems).ToList();
+            var itemsToGroup = GetDistinctItems(SelectedItems).ToList();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
@@ -41,6 +57,18 @@ namespace GroupedItemsTake2
             InsertItem(group);
             RemoveItems(GetItemsToRemove(SelectedItems));
             UpdateSelectedItems(new List<IDislpayItem>{group});
+        }
+
+        public void CutSelectedItems()
+        {
+            _cutItems = GetDistinctItems(SelectedItems).ToList();
+            RemoveItems(SelectedItems);
+        }
+        
+        public void PasteItems()
+        {
+            AddItems(_cutItems);
+            _cutItems.Clear();
         }
 
         public void UnGroupSelectedItems()
@@ -57,10 +85,10 @@ namespace GroupedItemsTake2
             MoveItemsOutOfGroup(SelectedItems);
         }
         
-        public void MoveItemsOutOfGroup(ObservableCollection<IDislpayItem> observableCollection)
+        public void MoveItemsOutOfGroup(ObservableCollection<IDislpayItem> items)
         {
-            var itemsToGroup = CreateItemsToGroup(observableCollection).ToList();
-            RemoveItems(GetGroupedItemsToRemove(observableCollection));
+            var itemsToGroup = GetDistinctItems(items).ToList();
+            RemoveItems(GetGroupedItemsToRemove(items));
             foreach (var item in itemsToGroup)
             {
                 if (IsItemAtTheTopLevel(item)) continue;

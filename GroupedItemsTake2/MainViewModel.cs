@@ -18,6 +18,8 @@ namespace GroupedItemsTake2
         public DelegateCommand<object> MoveOutOfGroupCommand { get; private set; }
         public DelegateCommand<object> MoveDownCommand { get; private set; }
         public DelegateCommand<object> DeleteCommand { get; private set; }
+        public DelegateCommand<object> CutCommand { get; private set; }
+        public DelegateCommand<object> PasteCommand { get; private set; }
 
         private DisplayCollection _items;
         private IDislpayItem _selectedItem;
@@ -35,6 +37,18 @@ namespace GroupedItemsTake2
             MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => IsItemSelected);
             MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected);
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => true);
+            CutCommand = new DelegateCommand<object>(obj => Cut(), x => true);
+            PasteCommand = new DelegateCommand<object>(obj => Paste(), x => true);
+        }
+
+        private void Paste()
+        {
+            Items.PasteItems();
+        }
+
+        private void Cut()
+        {
+            Items.CutSelectedItems();
         }
 
         private void DuplicateItem()
@@ -62,7 +76,7 @@ namespace GroupedItemsTake2
         {
             var group = new Group("Group " + groupCount, null);
             groupCount++;
-            Items.GroupItems(group);
+            Items.GroupSelectedItems(group);
         }
         
         private void UngroupItems()

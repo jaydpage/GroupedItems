@@ -17,6 +17,8 @@
             <telerik:RadButton Content="Add Item" Command="{Binding AddCommand}"/>
             <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}"/>
             <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}"/>
+            <telerik:RadButton Content="Cut" Command="{Binding CutCommand}"/>
+            <telerik:RadButton Content="Paste" Command="{Binding PasteCommand}"/>
         </StackPanel>
         <telerik:RadTreeListView x:Name="InputItemsList"
 						  Grid.Row="1"                                                                                                      
@@ -38,6 +40,8 @@
                 <KeyBinding Key="ENTER" Modifiers="Control" Command="{Binding EditCommand}" />
                 <KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
                 <KeyBinding Key="D" Modifiers="Control" Command="{Binding DuplicateCommand}" />
+                <KeyBinding Key="X" Modifiers="Control" Command="{Binding CutCommand}" />
+                <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteCommand}" />
             </telerik:RadTreeListView.InputBindings>
             <telerik:RadTreeListView.Columns>
                 <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Name}">

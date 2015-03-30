@@ -7,7 +7,7 @@ namespace GroupedItemsTake2
         bool AreAnySelectedItemsAtTheTopLevel(IEnumerable<IDislpayItem> selected);
         bool AreSelectedItemsOfTheSameGroup(IEnumerable<IDislpayItem> selectedItems);
         IGroup GetItemGroup(IDislpayItem selectedItem);
-        IEnumerable<IDislpayItem> CreateItemsToGroup(IEnumerable<IDislpayItem> selectedItems);
+        IEnumerable<IDislpayItem> GetDistinctItems(IEnumerable<IDislpayItem> selectedItems);
         IEnumerable<IDislpayItem> GetItemsToRemove(IEnumerable<IDislpayItem> selectedItems);
         bool IsItemAParent(IDislpayItem item);
         bool ItemHasNoGrandParent(IDislpayItem item);
