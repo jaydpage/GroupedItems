@@ -47,12 +47,6 @@ namespace GroupedItemsTake2
             return lowestIndex < 0 ? 0 : lowestIndex;
         }
 
-        public bool AreAnySelectedItemsAtTheTopLevel(IEnumerable<IDislpayItem> selected)
-        {
-            return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
-
-        }
-
         public bool AreSelectedItemsOfTheSameGroup(IEnumerable<IDislpayItem> selectedItems)
         {
             if (!selectedItems.Any()) return false;
@@ -101,30 +95,55 @@ namespace GroupedItemsTake2
 
         public IEnumerable<IDislpayItem> GetGroupedItemsToRemove(IEnumerable<IDislpayItem> selectedItems)
         {
-            return GetDistinctItemsToGroup(selectedItems).Where(x => x.Level != Level.Ungrouped).ToList();
+            return GetDistinctItemsToGroup(selectedItems).Where(x => !IsItemAtTheTopLevel(x)).ToList();
+        }
+
+        public bool AreAnySelectedItemsAtTheTopLevel(IEnumerable<IDislpayItem> selected)
+        {
+            return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
+        }
+
+        public bool IsItemAtTheTopLevel(IDislpayItem item)
+        {
+            return IsItemUngrouped(item) || IsItemExclusivelyAParent(item);
         }
 
         public bool IsItemAParent(IDislpayItem item)
         {
-            if (item.Level == Level.Parent) return true;
-            return item.Level == Level.ParentChild;
-        }
+            if (IsItemExclusivelyAParent(item)) return true;
+            return IsItemAParentChild(item);
+        }      
 
-        public bool DoesItemHaveAGrandParent(IDislpayItem item)
+        public bool ItemHasNoGrandParent(IDislpayItem item)
         {
-            if (item.Parent == null) return false;
-            return item.Parent.Parent != null;
+            if (item.Parent == null) return true;
+            return item.Parent.Parent == null;
         }
 
         public bool IsItemAChild(IDislpayItem item)
         {
-            if (item.Level == Level.Child) return true;
+            if (IsItemExclusivelyAChild(item)) return true;
+            return IsItemAParentChild(item);
+        }
+       
+        private bool IsItemUngrouped(IDislpayItem item)
+        {
+            return item.Level == Level.Ungrouped;
+        }
+
+        private bool IsItemAParentChild(IDislpayItem item)
+        {
             return item.Level == Level.ParentChild;
         }
 
-        public bool IsItemUngrouped(IDislpayItem item)
+        private static bool IsItemExclusivelyAChild(IDislpayItem item)
         {
-            return item.Level == Level.Ungrouped;
+            return item.Level == Level.Child;
+        }
+
+        private bool IsItemExclusivelyAParent(IDislpayItem item)
+        {
+            return item.Level == Level.Parent;
         }
 
         private IEnumerable<IDislpayItem> GetItemsWithNoSelectedParents(IEnumerable<IDislpayItem> items)

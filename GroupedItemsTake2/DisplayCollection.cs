@@ -42,19 +42,19 @@ namespace GroupedItemsTake2
             UpdateSelectedItems(new List<IDislpayItem>{group});
         }
         
-        public void Ungroup()
+        public void MoveOutOfGroup()
         {
             var itemsToGroup = CreateItemsToGroup(SelectedItems).ToList();
             RemoveItems(GetGroupedItemsToRemove(SelectedItems));
             foreach (var item in itemsToGroup)
             {
-                if (IsItemUngrouped(item)) continue;
-                if (!DoesItemHaveAGrandParent(item))
+                if (IsItemAtTheTopLevel(item)) continue;
+                if (ItemHasNoGrandParent(item))
                 {
                     Insert(IndexOf(item.Parent), item);
                     item.SetParent(null);
                 }
-                else InsertInGroupParentIndex(item, GetItemGroup(item.Parent));
+                else InsertInGroupAtParentIndex(item, GetItemGroup(item.Parent));
             }
         }
 
@@ -86,7 +86,7 @@ namespace GroupedItemsTake2
             group.Insert(item, SelectedItems);
         }
         
-        private void InsertInGroupParentIndex(IDislpayItem item, IGroup group)
+        private void InsertInGroupAtParentIndex(IDislpayItem item, IGroup group)
         {
             group.InsertAtParentIndex(item);
         }

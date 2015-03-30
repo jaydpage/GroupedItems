@@ -126,7 +126,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Ungroup();
+            displayCollection.MoveOutOfGroup();
 
             Assert.AreEqual(1, displayCollection.Count());
             Assert.That(displayCollection.Contains(item2));
@@ -151,7 +151,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Ungroup();
+            displayCollection.MoveOutOfGroup();
 
             Assert.AreEqual(0, group.Count());
             Assert.That(!group.Contains(item0));
@@ -177,7 +177,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Ungroup();
+            displayCollection.MoveOutOfGroup();
 
             Assert.AreEqual(item0.Name, displayCollection[0].Name);
             Assert.AreEqual(item.Name, displayCollection[1].Name);
@@ -205,7 +205,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(2, displayCollection.Count);
-            displayCollection.Ungroup();
+            displayCollection.MoveOutOfGroup();
 
             Assert.AreEqual(group.Name, displayCollection[0].Name);
             Assert.AreEqual(3, displayCollection.Count);
@@ -230,7 +230,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(group, item0.Parent);
-            displayCollection.Ungroup();
+            displayCollection.MoveOutOfGroup();
 
             Assert.AreEqual(null, displayCollection[0].Parent);
            
@@ -260,7 +260,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             Assert.That(newGroup.Contains(group));
 
-            displayCollection.Ungroup();
+            displayCollection.MoveOutOfGroup();
 
             Assert.AreEqual(group.Name, newerGroup.Items[0].Name);
             Assert.AreEqual(2, newerGroup.Count());

@@ -10,9 +10,9 @@ namespace GroupedItemsTake2
         IEnumerable<IDislpayItem> CreateItemsToGroup(IEnumerable<IDislpayItem> selectedItems);
         IEnumerable<IDislpayItem> GetItemsToRemove(IEnumerable<IDislpayItem> selectedItems);
         bool IsItemAParent(IDislpayItem item);
-        bool DoesItemHaveAGrandParent(IDislpayItem item);
+        bool ItemHasNoGrandParent(IDislpayItem item);
         bool IsItemAChild(IDislpayItem item);
-        bool IsItemUngrouped(IDislpayItem item);
+        bool IsItemAtTheTopLevel(IDislpayItem item);
         void MoveItemsDown(IEnumerable<IDislpayItem> selectedItems);
         void MoveItemsUp(IEnumerable<IDislpayItem> selectedItems);
         int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selectedItems);

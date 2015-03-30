@@ -14,7 +14,7 @@ namespace GroupedItemsTake2
         public DelegateCommand<object> EditCommand { get; private set; }
         public DelegateCommand<object> MoveUpCommand { get; private set; }
         public DelegateCommand<object> GroupCommand { get; private set; }
-        public DelegateCommand<object> UnGroupCommand { get; private set; }
+        public DelegateCommand<object> MoveOutOfGroupCommand { get; private set; }
         public DelegateCommand<object> MoveDownCommand { get; private set; }
         public DelegateCommand<object> DeleteCommand { get; private set; }
 
@@ -28,16 +28,16 @@ namespace GroupedItemsTake2
             _items = new DisplayCollection();;
             AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
             DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => true);
-            MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => IsItemSelected());
-            GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => IsItemSelected());
-            UnGroupCommand = new DelegateCommand<object>(obj => UnGroupItems(), x => IsItemSelected());
-            MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected());
+            MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => IsItemSelected);
+            GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => IsItemSelected);
+            MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => IsItemSelected);
+            MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected);
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => true);
         }
 
         private void DuplicateItem()
         {
-            if (!IsItemSelected()) return;
+            if (!IsItemSelected) return;
             Items.Duplicate();
         }
 
@@ -63,9 +63,9 @@ namespace GroupedItemsTake2
             Items.GroupItems(group);
         }
         
-        private void UnGroupItems()
+        private void MoveOutOfGroup()
         {
-            Items.Ungroup();
+            Items.MoveOutOfGroup();
         }
 
 
@@ -75,9 +75,14 @@ namespace GroupedItemsTake2
             itemCount++;
         }
 
-        private bool IsItemSelected()
+        public bool IsItemSelected
         {
-            return SelectedItems.Any();
+            get { return SelectedItems.Any(); }
+        }
+        
+        public bool AnySelectedItemsNotAtTopLevel
+        {
+            get { return SelectedItems.Any(x => !Items.IsItemAtTheTopLevel(x)); } 
         }
 
         public DisplayCollection Items { get { return _items; } set { _items = value; } }
@@ -95,7 +100,13 @@ namespace GroupedItemsTake2
         public ObservableCollection<IDislpayItem> SelectedItems
         {
             get { return Items.SelectedItems; }
-            set { Items.SelectedItems = value; }
+            set
+            {
+                Items.SelectedItems = value;
+                OnPropertyChanged("SelectedItems");
+                OnPropertyChanged("IsItemSelected");
+                OnPropertyChanged("AnySelectedItemsNotAtTopLevel");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
