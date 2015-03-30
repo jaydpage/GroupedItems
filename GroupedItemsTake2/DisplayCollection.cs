@@ -62,7 +62,7 @@ namespace GroupedItemsTake2
         public void CutSelectedItems()
         {
             _cutItems = GetDistinctItems(SelectedItems).ToList();
-            RemoveItems(SelectedItems);
+            RemoveItems(GetItemsToRemove(SelectedItems));
         }
         
         public void PasteItems()
