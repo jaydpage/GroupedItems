@@ -33,4 +33,3 @@ D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csp
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.exe
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.pdb
 D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csprojResolveAssemblyReference.cache
