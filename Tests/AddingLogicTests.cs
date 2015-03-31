@@ -176,9 +176,9 @@ namespace Tests
             displayCollection.SelectedItems = new ObservableCollection<IDislpayItem> { group };
 
             Assert.That(displayCollection.Any(x => x.UID == group.UID));
-            displayCollection.CutSelectedItems();
+            displayCollection.CutSelected();
             Assert.That(displayCollection.All(x => x.UID != group.UID));
-            displayCollection.PasteItems();
+            displayCollection.Paste();
             Assert.That(displayCollection.Any(x => x.UID == group.UID));
         }
     }

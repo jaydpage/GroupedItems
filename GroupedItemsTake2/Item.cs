@@ -4,6 +4,12 @@ namespace GroupedItemsTake2
 {
     public class Item : IItem
     {
+	    public static Item Create(string name)
+	    {
+		    var result = new Item(name, null);
+		    return result;
+	    }
+
         public Item(string name, IDislpayItem parent)
         {
             Parent = parent;

@@ -23,3 +23,17 @@ D:\Dev\POC's\GroupedItemsTake2\Tests\bin\Debug\tr\Telerik.Windows.Controls.resou
 D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
 D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.dll
 D:\Dev\POC's\GroupedItemsTake2\Tests\obj\Debug\Tests.pdb
+D:\GitHub\GroupedItems\Tests\bin\Debug\Tests.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\Tests.pdb
+D:\GitHub\GroupedItems\Tests\bin\Debug\GroupedItemsTake2.exe
+D:\GitHub\GroupedItems\Tests\bin\Debug\Telerik.Windows.Controls.GridView.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\Microsoft.Practices.Composite.Presentation.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\Microsoft.Practices.Composite.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\Telerik.Windows.Data.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\Telerik.Windows.Controls.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\Telerik.Windows.Controls.Input.dll
+D:\GitHub\GroupedItems\Tests\bin\Debug\GroupedItemsTake2.pdb
+D:\GitHub\GroupedItems\Tests\bin\Debug\nunit.framework.xml
+D:\GitHub\GroupedItems\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+D:\GitHub\GroupedItems\Tests\obj\Debug\Tests.dll
+D:\GitHub\GroupedItems\Tests\obj\Debug\Tests.pdb

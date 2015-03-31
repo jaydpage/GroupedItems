@@ -92,12 +92,15 @@
     </Compile>
     <Compile Include="DisplayCollection.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="GroupNameGenerator.cs" />
     <Compile Include="IDislpayItem.cs" />
+    <Compile Include="IDisplayCollection.cs" />
     <Compile Include="IGroup.cs" />
     <Compile Include="IGroupingLogic.cs" />
     <Compile Include="IItem.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemMultiSelectBehavior.cs" />
+    <Compile Include="ItemNameGenerator.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
