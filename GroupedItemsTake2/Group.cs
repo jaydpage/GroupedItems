@@ -8,7 +8,14 @@ namespace GroupedItemsTake2
     {
         public string Name { get; set; }
         public IDislpayItem Parent { get; private set; }
-        public ObservableItemsCollection Items { get; private set; } 
+        public ObservableItemsCollection Items { get; private set; }
+
+	    public static IGroup CreateGroup(string name)
+	    {
+		    var result = new Group(name, null);
+		    return result;
+	    }
+
 
         public Group(string name, IDislpayItem parent)
         {

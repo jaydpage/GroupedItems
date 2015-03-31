@@ -39,7 +39,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Delete();
+            displayCollection.DeleteSelected();
 
             Assert.AreEqual(1, displayCollection.Count());
             Assert.That(!displayCollection.Contains(group));
@@ -63,7 +63,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Delete();
+            displayCollection.DeleteSelected();
 
             Assert.AreEqual(1, group.Count());
             Assert.That(!group.Contains(item0));
@@ -89,7 +89,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Delete();
+            displayCollection.DeleteSelected();
 
             Assert.AreEqual(0, newGroup.Count());
             Assert.AreEqual(2, displayCollection.Count());
@@ -108,7 +108,7 @@ namespace Tests
             displayCollection.Add(item2);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.Delete();
+            displayCollection.DeleteSelected();
 
             Assert.AreEqual(0, displayCollection.Count());
             Assert.That(!displayCollection.Contains(item2));
@@ -232,7 +232,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(2, displayCollection.Count);
-            displayCollection.UnGroupSelectedItems();
+            displayCollection.UnGroupSelected();
 
             Assert.That(displayCollection.All(x => x.Name != group.Name));
             Assert.AreEqual(3, displayCollection.Count);           
@@ -258,7 +258,7 @@ namespace Tests
             displayCollection.AddItem(newGroup);
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.UnGroupSelectedItems();
+            displayCollection.UnGroupSelected();
 
             Assert.That(newGroup.Items.All(x => x.Name != group.Name));
             Assert.AreEqual(2, newGroup.Items.Count);           
@@ -284,7 +284,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(2, displayCollection.Count);
-            displayCollection.UnGroupSelectedItems();
+            displayCollection.UnGroupSelected();
      
             Assert.AreEqual(item0.Name, displayCollection[1].Name);
             Assert.AreEqual(item.Name, displayCollection[2].Name);           
@@ -324,7 +324,7 @@ namespace Tests
             Assert.That(group1.Parent.Parent == null);
             Assert.That(group.Parent == null);
 
-            displayCollection.UnGroupSelectedItems();
+            displayCollection.UnGroupSelected();
 
             //Assert.That(group2.Parent.UID == group1.UID);
             Assert.That(group2.Parent.Parent == null);

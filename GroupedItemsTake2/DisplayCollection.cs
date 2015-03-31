@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Windows;
 using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
 {
-    public class DisplayCollection : ObservableItemsCollection
-    {
+	public class DisplayCollection : ObservableItemsCollection, IDisplayCollection
+	{
         private ObservableCollection<IDislpayItem> _selectedItems;
         private List<IDislpayItem> _cutItems;
 
@@ -47,7 +45,7 @@ namespace GroupedItemsTake2
             }
         }
 
-        public void GroupSelectedItems(IGroup group)
+        public void MoveTo(IGroup group)
         {
             var itemsToGroup = GetDistinctItems(SelectedItems).ToList();
             foreach (var item in itemsToGroup)
@@ -59,19 +57,19 @@ namespace GroupedItemsTake2
             UpdateSelectedItems(new List<IDislpayItem>{group});
         }
 
-        public void CutSelectedItems()
+        public void CutSelected()
         {
             _cutItems = GetDistinctItems(SelectedItems).ToList();
             RemoveItems(GetItemsToRemove(SelectedItems));
         }
         
-        public void PasteItems()
+        public void Paste()
         {
             AddItems(_cutItems);
             _cutItems.Clear();
         }
 
-        public void UnGroupSelectedItems()
+        public void UnGroupSelected()
         {
             var selectedParents = GetTopLevelSelectedParents(SelectedItems);
             foreach (var selectedParent in selectedParents)
@@ -140,12 +138,12 @@ namespace GroupedItemsTake2
             group.InsertAtParentIndex(item);
         }
 
-        public void Delete()
+        public void DeleteSelected()
         {
             RemoveItems(SelectedItems);
         }
 
-        public void MoveUp()
+        public void MoveSelectedUp()
         {
             var items = SelectedItems.OrderBy(IndexOf).ToList();
             var childItems = SelectedItems.Where(IsItemAChild);
@@ -160,7 +158,7 @@ namespace GroupedItemsTake2
             UpdateSelectedItems(items);
         }
 
-        public void MoveDown()
+        public void MoveSelectedDown()
         {
             var items = SelectedItems.OrderBy(IndexOf).ToList();
             var childItems = SelectedItems.Where(IsItemAChild);
@@ -175,8 +173,10 @@ namespace GroupedItemsTake2
             UpdateSelectedItems(items);
         }
 
-        public void Duplicate()
+        public void DuplicateSelected()
         {
+            if (!IsItemSelected) return;
+
             foreach (var item in SelectedItems)
             {
                 AddItem(item.Copy());
@@ -198,5 +198,16 @@ namespace GroupedItemsTake2
             }
             set { _selectedItems = value; }
         }
-    }
+
+        public bool IsItemSelected
+        {
+            get { return SelectedItems.Any(); }
+        }
+
+		public void GroupSelected(string groupName)
+		{
+			var newGroup = Group.CreateGroup(groupName);
+			MoveTo(newGroup);
+		}
+	}
 }
