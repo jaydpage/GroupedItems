@@ -11,8 +11,8 @@
 
 		public string GenerateName()
 		{
+            _groupCount++;
 			var name = "Group " + _groupCount;
-			_groupCount++;
 			return name;
 		}
 	}

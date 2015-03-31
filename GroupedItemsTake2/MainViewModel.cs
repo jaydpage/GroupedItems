@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using GroupedItemsTake2.Annotations;
@@ -26,24 +28,39 @@ namespace GroupedItemsTake2
 		private readonly GroupNameGenerator _groupNameGenerator;
 		private readonly ItemNameGenerator _itemNameGenerator;
 
-		public MainViewModel()
+	    public MainViewModel()
 		{
 			_itemNameGenerator = new ItemNameGenerator();
 			_groupNameGenerator = new GroupNameGenerator();
 			_items = new DisplayCollection(); ;
 			AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
-			DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => true);
-			MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => Items.IsItemSelected);
-			GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => Items.IsItemSelected);
-			UnGroupCommand = new DelegateCommand<object>(obj => UngroupItems(), x => Items.IsItemSelected);
-			MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => Items.IsItemSelected);
-			MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => _items.IsItemSelected);
-			DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => true);
-			CutCommand = new DelegateCommand<object>(obj => Cut(), x => true);
-			PasteCommand = new DelegateCommand<object>(obj => Paste(), x => true);
+            DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => IsItemSelected);
+            MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => IsItemSelected);
+            GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => IsItemSelected);
+            UnGroupCommand = new DelegateCommand<object>(obj => UngroupItems(), x => OnlyParentsSelected);
+            MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => OnlyChildrenSelected);
+            MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected);
+            DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => IsItemSelected);
+            CutCommand = new DelegateCommand<object>(obj => Cut(), x => IsItemSelected);
+            PasteCommand = new DelegateCommand<object>(obj => Paste(), x => IsItemSelected);
+
+            SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
 		}
 
-		private void Paste()
+        private void SelectedItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            UnGroupCommand.RaiseCanExecuteChanged();
+            DuplicateCommand.RaiseCanExecuteChanged();
+            MoveUpCommand.RaiseCanExecuteChanged();
+            GroupCommand.RaiseCanExecuteChanged();
+            MoveOutOfGroupCommand.RaiseCanExecuteChanged();
+            MoveDownCommand.RaiseCanExecuteChanged();
+            DeleteCommand.RaiseCanExecuteChanged();
+            CutCommand.RaiseCanExecuteChanged();
+            PasteCommand.RaiseCanExecuteChanged();
+        }
+
+	    private void Paste()
 		{
 			Items.Paste();
 		}
@@ -106,7 +123,31 @@ namespace GroupedItemsTake2
 			}
 		}
 
-		public IDislpayItem SelectedItem
+        public bool IsItemSelected
+        {
+            get { return SelectedItems.Any(); }
+        }
+
+	    public bool OnlyParentsSelected
+	    {
+	        get
+	        {
+	            if (!SelectedItems.Any()) return false;
+	            return SelectedItems.All(x => Items.IsItemAParent(x));
+	        }	      
+	    }
+        
+        public bool OnlyChildrenSelected
+	    {
+            get
+            {
+                if (!SelectedItems.Any()) return false;
+                return SelectedItems.All(x => Items.IsItemAChild(x));
+            }	      
+	    }
+
+
+	    public IDislpayItem SelectedItem
 		{
 			get { return _selectedItem; }
 			set

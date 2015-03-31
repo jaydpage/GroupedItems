@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.Practices.Composite;
 
@@ -10,7 +11,7 @@ namespace GroupedItemsTake2
         private ObservableCollection<IDislpayItem> _selectedItems;
         private List<IDislpayItem> _cutItems;
 
-        public void AddItem(IDislpayItem item)
+	    public void AddItem(IDislpayItem item)
         {
             if (!SelectedItems.Any()) AddAsUngrouped(item);
             else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) AddAsUngrouped(item);
@@ -175,8 +176,6 @@ namespace GroupedItemsTake2
 
         public void DuplicateSelected()
         {
-            if (!IsItemSelected) return;
-
             foreach (var item in SelectedItems)
             {
                 AddItem(item.Copy());
@@ -196,12 +195,10 @@ namespace GroupedItemsTake2
                 return _selectedItems ??
                      (_selectedItems = new ObservableCollection<IDislpayItem>());
             }
-            set { _selectedItems = value; }
-        }
-
-        public bool IsItemSelected
-        {
-            get { return SelectedItems.Any(); }
+            set
+            {
+                _selectedItems = value; 
+            }
         }
 
 		public void GroupSelected(string groupName)

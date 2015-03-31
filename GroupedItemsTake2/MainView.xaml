@@ -13,13 +13,21 @@
             <RowDefinition Height ="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <telerik:RadButton Content="Add Item" Command="{Binding AddCommand}"/>
-            <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}"/>
-            <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}"/>
-            <telerik:RadButton Content="Cut" Command="{Binding CutCommand}"/>
-            <telerik:RadButton Content="Paste" Command="{Binding PasteCommand}"/>
-        </StackPanel>
+        <Grid>
+            <StackPanel Orientation="Horizontal">
+                <telerik:RadButton Content="Add Item" Command="{Binding AddCommand}" Width="70"/>
+                <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}" Width="70"/>
+                <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}" Width="70"/>
+                <telerik:RadButton Content="Cut" Command="{Binding CutCommand}" Width="70"/>
+                <telerik:RadButton Content="Paste" Command="{Binding PasteCommand}" Width="70"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <telerik:RadButton Content="Group" Command="{Binding GroupCommand}" Width="70"/>
+                <telerik:RadButton Content="Ungroup" Command="{Binding UnGroupCommand}" Width="70"/>
+                <telerik:RadButton Content="Move Out" Command="{Binding MoveOutOfGroupCommand}" Width="70"/>
+            </StackPanel>
+           
+        </Grid>
         <telerik:RadTreeListView x:Name="InputItemsList"
 						  Grid.Row="1"                                                                                                      
 						  ItemsSource="{Binding Items}"                                                                                                      
@@ -67,7 +75,7 @@
                 <telerik:RadContextMenu>
                     <telerik:RadMenuItem Header="Group" Command="{Binding GroupCommand}"/>
                     <telerik:RadMenuItem Header="Ungroup" Command="{Binding UnGroupCommand}"/>
-                    <telerik:RadMenuItem Header="Move Out of Group" Command="{Binding MoveOutOfGroupCommand}"/>
+                    <telerik:RadMenuItem Header="Move Out" Command="{Binding MoveOutOfGroupCommand}"/>
                     <telerik:RadMenuSeparatorItem/>
                     <telerik:RadMenuItem Header="Move Up" Command="{Binding MoveUpCommand}"/>
                     <telerik:RadMenuItem Header="Move Down" Command="{Binding MoveDownCommand}"/>
