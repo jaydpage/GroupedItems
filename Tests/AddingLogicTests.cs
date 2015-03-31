@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using GroupedItemsTake2;
 using NUnit.Framework;
 
@@ -22,11 +20,10 @@ namespace Tests
         }
 
         [Test]
-        public void givenNoSelectedItems_ItemThatIsAddedShouldBeUngrouped()
+        public void GivenNoSelectedItemsItemThatIsAddedShouldBeUngrouped()
         {
             var selectedItems = new ObservableCollection<IDislpayItem>();
-            var displayCollection = new DisplayCollection();
-            displayCollection.SelectedItems = selectedItems;
+            var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
             displayCollection.AddItems(new List<IDislpayItem>{item}, false);
@@ -35,12 +32,10 @@ namespace Tests
         }
         
         [Test]
-        public void givenAnyUngroupedSelectedItems_ItemThatIsAddedShouldBeUngrouped()
+        public void GivenAnyUngroupedSelectedItemsItemThatIsAddedShouldBeUngrouped()
         {
-            var selectedItems = new ObservableItemsCollection();
-            selectedItems.Add(CreateItem());
-            var displayCollection = new DisplayCollection();
-            displayCollection.SelectedItems = selectedItems;
+            var selectedItems = new ObservableItemsCollection {CreateItem()};
+            var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
             displayCollection.AddItems(new List<IDislpayItem> { item }, false);
@@ -49,7 +44,7 @@ namespace Tests
         }
         
         [Test]
-        public void givenSelectedItemsOfSameGroup_ItemThatIsAddedShouldBeAChildOfTheSameGroup()
+        public void GivenSelectedItemsOfSameGroupItemThatIsAddedShouldBeAChildOfTheSameGroup()
         {
             var selectedItems = new ObservableCollection<IDislpayItem>();
             var group = CreateGroup();
@@ -66,8 +61,7 @@ namespace Tests
             selectedItems.Add(item5);
             selectedItems.Add(item6);
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.SelectedItems = selectedItems;
+            var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item1 = CreateItem();
             displayCollection.AddItems(new List<IDislpayItem> { item1 }, false);
             Assert.AreEqual(Level.Child, item1.Level);
@@ -76,8 +70,7 @@ namespace Tests
             var displayCollection1 = new DisplayCollection();
             var group1 = CreateGroup();
             var item2 = CreateItem();
-            var selectedItems1 = new ObservableCollection<IDislpayItem>();
-            selectedItems1.Add(group1);
+            var selectedItems1 = new ObservableCollection<IDislpayItem> {group1};
             displayCollection1.SelectedItems = selectedItems1;
             displayCollection1.Add(group1);
             displayCollection1.InsertItem(item2);
@@ -85,7 +78,7 @@ namespace Tests
         }
         
         [Test]
-        public void givenSelectedItemsOfDifferentLevels_ItemThatIsAddedAsUngrouped()
+        public void GivenSelectedItemsOfDifferentLevelsItemThatIsAddedAsUngrouped()
         {
             var selectedItems = new ObservableCollection<IDislpayItem>();
             var group = CreateGroup();
@@ -101,8 +94,7 @@ namespace Tests
             selectedItems.Add(item6);
             selectedItems.Add(group);
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.SelectedItems = selectedItems;
+            var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item1 = CreateItem();
             displayCollection.AddItems(new List<IDislpayItem> { item1 }, false);
             Assert.AreEqual(Level.Ungrouped, item1.Level);
@@ -110,60 +102,60 @@ namespace Tests
 
 
         [Test]
-        public void givenItemWithNoParentOrChildren_ShouldReturnItemLevelUngrouped()
+        public void GivenItemWithNoParentOrChildrenShouldReturnItemLevelUngrouped()
         {
             var item = CreateItem();
-            var expected = Level.Ungrouped;
+            const Level expected = Level.Ungrouped;
             Assert.AreEqual(expected, item.Level);
         }
         
         [Test]
-        public void givenItemInAGroup_ShouldReturnItemLevelChild()
+        public void GivenItemInAGroupShouldReturnItemLevelChild()
         {
             var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
-            var expected = Level.Child;
+            const Level expected = Level.Child;
             Assert.AreEqual(expected, item.Level);
         }
         
         [Test]
-        public void givenAGroupWithAItem_ShouldReturnGroupLevelParent()
+        public void GivenAGroupWithAItemShouldReturnGroupLevelParent()
         {
             var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
-            var expected = Level.Parent;
+            const Level expected = Level.Parent;
             Assert.AreEqual(expected, group.Level);
         }
         
         [Test]
-        public void givenNestedGroup_ShouldReturnParentChild()
+        public void GivenNestedGroupShouldReturnParentChild()
         {
             var item = CreateItem();
             var group = CreateGroup();
             var group1 = CreateGroup();
             group.Add(item);
             group1.Add(group);
-            var expected = Level.ParentChild;
+            const Level expected = Level.ParentChild;
             Assert.AreEqual(expected, group.Level);
         }
         
         [Test]
-        public void givenGroupWithoutChildren_ShouldReturnParent()
+        public void GivenGroupWithoutChildrenShouldReturnParent()
         {
             var group = CreateGroup();
-            var expected = Level.Parent;
+            const Level expected = Level.Parent;
             Assert.AreEqual(expected, group.Level);
         }
         
         [Test]
-        public void givenGroupWithParentandWithoutChildren_ShouldReturnParentChild()
+        public void GivenGroupWithParentandWithoutChildrenShouldReturnParentChild()
         {
             var group = CreateGroup();
             var group1 = CreateGroup();
             group1.Add(group);
-            var expected = Level.ParentChild;
+            const Level expected = Level.ParentChild;
             Assert.AreEqual(expected, group.Level);
         }
 

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using GroupedItemsTake2;
 using NUnit.Framework;
 
@@ -22,7 +20,7 @@ namespace Tests
         }
 
         [Test]
-        public void GivenTopLevelParent_AfterDeletingShouldBeRemovedFromList()
+        public void GivenTopLevelParentAfterDeletingShouldBeRemovedFromList()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -31,12 +29,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(group);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.DeleteSelected();
@@ -46,7 +41,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenChildItem_AfterDeletingShouldBeRemovedFromList()
+        public void GivenChildItemAfterDeletingShouldBeRemovedFromList()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -55,12 +50,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(item0);
+            var selectedItems = new ObservableCollection<IDislpayItem> {item0};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(group);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.DeleteSelected();
@@ -70,7 +62,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenParentChildItem_AfterDeletingShouldBeRemovedFromList()
+        public void GivenParentChildItemAfterDeletingShouldBeRemovedFromList()
         {
             var newGroup = CreateGroup("newGroup");
             var group = CreateGroup();
@@ -81,12 +73,9 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(newGroup);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {newGroup, item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.DeleteSelected();
@@ -97,15 +86,13 @@ namespace Tests
         }
         
         [Test]
-        public void GivenUngroupedItem_AfterDeletingShouldBeRemovedFromList()
+        public void GivenUngroupedItemAfterDeletingShouldBeRemovedFromList()
         {
             var item2 = CreateItem("item2");
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(item2);
+            var selectedItems = new ObservableCollection<IDislpayItem> {item2};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.DeleteSelected();
@@ -115,15 +102,13 @@ namespace Tests
         }
         
         [Test]
-        public void GivenUngroupedItem_AfterMovingOutOfGroupShouldHaveNoChange()
+        public void GivenUngroupedItemAfterMovingOutOfGroupShouldHaveNoChange()
         {
             var item2 = CreateItem("item2");
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(item2);
+            var selectedItems = new ObservableCollection<IDislpayItem> {item2};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.MoveItemsOutOfGroup(displayCollection.SelectedItems);
@@ -133,7 +118,7 @@ namespace Tests
         }
 
         [Test]
-        public void GivenChildItems_AfterMovingOutOfGroup_ShouldBeRemovedFromParent()
+        public void GivenChildItemsAfterMovingOutOfGroupShouldBeRemovedFromParent()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -142,13 +127,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(item0);
-            selectedItems.Add(item);
+            var selectedItems = new ObservableCollection<IDislpayItem> {item0, item};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(group);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.MoveItemsOutOfGroup(displayCollection.SelectedItems);
@@ -159,7 +140,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenChildItems_AfterMovingOutOfGroup_ShouldBePlacedAtSameLevelAsParent()
+        public void GivenChildItemsAfterMovingOutOfGroupShouldBePlacedAtSameLevelAsParent()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -168,13 +149,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(item0);
-            selectedItems.Add(item);
+            var selectedItems = new ObservableCollection<IDislpayItem> {item0, item};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(group);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.MoveItemsOutOfGroup(displayCollection.SelectedItems);
@@ -184,7 +161,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenParentChild_AfterMovingOutOfGroup_ShouldBePlacedAtSameLevelAsParent()
+        public void GivenParentChildAfterMovingOutOfGroupShouldBePlacedAtSameLevelAsParent()
         {
             var newGroup = CreateGroup("newGroup");
             var group = CreateGroup();
@@ -195,12 +172,9 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {@group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(newGroup);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {newGroup, item2};
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -213,7 +187,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenTopLevelGroup_AfterUngrouping_ShouldBeRemovedFromItems()
+        public void GivenTopLevelGroupAfterUngroupingShouldBeRemovedFromItems()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -222,11 +196,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {@group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {item2};
             displayCollection.AddItems(new List<IDislpayItem> { group }, false);
 
             displayCollection.SelectedItems = selectedItems;
@@ -239,7 +211,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenNestedGroup_AfterUngrouping_ShouldBeRemovedFromItems()
+        public void GivenNestedGroupAfterUngroupingShouldBeRemovedFromItems()
         {
             var group = CreateGroup();
             var newGroup = CreateGroup("newGroup");
@@ -250,11 +222,9 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {@group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {item2};
             displayCollection.AddItems(new List<IDislpayItem> { newGroup }, false);
 
             displayCollection.SelectedItems = selectedItems;
@@ -265,7 +235,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenTopLevelGroup_AfterUngrouping_ItemsShouldBeAddedToCollection()
+        public void GivenTopLevelGroupAfterUngroupingItemsShouldBeAddedToCollection()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -274,11 +244,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {item2};
             displayCollection.AddItems(new List<IDislpayItem> { group }, false);
 
             displayCollection.SelectedItems = selectedItems;
@@ -291,7 +259,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenAnUngroupedParent_ShouldHaveItsParentHeirarchyUpdated()
+        public void GivenAnUngroupedParentShouldHaveItsParentHeirarchyUpdated()
         {
             var group = CreateGroup();
             var group1 = CreateGroup("Group1");
@@ -306,12 +274,7 @@ namespace Tests
             group.Add(group1);
             
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
-            selectedItems.Add(group1);
-            selectedItems.Add(group2);
-            selectedItems.Add(item);
-            selectedItems.Add(item1);
+            var selectedItems = new ObservableCollection<IDislpayItem> {group, group1, group2, item, item1};
 
             var displayCollection = new DisplayCollection();
             displayCollection.AddItems(new List<IDislpayItem> { group }, false);
@@ -333,7 +296,7 @@ namespace Tests
         }
         
         [Test]
-        public void AfterMovingOutOfGroup_IfTheyArePlacedAtTheUngroupedLevelTheirParentShouldBeNull()
+        public void AfterMovingOutOfGroupIfTheyArePlacedAtTheUngroupedLevelTheirParentShouldBeNull()
         {
             var group = CreateGroup();
             var item0 = CreateItem("item0");
@@ -341,11 +304,9 @@ namespace Tests
             group.Add(item0);
             group.Add(item2);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(item0);
+            var selectedItems = new ObservableCollection<IDislpayItem> {item0};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(group);
+            var displayCollection = new DisplayCollection {group};
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -356,7 +317,7 @@ namespace Tests
         }
         
         [Test]
-        public void GivenDeepNestedChild_AfterMovingOutOfGroup_ShouldBePlacedAtSameLevelAsParent()
+        public void GivenDeepNestedChildAfterMovingOutOfGroupShouldBePlacedAtSameLevelAsParent()
         {
             var newerGroup = CreateGroup("newerGroup");
             var newGroup = CreateGroup("newGroup");
@@ -369,12 +330,9 @@ namespace Tests
             newGroup.Add(group);
             newerGroup.Add(newGroup);
 
-            var selectedItems = new ObservableCollection<IDislpayItem>();
-            selectedItems.Add(group);
+            var selectedItems = new ObservableCollection<IDislpayItem> {group};
 
-            var displayCollection = new DisplayCollection();
-            displayCollection.Add(newerGroup);
-            displayCollection.Add(item2);
+            var displayCollection = new DisplayCollection {newerGroup, item2};
 
             displayCollection.SelectedItems = selectedItems;
             Assert.That(newGroup.Contains(group));
