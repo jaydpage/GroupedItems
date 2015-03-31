@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using GroupedItemsTake2.Annotations;
 using Microsoft.Practices.Composite.Presentation.Commands;
+using NUnit.Framework;
 
 namespace GroupedItemsTake2
 {
@@ -108,7 +110,8 @@ namespace GroupedItemsTake2
 		private void AddItem()
 		{
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
-			Items.AddItem(newItem);
+		    var newItems = new List<IDislpayItem> {newItem};
+			Items.AddItems(newItems);
 		}
 
 		public DisplayCollection Items

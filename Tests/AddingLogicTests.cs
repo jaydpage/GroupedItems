@@ -29,7 +29,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItem(item);
+            displayCollection.AddItems(new List<IDislpayItem>{item});
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -43,7 +43,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItem(item);
+            displayCollection.AddItems(new List<IDislpayItem> { item });
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -69,7 +69,7 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             displayCollection.SelectedItems = selectedItems;
             var item1 = CreateItem();
-            displayCollection.AddItem(item1);
+            displayCollection.AddItems(new List<IDislpayItem> { item });
             Assert.AreEqual(Level.Child, item1.Level);
             Assert.AreEqual(item1.Parent, group);
 
@@ -104,7 +104,7 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             displayCollection.SelectedItems = selectedItems;
             var item1 = CreateItem();
-            displayCollection.AddItem(item1);
+            displayCollection.AddItems(new List<IDislpayItem> { item1 });
             Assert.AreEqual(Level.Ungrouped, item1.Level);
         }
 
@@ -172,7 +172,7 @@ namespace Tests
         {
             var group = CreateGroup();
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItem(group);
+            displayCollection.AddItems(new List<IDislpayItem> { group });
             displayCollection.SelectedItems = new ObservableCollection<IDislpayItem> { group };
 
             Assert.That(displayCollection.Any(x => x.UID == group.UID));

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.Practices.Composite;
+using NUnit.Framework;
 
 namespace GroupedItemsTake2
 {
@@ -11,13 +11,18 @@ namespace GroupedItemsTake2
         private ObservableCollection<IDislpayItem> _selectedItems;
         private List<IDislpayItem> _cutItems;
 
-	    public void AddItem(IDislpayItem item)
+	    private void AddItem(IDislpayItem item, bool addToEmptyGroup)
         {
             if (!SelectedItems.Any()) AddAsUngrouped(item);
-            else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) AddAsUngrouped(item);
+            else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems) && !addToEmptyGroup) AddAsUngrouped(item);
             else if (AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                AddToGroup(item, GetItemGroup(SelectedItems.First()));
+                var group = GetItemGroup(SelectedItems.First());
+                if (addToEmptyGroup)
+                {
+                    group = SelectedItems.First() as IGroup;                  
+                }
+                AddToGroup(item, group);
             }
         }
 
@@ -27,15 +32,39 @@ namespace GroupedItemsTake2
             Add(item);
         }
 
-        private void AddItems(IEnumerable<IDislpayItem> items)
+        public void AddItems(IEnumerable<IDislpayItem> items)
         {
+            var result = PromptIfEmptyGroupIsSelected();
+
             foreach (var item in items)
             {
-                AddItem(item);
+                AddItem(item, result);
             }
         }
-        
-        public void InsertItem(IDislpayItem item)
+
+	    private bool PromptIfEmptyGroupIsSelected()
+	    {
+	        if (SelectedItemIsAnEmptyGroup)
+	        {
+	            var view = new AddGroupPromptDialog();
+                var vm = new AddGroupPromptDialogViewModel(view);
+	            view.DataContext = vm;
+	            view.ShowDialog();
+	            return vm.Result;
+	        }
+	        return false;
+	    }
+
+	    private bool SelectedItemIsAnEmptyGroup
+	    {
+	        get
+	        {
+	            if (SelectedItems.Count != 1) return false;
+                return SelectedItems.All(IsItemAParentWithoutChildren);
+	        }
+	    }
+
+	    public void InsertItem(IDislpayItem item)
         {
             var lowestSelectedIndex = GetLowestSelectedIndex(SelectedItems);
             if (!SelectedItems.Any()) Insert(lowestSelectedIndex, item);
@@ -178,7 +207,7 @@ namespace GroupedItemsTake2
         {
             foreach (var item in SelectedItems)
             {
-                AddItem(item.Copy());
+                AddItem(item.Copy(), false);
             }
         }
 

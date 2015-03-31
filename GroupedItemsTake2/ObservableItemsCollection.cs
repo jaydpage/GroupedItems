@@ -113,6 +113,13 @@ namespace GroupedItemsTake2
             if (IsItemExclusivelyAParent(item)) return true;
             return IsItemAParentChild(item);
         }      
+        
+        public bool IsItemAParentWithoutChildren(IDislpayItem item)
+        {
+            if (!IsItemAParent(item)) return false;
+            var group = item as IGroup;
+            return group != null && group.Count() == 0;
+        }      
 
         public bool ItemHasNoGrandParent(IDislpayItem item)
         {

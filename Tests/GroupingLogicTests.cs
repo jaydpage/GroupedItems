@@ -84,9 +84,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection();
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.AddItem(group);
-            displayCollection.AddItem(item1);
-            displayCollection.AddItem(item2);
+            displayCollection.AddItems(new List<IDislpayItem> { group, item1, item2 });
             displayCollection.MoveTo(newgroup);
 
             Assert.That(newgroup.Count() == 3);
@@ -224,9 +222,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection();
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.AddItem(group);
-            displayCollection.AddItem(item1);
-            displayCollection.AddItem(item2);
+            displayCollection.AddItems(new List<IDislpayItem> { group, item1, item2 });
 
             var itemsToGroup = _collection.GetDistinctItems(selectedItems).ToList();
 

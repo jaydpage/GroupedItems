@@ -227,7 +227,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection();
             displayCollection.Add(item2);
-            displayCollection.AddItem(group);
+            displayCollection.AddItems(new List<IDislpayItem> { group });
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -255,7 +255,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection();
             displayCollection.Add(item2);
-            displayCollection.AddItem(newGroup);
+            displayCollection.AddItems(new List<IDislpayItem> { newGroup });
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.UnGroupSelected();
@@ -279,7 +279,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection();
             displayCollection.Add(item2);
-            displayCollection.AddItem(group);
+            displayCollection.AddItems(new List<IDislpayItem> { group });
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -314,7 +314,7 @@ namespace Tests
             selectedItems.Add(item1);
 
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItem(group);
+            displayCollection.AddItems(new List<IDislpayItem> { group });
 
             displayCollection.SelectedItems = selectedItems;
 

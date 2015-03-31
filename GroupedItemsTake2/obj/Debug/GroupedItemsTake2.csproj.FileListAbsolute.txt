@@ -50,3 +50,6 @@ D:\GitHub\GroupedItems\GroupedItemsTake2\obj\Debug\MainView.baml
 D:\GitHub\GroupedItems\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.g.resources
 D:\GitHub\GroupedItems\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.Properties.Resources.resources
 D:\GitHub\GroupedItems\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csproj.GenerateResource.Cache
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\GroupedItemsTake2.csprojResolveAssemblyReference.cache
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\AddGroupPromptDialog.baml
+D:\Dev\POC's\GroupedItemsTake2\GroupedItemsTake2\obj\Debug\AddGroupPromptDialog.g.cs
