@@ -29,7 +29,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItems(new List<IDislpayItem>{item});
+            displayCollection.AddItems(new List<IDislpayItem>{item}, false);
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -43,7 +43,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItems(new List<IDislpayItem> { item });
+            displayCollection.AddItems(new List<IDislpayItem> { item }, false);
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -69,7 +69,7 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             displayCollection.SelectedItems = selectedItems;
             var item1 = CreateItem();
-            displayCollection.AddItems(new List<IDislpayItem> { item });
+            displayCollection.AddItems(new List<IDislpayItem> { item1 }, false);
             Assert.AreEqual(Level.Child, item1.Level);
             Assert.AreEqual(item1.Parent, group);
 
@@ -104,7 +104,7 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             displayCollection.SelectedItems = selectedItems;
             var item1 = CreateItem();
-            displayCollection.AddItems(new List<IDislpayItem> { item1 });
+            displayCollection.AddItems(new List<IDislpayItem> { item1 }, false);
             Assert.AreEqual(Level.Ungrouped, item1.Level);
         }
 
@@ -172,12 +172,13 @@ namespace Tests
         {
             var group = CreateGroup();
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItems(new List<IDislpayItem> { group });
+            displayCollection.AddItems(new List<IDislpayItem> { group }, false);
             displayCollection.SelectedItems = new ObservableCollection<IDislpayItem> { group };
 
             Assert.That(displayCollection.Any(x => x.UID == group.UID));
             displayCollection.CutSelected();
             Assert.That(displayCollection.All(x => x.UID != group.UID));
+            displayCollection.SelectedItems.Clear();
             displayCollection.Paste();
             Assert.That(displayCollection.Any(x => x.UID == group.UID));
         }

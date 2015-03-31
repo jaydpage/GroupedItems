@@ -32,15 +32,19 @@ namespace GroupedItemsTake2
             Add(item);
         }
 
-        public void AddItems(IEnumerable<IDislpayItem> items)
+        public void AddItemsPrompt(IEnumerable<IDislpayItem> items)
         {
             var result = PromptIfEmptyGroupIsSelected();
-
-            foreach (var item in items)
-            {
-                AddItem(item, result);
-            }
+            AddItems(items, result);
         }
+
+	    public void AddItems(IEnumerable<IDislpayItem> items, bool result)
+	    {
+	        foreach (var item in items)
+	        {
+	            AddItem(item, result);
+	        }
+	    }
 
 	    private bool PromptIfEmptyGroupIsSelected()
 	    {
@@ -95,7 +99,7 @@ namespace GroupedItemsTake2
         
         public void Paste()
         {
-            AddItems(_cutItems);
+            AddItemsPrompt(_cutItems);
             _cutItems.Clear();
         }
 

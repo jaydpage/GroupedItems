@@ -6,7 +6,8 @@ namespace GroupedItemsTake2
 {
 	public interface IDisplayCollection
 	{
-		void AddItems(IEnumerable<IDislpayItem> items);
+	    void AddItemsPrompt(IEnumerable<IDislpayItem> items);
+	    void AddItems(IEnumerable<IDislpayItem> items, bool result);
 		void InsertItem(IDislpayItem item);
 		void MoveTo(IGroup group);
 		void CutSelected();

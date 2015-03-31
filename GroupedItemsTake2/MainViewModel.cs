@@ -111,7 +111,7 @@ namespace GroupedItemsTake2
 		{
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
 		    var newItems = new List<IDislpayItem> {newItem};
-			Items.AddItems(newItems);
+			Items.AddItemsPrompt(newItems);
 		}
 
 		public DisplayCollection Items
