@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace GroupedItemsTake2
 {
     /// <summary>
-    /// Interaction logic for AddGroupPromptDialog.xaml
+    /// Interaction logic for AddToParentPromptDialog.xaml
     /// </summary>
-    public partial class AddGroupPromptDialog : Window
+    public partial class AddToParentPromptDialog : Window
     {
-        public AddGroupPromptDialog()
+        public AddToParentPromptDialog()
         {
             InitializeComponent();
         }

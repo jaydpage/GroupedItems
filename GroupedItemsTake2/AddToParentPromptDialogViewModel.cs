@@ -3,13 +3,13 @@ using Microsoft.Practices.Composite.Presentation.Commands;
 
 namespace GroupedItemsTake2
 {
-    public class AddGroupPromptDialogViewModel
+    public class AddToParentPromptDialogViewModel
     {
         public bool Result { get; set; }
         public DelegateCommand<object> AddToEmptyCommand { get; private set; }
         public DelegateCommand<object> AddAtGroupLevelCommand { get; private set; }
         private readonly Window _window;
-        public AddGroupPromptDialogViewModel(Window window)
+        public AddToParentPromptDialogViewModel(Window window)
         {
             _window = window;
             AddToEmptyCommand = new DelegateCommand<object>(obj => AddToEmptyGroup(), x => true);

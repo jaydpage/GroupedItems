@@ -6,9 +6,9 @@ namespace GroupedItemsTake2
 {
     public class ObservableItemsCollection : ObservableCollection<IDislpayItem>, IGroupingLogic
     {
-        public void MoveDown(IEnumerable<IDislpayItem> selectedItems)
+        public void MoveDown(IEnumerable<IDislpayItem> selected)
         {
-            var items = selectedItems.OrderByDescending(IndexOf).ToList();
+            var items = selected.OrderByDescending(IndexOf).ToList();
 
             while (items.Any())
             {
@@ -21,9 +21,9 @@ namespace GroupedItemsTake2
             }
         }
 
-        public void MoveUp(IEnumerable<IDislpayItem> selectedItems)
+        public void MoveUp(IEnumerable<IDislpayItem> selected)
         {
-            var items = selectedItems.OrderBy(IndexOf).ToList();
+            var items = selected.OrderBy(IndexOf).ToList();
             while (items.Any())
             {
                 var current = items.First();
@@ -35,10 +35,10 @@ namespace GroupedItemsTake2
             }
         }
 
-        public int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selectedItems)
+        public int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selected)
         {
             var lowestIndex = int.MaxValue;
-            foreach (var item in selectedItems)
+            foreach (var item in selected)
             {
                 var index = IndexOf(item);
                 if (!Contains(item)) continue;
@@ -47,114 +47,114 @@ namespace GroupedItemsTake2
             return lowestIndex < 0 ? 0 : lowestIndex;
         }
 
-        public bool AreSelectedItemsOfTheSameGroup(IEnumerable<IDislpayItem> selectedItems)
+        public bool AreOfTheSameGroup(IEnumerable<IDislpayItem> selected)
         {
-            if (!selectedItems.Any()) return false;
-            var group = GetParent(selectedItems.First());
-            return selectedItems.All(selectedItem => @group == GetParent(selectedItem));
+            if (!selected.Any()) return false;
+            var group = GetParent(selected.First());
+            return selected.All(selectedItem => @group == GetParent(selectedItem));
         }
 
-        public IGroup GetParent(IDislpayItem selectedItem)
+        public IGroup GetParent(IDislpayItem selected)
         {
-            if (selectedItem.Level == Level.Ungrouped) return null;
-            if (IsItemAChild(selectedItem)) return selectedItem.Parent as IGroup;
-            return selectedItem as IGroup;
+            if (selected.Level == Level.Ungrouped) return null;
+            if (IsAChild(selected)) return selected.Parent as IGroup;
+            return selected as IGroup;
         }
 
-        public IEnumerable<IDislpayItem> CloneSelected(IEnumerable<IDislpayItem> selectedItems)
+        public IEnumerable<IDislpayItem> Clone(IEnumerable<IDislpayItem> selected)
         {
             var itemsToGroup = new List<IDislpayItem>();
-            var selectedDistinct = GetDistinctItems(selectedItems);
+            var selectedDistinct = GetDistinct(selected);
             itemsToGroup.AddRange(selectedDistinct.Select(item => (IDislpayItem)item.Clone()));
             return itemsToGroup;
         }
 
-        public IEnumerable<IDislpayItem> GetDistinctItems(IEnumerable<IDislpayItem> items)
+        public IEnumerable<IDislpayItem> GetDistinct(IEnumerable<IDislpayItem> selected)
         {
-            var topSelectedParents = GetTopLevelSelectedParents(items);
-            var itemsWithNoSelectedParents = GetItemsWithNoSelectedParents(items);
+            var topSelectedParents = GetTopLevelParents(selected);
+            var itemsWithNoSelectedParents = GetItemsWithoutSelectedParents(selected);
             return topSelectedParents.Concat(itemsWithNoSelectedParents).Distinct();
         }
 
-        public IEnumerable<IDislpayItem> GetTopLevelSelectedParents(IEnumerable<IDislpayItem> items)
+        public IEnumerable<IDislpayItem> GetTopLevelParents(IEnumerable<IDislpayItem> selected)
         {
             var itemGroups = new List<IDislpayItem>();
-            foreach (var item in items)
+            foreach (var item in selected)
             {
-                if (!IsItemAParent(item)) continue;
-                var topGroup = GetTopLevelSelectedItem(item, items);
+                if (!IsAParent(item)) continue;
+                var topGroup = GetHighestLevelItem(item, selected);
                 if (itemGroups.All(x => x.UID != topGroup.UID)) itemGroups.Add(topGroup);
             }
             return itemGroups;
         }
 
-        public IEnumerable<IDislpayItem> GetGroupedItemsToRemove(IEnumerable<IDislpayItem> selectedItems)
+        public IEnumerable<IDislpayItem> GetMovableItems(IEnumerable<IDislpayItem> selected)
         {
-            return GetDistinctItems(selectedItems).Where(x => !IsTopLevelItem(x)).ToList();
+            return GetDistinct(selected).Where(x => !IsTopLevelItem(x)).ToList();
         }
 
-        public bool AreAnySelectedItemsAtTheTopLevel(IEnumerable<IDislpayItem> selected)
+        public bool GetTopLevelItems(IEnumerable<IDislpayItem> selected)
         {
             return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
         }
 
         public bool IsTopLevelItem(IDislpayItem item)
         {
-            return IsItemUngrouped(item) || IsItemExclusivelyAParent(item);
+            return IsUngrouped(item) || IsOnlyAParent(item);
         }
 
-        public bool IsItemAParent(IDislpayItem item)
+        public bool IsAParent(IDislpayItem item)
         {
-            if (IsItemExclusivelyAParent(item)) return true;
-            return IsItemAParentChild(item);
+            if (IsOnlyAParent(item)) return true;
+            return IsAParentChild(item);
         }      
         
-        public bool IsItemAParentWithoutChildren(IDislpayItem item)
+        public bool IsChildlessParent(IDislpayItem item)
         {
-            if (!IsItemAParent(item)) return false;
+            if (!IsAParent(item)) return false;
             var group = item as IGroup;
             return group != null && group.Count() == 0;
         }      
 
-        public bool IsItemGrandParentless(IDislpayItem item)
+        public bool IsGrandParentless(IDislpayItem item)
         {
             if (item.Parent == null) return true;
             return item.Parent.Parent == null;
         }
 
-        public bool IsItemAChild(IDislpayItem item)
+        public bool IsAChild(IDislpayItem item)
         {
-            if (IsItemExclusivelyAChild(item)) return true;
-            return IsItemAParentChild(item);
+            if (IsOnlyAChild(item)) return true;
+            return IsAParentChild(item);
         }
        
-        private bool IsItemUngrouped(IDislpayItem item)
+        private bool IsUngrouped(IDislpayItem item)
         {
             return item.Level == Level.Ungrouped;
         }
 
-        private bool IsItemAParentChild(IDislpayItem item)
+        private bool IsAParentChild(IDislpayItem item)
         {
             return item.Level == Level.ParentChild;
         }
 
-        private static bool IsItemExclusivelyAChild(IDislpayItem item)
+        private static bool IsOnlyAChild(IDislpayItem item)
         {
             return item.Level == Level.Child;
         }
 
-        private bool IsItemExclusivelyAParent(IDislpayItem item)
+        private bool IsOnlyAParent(IDislpayItem item)
         {
             return item.Level == Level.Parent;
         }
 
-        private IEnumerable<IDislpayItem> GetItemsWithNoSelectedParents(IEnumerable<IDislpayItem> items)
+        private IEnumerable<IDislpayItem> GetItemsWithoutSelectedParents(IEnumerable<IDislpayItem> selected)
         {
-            var allSelectedGroups = items.Where(IsItemAParent);
+            var allSelectedGroups = selected.Where(IsAParent);
             var itemsWithoutSelectedGroups = new List<IDislpayItem>();
-            foreach (var item in items)
+            foreach (var item in selected)
             {
-                if (IsItemAChild(item))
+                if (IsAChild(item))
                 {
                     if (allSelectedGroups.All(x => x.UID != item.Parent.UID))
                         itemsWithoutSelectedGroups.Add(item);
@@ -167,11 +167,11 @@ namespace GroupedItemsTake2
             return itemsWithoutSelectedGroups;
         }
 
-        private static IDislpayItem GetTopLevelSelectedItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
+        private static IDislpayItem GetHighestLevelItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
         {
             if (item.Parent == null) return item;
             if (selectedItems.Any(x => x.UID == item.Parent.UID))
-                return GetTopLevelSelectedItem(item.Parent, selectedItems);
+                return GetHighestLevelItem(item.Parent, selectedItems);
 
             return item;
         }

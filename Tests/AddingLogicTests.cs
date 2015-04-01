@@ -73,7 +73,7 @@ namespace Tests
             var selectedItems1 = new ObservableCollection<IDislpayItem> {group1};
             displayCollection1.SelectedItems = selectedItems1;
             displayCollection1.Add(group1);
-            displayCollection1.InsertItem(item2);
+            displayCollection1.Insert(item2);
             Assert.AreEqual(Level.Ungrouped, item2.Level);
         }
         
@@ -168,7 +168,7 @@ namespace Tests
             displayCollection.SelectedItems = new ObservableCollection<IDislpayItem> { group };
 
             Assert.That(displayCollection.Any(x => x.UID == group.UID));
-            displayCollection.CutSelected();
+            displayCollection.Cut();
             Assert.That(displayCollection.All(x => x.UID != group.UID));
             displayCollection.SelectedItems.Clear();
             displayCollection.Paste();

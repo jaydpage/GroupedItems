@@ -69,49 +69,49 @@ namespace GroupedItemsTake2
 
 		private void Cut()
 		{
-			Items.CutSelected();
+			Items.Cut();
 		}
 
 		private void DuplicateItem()
 		{
-			Items.DuplicateSelected();
+			Items.Duplicate();
 		}
 
 		private void MoveDown()
 		{
-			Items.MoveSelectedDown();
+			Items.MoveDown();
 		}
 
 		private void MoveUp()
 		{
-			Items.MoveSelectedUp();
+			Items.MoveUp();
 		}
 
 		private void Delete()
 		{
-			Items.DeleteSelected();
+			Items.Delete();
 		}
 
 		private void GroupItems()
 		{
-			Items.GroupSelected(_groupNameGenerator.GenerateName());
+			Items.Group(_groupNameGenerator.GenerateName());
 		}
 
 		private void UngroupItems()
 		{
-			Items.UnGroupSelected();
+			Items.UnGroup();
 		}
 
 		private void MoveOutOfGroup()
 		{
-			Items.MoveSelectedItemsOutOfGroup();
+			Items.MoveOutOfGroup();
 		}
 
 		private void AddItem()
 		{
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
 		    var newItems = new List<IDislpayItem> {newItem};
-			Items.AddItemsPrompt(newItems);
+			Items.AddPrompt(newItems);
 		}
 
 		public DisplayCollection Items
@@ -136,7 +136,7 @@ namespace GroupedItemsTake2
 	        get
 	        {
 	            if (!SelectedItems.Any()) return false;
-	            return SelectedItems.All(x => Items.IsItemAParent(x));
+	            return SelectedItems.All(x => Items.IsAParent(x));
 	        }	      
 	    }
         
@@ -145,7 +145,7 @@ namespace GroupedItemsTake2
             get
             {
                 if (!SelectedItems.Any()) return false;
-                return SelectedItems.All(x => Items.IsItemAChild(x));
+                return SelectedItems.All(x => Items.IsAChild(x));
             }	      
 	    }
 

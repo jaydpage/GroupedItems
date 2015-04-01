@@ -1,7 +1,7 @@
-﻿<Window x:Class="GroupedItemsTake2.AddGroupPromptDialog"
+﻿<Window x:Class="GroupedItemsTake2.AddToParentPromptDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddGroupPromptDialog" Height="200" Width="400">
+        Title="AddToParentPromptDialog" Height="200" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
