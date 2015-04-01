@@ -1,12 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 
 namespace GroupedItemsTake2
 {
-    public class ObservableItemsCollection : ObservableCollection<IDislpayItem>, IGroupingLogic
+    public class ObservableItemsCollection : IEnumerable<IDisplayItem>, IGroupingLogic
     {
-        public void MoveDown(IEnumerable<IDislpayItem> selected)
+        private ObservableCollection<IDisplayItem> _items;
+        public ObservableItemsCollection()
+        {
+            _items = new ObservableCollection<IDisplayItem>();
+        }
+
+        public void MoveDown(IEnumerable<IDisplayItem> selected)
         {
             var items = selected.OrderByDescending(IndexOf).ToList();
 
@@ -15,13 +24,13 @@ namespace GroupedItemsTake2
                 var current = items.First();
                 items.Remove(current);
                 var index = IndexOf(current);
-                if (index >= Count - 1) return;
-                RemoveAt(index);
+                if (index >= Items.Count - 1) return;
+                Items.RemoveAt(index);
                 Insert(index + 1, current);
             }
         }
 
-        public void MoveUp(IEnumerable<IDislpayItem> selected)
+        public void MoveUp(IEnumerable<IDisplayItem> selected)
         {
             var items = selected.OrderBy(IndexOf).ToList();
             while (items.Any())
@@ -30,55 +39,55 @@ namespace GroupedItemsTake2
                 items.Remove(current);
                 var index = IndexOf(current);
                 if (index <= 0) return;
-                RemoveAt(index);
+                Items.RemoveAt(index);
                 Insert(index - 1, current);
             }
         }
 
-        public int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selected)
+        public int GetLowestSelectedIndex(IEnumerable<IDisplayItem> selected)
         {
             var lowestIndex = int.MaxValue;
             foreach (var item in selected)
             {
                 var index = IndexOf(item);
-                if (!Contains(item)) continue;
+                if (!Items.Contains(item)) continue;
                 if (index < lowestIndex) lowestIndex = index;
             }
             return lowestIndex < 0 ? 0 : lowestIndex;
         }
 
-        public bool AreOfTheSameGroup(IEnumerable<IDislpayItem> selected)
+        public bool AreOfTheSameGroup(IEnumerable<IDisplayItem> selected)
         {
             if (!selected.Any()) return false;
             var group = GetParent(selected.First());
             return selected.All(selectedItem => @group == GetParent(selectedItem));
         }
 
-        public IGroup GetParent(IDislpayItem selected)
+        public IGroup GetParent(IDisplayItem selected)
         {
             if (selected.Level == Level.Ungrouped) return null;
             if (IsAChild(selected)) return selected.Parent as IGroup;
             return selected as IGroup;
         }
 
-        public IEnumerable<IDislpayItem> Clone(IEnumerable<IDislpayItem> selected)
+        public IEnumerable<IDisplayItem> Clone(IEnumerable<IDisplayItem> selected)
         {
-            var itemsToGroup = new List<IDislpayItem>();
+            var itemsToGroup = new List<IDisplayItem>();
             var selectedDistinct = GetDistinct(selected);
-            itemsToGroup.AddRange(selectedDistinct.Select(item => (IDislpayItem)item.Clone()));
+            itemsToGroup.AddRange(selectedDistinct.Select(item => (IDisplayItem)item.Clone()));
             return itemsToGroup;
         }
 
-        public IEnumerable<IDislpayItem> GetDistinct(IEnumerable<IDislpayItem> selected)
+        public IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected)
         {
             var topSelectedParents = GetTopLevelParents(selected);
             var itemsWithNoSelectedParents = GetItemsWithoutSelectedParents(selected);
             return topSelectedParents.Concat(itemsWithNoSelectedParents).Distinct();
         }
 
-        public IEnumerable<IDislpayItem> GetTopLevelParents(IEnumerable<IDislpayItem> selected)
+        public IEnumerable<IDisplayItem> GetTopLevelParents(IEnumerable<IDisplayItem> selected)
         {
-            var itemGroups = new List<IDislpayItem>();
+            var itemGroups = new List<IDisplayItem>();
             foreach (var item in selected)
             {
                 if (!IsAParent(item)) continue;
@@ -88,70 +97,70 @@ namespace GroupedItemsTake2
             return itemGroups;
         }
 
-        public IEnumerable<IDislpayItem> GetMovableItems(IEnumerable<IDislpayItem> selected)
+        public IEnumerable<IDisplayItem> GetMovableItems(IEnumerable<IDisplayItem> selected)
         {
             return GetDistinct(selected).Where(x => !IsTopLevelItem(x)).ToList();
         }
 
-        public bool GetTopLevelItems(IEnumerable<IDislpayItem> selected)
+        public bool GetTopLevelItems(IEnumerable<IDisplayItem> selected)
         {
             return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
         }
 
-        public bool IsTopLevelItem(IDislpayItem item)
+        public bool IsTopLevelItem(IDisplayItem item)
         {
             return IsUngrouped(item) || IsOnlyAParent(item);
         }
 
-        public bool IsAParent(IDislpayItem item)
+        public bool IsAParent(IDisplayItem item)
         {
             if (IsOnlyAParent(item)) return true;
             return IsAParentChild(item);
         }      
         
-        public bool IsChildlessParent(IDislpayItem item)
+        public bool IsChildlessParent(IDisplayItem item)
         {
             if (!IsAParent(item)) return false;
             var group = item as IGroup;
             return group != null && group.Count() == 0;
         }      
 
-        public bool IsGrandParentless(IDislpayItem item)
+        public bool IsGrandParentless(IDisplayItem item)
         {
             if (item.Parent == null) return true;
             return item.Parent.Parent == null;
         }
 
-        public bool IsAChild(IDislpayItem item)
+        public bool IsAChild(IDisplayItem item)
         {
             if (IsOnlyAChild(item)) return true;
             return IsAParentChild(item);
         }
        
-        private bool IsUngrouped(IDislpayItem item)
+        private bool IsUngrouped(IDisplayItem item)
         {
             return item.Level == Level.Ungrouped;
         }
 
-        private bool IsAParentChild(IDislpayItem item)
+        private bool IsAParentChild(IDisplayItem item)
         {
             return item.Level == Level.ParentChild;
         }
 
-        private static bool IsOnlyAChild(IDislpayItem item)
+        private static bool IsOnlyAChild(IDisplayItem item)
         {
             return item.Level == Level.Child;
         }
 
-        private bool IsOnlyAParent(IDislpayItem item)
+        private bool IsOnlyAParent(IDisplayItem item)
         {
             return item.Level == Level.Parent;
         }
 
-        private IEnumerable<IDislpayItem> GetItemsWithoutSelectedParents(IEnumerable<IDislpayItem> selected)
+        private IEnumerable<IDisplayItem> GetItemsWithoutSelectedParents(IEnumerable<IDisplayItem> selected)
         {
             var allSelectedGroups = selected.Where(IsAParent);
-            var itemsWithoutSelectedGroups = new List<IDislpayItem>();
+            var itemsWithoutSelectedGroups = new List<IDisplayItem>();
             foreach (var item in selected)
             {
                 if (IsAChild(item))
@@ -167,7 +176,7 @@ namespace GroupedItemsTake2
             return itemsWithoutSelectedGroups;
         }
 
-        private static IDislpayItem GetHighestLevelItem(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
+        private static IDisplayItem GetHighestLevelItem(IDisplayItem item, IEnumerable<IDisplayItem> selectedItems)
         {
             if (item.Parent == null) return item;
             if (selectedItems.Any(x => x.UID == item.Parent.UID))
@@ -176,6 +185,46 @@ namespace GroupedItemsTake2
             return item;
         }
 
-        
+        public ObservableCollection<IDisplayItem> Items
+        {
+            get { return _items; }
+            set { _items = value; }
+        }
+
+
+        public IEnumerator<IDisplayItem> GetEnumerator()
+        {
+            return Items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(IDisplayItem item)
+        {
+            Items.Add(item);
+        }
+
+        public int Count()
+        {
+            return Items.Count;
+        }
+
+        public int IndexOf(IDisplayItem item)
+        {
+            return Items.IndexOf(item);
+        }
+
+        public void Insert(int index, IDisplayItem item)
+        {
+            Items.Insert(index, item);
+        }
+
+        public void Remove(IDisplayItem item)
+        {
+            Items.Remove(item);
+        }
     }
 }

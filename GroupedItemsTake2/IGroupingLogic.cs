@@ -4,18 +4,18 @@ namespace GroupedItemsTake2
 {
     public interface IGroupingLogic
     {
-        bool GetTopLevelItems(IEnumerable<IDislpayItem> selected);
-        bool AreOfTheSameGroup(IEnumerable<IDislpayItem> selected);
-        IGroup GetParent(IDislpayItem selected);
-        IEnumerable<IDislpayItem> Clone(IEnumerable<IDislpayItem> selected);
-        IEnumerable<IDislpayItem> GetDistinct(IEnumerable<IDislpayItem> selected);
-        bool IsAParent(IDislpayItem item);
-        bool IsGrandParentless(IDislpayItem item);
-        bool IsAChild(IDislpayItem item);
-        bool IsTopLevelItem(IDislpayItem item);
-        void MoveDown(IEnumerable<IDislpayItem> selected);
-        void MoveUp(IEnumerable<IDislpayItem> selected);
-        int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selected);
-        IEnumerable<IDislpayItem> GetTopLevelParents(IEnumerable<IDislpayItem> selected);
+        bool GetTopLevelItems(IEnumerable<IDisplayItem> selected);
+        bool AreOfTheSameGroup(IEnumerable<IDisplayItem> selected);
+        IGroup GetParent(IDisplayItem selected);
+        IEnumerable<IDisplayItem> Clone(IEnumerable<IDisplayItem> selected);
+        IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected);
+        bool IsAParent(IDisplayItem item);
+        bool IsGrandParentless(IDisplayItem item);
+        bool IsAChild(IDisplayItem item);
+        bool IsTopLevelItem(IDisplayItem item);
+        void MoveDown(IEnumerable<IDisplayItem> selected);
+        void MoveUp(IEnumerable<IDisplayItem> selected);
+        int GetLowestSelectedIndex(IEnumerable<IDisplayItem> selected);
+        IEnumerable<IDisplayItem> GetTopLevelParents(IEnumerable<IDisplayItem> selected);
     }
 }

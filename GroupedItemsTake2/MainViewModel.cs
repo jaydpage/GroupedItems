@@ -26,7 +26,7 @@ namespace GroupedItemsTake2
 		public DelegateCommand<object> PasteCommand { get; private set; }
 
 		private DisplayCollection _items;
-		private IDislpayItem _selectedItem;
+		private IDisplayItem _selectedItem;
 		private readonly GroupNameGenerator _groupNameGenerator;
 		private readonly ItemNameGenerator _itemNameGenerator;
 
@@ -49,7 +49,7 @@ namespace GroupedItemsTake2
             SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
 		}
 
-        private void SelectedItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+	    private void SelectedItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             UnGroupCommand.RaiseCanExecuteChanged();
             DuplicateCommand.RaiseCanExecuteChanged();
@@ -110,7 +110,7 @@ namespace GroupedItemsTake2
 		private void AddItem()
 		{
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
-		    var newItems = new List<IDislpayItem> {newItem};
+		    var newItems = new List<IDisplayItem> {newItem};
 			Items.AddPrompt(newItems);
 		}
 
@@ -150,7 +150,7 @@ namespace GroupedItemsTake2
 	    }
 
 
-	    public IDislpayItem SelectedItem
+	    public IDisplayItem SelectedItem
 		{
 			get { return _selectedItem; }
 			set
@@ -160,7 +160,7 @@ namespace GroupedItemsTake2
 			}
 		}
 
-		public ObservableCollection<IDislpayItem> SelectedItems
+		public ObservableCollection<IDisplayItem> SelectedItems
 		{
 			get { return Items.SelectedItems; }
 			set

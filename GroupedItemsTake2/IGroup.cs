@@ -3,16 +3,16 @@ using System.Collections.ObjectModel;
 
 namespace GroupedItemsTake2
 {
-    public interface IGroup : IDislpayItem
+    public interface IGroup : IDisplayItem
     {
         ObservableItemsCollection Items { get; }
-        void Add(IDislpayItem item);
-        void Insert(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems);
-        void InsertAtParentIndex(IDislpayItem item);
-        void MoveItemsUp(IEnumerable<IDislpayItem> items);
-        void MoveItemsDown(IEnumerable<IDislpayItem> items);
-        void Remove(IDislpayItem item);
+        void Add(IDisplayItem item);
+        void Insert(IDisplayItem item, IEnumerable<IDisplayItem> selectedItems);
+        void InsertAtParentIndex(IDisplayItem item);
+        void MoveItemsUp(IEnumerable<IDisplayItem> items);
+        void MoveItemsDown(IEnumerable<IDisplayItem> items);
+        void Remove(IDisplayItem item);
         int Count();
-        bool Contains(IDislpayItem item);
+        bool Contains(IDisplayItem item);
     }
 }

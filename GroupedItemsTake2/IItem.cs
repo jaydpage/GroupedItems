@@ -1,6 +1,6 @@
 ﻿namespace GroupedItemsTake2
 {
-    public interface IItem : IDislpayItem
+    public interface IItem : IDisplayItem
     {
     }
 }

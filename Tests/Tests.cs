@@ -24,7 +24,7 @@ namespace Tests
             var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
-            var expected = 1;
+            const int expected = 1;
             Assert.AreEqual(expected, group.Count());
         }
 
@@ -68,7 +68,7 @@ namespace Tests
             var group1 = CreateItem();
             var group = CreateGroup();
             group.Add(group1);
-            var expected = 1;
+            const int expected = 1;
             Assert.AreEqual(expected, group.Count());
         }
         
@@ -78,8 +78,8 @@ namespace Tests
             var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
-            var expectedItemName = "item";
-            var expectedGroupName = "group";
+            const string expectedItemName = "item";
+            const string expectedGroupName = "group";
             Assert.AreEqual(expectedItemName, item.Name);
             Assert.AreEqual(expectedGroupName, group.Name);
         }
@@ -90,7 +90,7 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             var group = CreateGroup();
             displayCollection.Add(group);
-            var expected = 1;
+            const int expected = 1;
             Assert.AreEqual(expected, displayCollection.Count);
         }
 
@@ -100,7 +100,7 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             var item = CreateGroup();
             displayCollection.Add(item);
-            var expected = 1;
+            const int expected = 1;
             Assert.AreEqual(expected, displayCollection.Count);
         }
 
@@ -112,14 +112,14 @@ namespace Tests
             var group = CreateGroup();
             displayCollection.Add(item);
             displayCollection.Add(group);
-            var expected = 2;
+            const int expected = 2;
             Assert.AreEqual(expected, displayCollection.Count);
         }
 
         [Test]
         public void CanAddCollectionOfIDislpayItemToGroup()
         {
-            var collection = new List<IDislpayItem>();
+            var collection = new List<IDisplayItem>();
 
             var item = CreateItem();
             var item2 = CreateItem();

@@ -10,21 +10,21 @@ namespace GroupedItemsTake2
 		    return result;
 	    }
 
-        public Item(string name, IDislpayItem parent)
+        public Item(string name, IDisplayItem parent)
         {
             Parent = parent;
             Name = name;
             UID = Guid.NewGuid().ToString();
         }
         public string Name { get; set; }
-        public IDislpayItem Parent { get; private set; }
+        public IDisplayItem Parent { get; private set; }
 
-        public void SetParent(IDislpayItem parent)
+        public void SetParent(IDisplayItem parent)
         {
             Parent = parent;
         }
 
-        public IDislpayItem Copy()
+        public IDisplayItem Copy()
         {
             return new Item(Name, Parent){UID = Guid.NewGuid().ToString()};
         }

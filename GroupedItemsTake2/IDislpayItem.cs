@@ -2,12 +2,12 @@ using System;
 
 namespace GroupedItemsTake2
 {
-    public interface IDislpayItem : ICloneable
+    public interface IDisplayItem : ICloneable
     {
         string Name { get; set; }
-        IDislpayItem Parent { get; }
-        void SetParent(IDislpayItem parent);
-        IDislpayItem Copy(); 
+        IDisplayItem Parent { get; }
+        void SetParent(IDisplayItem parent);
+        IDisplayItem Copy(); 
         Level Level { get; }
         string UID { get; }
     }

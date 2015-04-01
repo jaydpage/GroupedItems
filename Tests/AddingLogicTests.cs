@@ -22,11 +22,11 @@ namespace Tests
         [Test]
         public void GivenNoSelectedItemsItemThatIsAddedShouldBeUngrouped()
         {
-            var selectedItems = new ObservableCollection<IDislpayItem>();
+            var selectedItems = new ObservableCollection<IDisplayItem>();
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItems(new List<IDislpayItem>{item}, false);
+            displayCollection.AddItems(new List<IDisplayItem>{item}, false);
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -34,11 +34,11 @@ namespace Tests
         [Test]
         public void GivenAnyUngroupedSelectedItemsItemThatIsAddedShouldBeUngrouped()
         {
-            var selectedItems = new ObservableItemsCollection {CreateItem()};
+            var selectedItems = new ObservableCollection<IDisplayItem>{CreateItem()};
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItems(new List<IDislpayItem> { item }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { item }, false);
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -46,7 +46,7 @@ namespace Tests
         [Test]
         public void GivenSelectedItemsOfSameGroupItemThatIsAddedShouldBeAChildOfTheSameGroup()
         {
-            var selectedItems = new ObservableCollection<IDislpayItem>();
+            var selectedItems = new ObservableCollection<IDisplayItem>();
             var group = CreateGroup();
             var item = CreateItem();
             var item4 = CreateItem();
@@ -63,14 +63,14 @@ namespace Tests
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item1 = CreateItem();
-            displayCollection.AddItems(new List<IDislpayItem> { item1 }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { item1 }, false);
             Assert.AreEqual(Level.Child, item1.Level);
             Assert.AreEqual(item1.Parent, group);
 
             var displayCollection1 = new DisplayCollection();
             var group1 = CreateGroup();
             var item2 = CreateItem();
-            var selectedItems1 = new ObservableCollection<IDislpayItem> {group1};
+            var selectedItems1 = new ObservableCollection<IDisplayItem> {group1};
             displayCollection1.SelectedItems = selectedItems1;
             displayCollection1.Add(group1);
             displayCollection1.Insert(item2);
@@ -80,7 +80,7 @@ namespace Tests
         [Test]
         public void GivenSelectedItemsOfDifferentLevelsItemThatIsAddedAsUngrouped()
         {
-            var selectedItems = new ObservableCollection<IDislpayItem>();
+            var selectedItems = new ObservableCollection<IDisplayItem>();
             var group = CreateGroup();
             var item = CreateItem();
             var item4 = CreateItem();
@@ -96,7 +96,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item1 = CreateItem();
-            displayCollection.AddItems(new List<IDislpayItem> { item1 }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { item1 }, false);
             Assert.AreEqual(Level.Ungrouped, item1.Level);
         }
 
@@ -122,7 +122,7 @@ namespace Tests
         [Test]
         public void GivenAGroupWithAItemShouldReturnGroupLevelParent()
         {
-            var item = CreateItem();
+             var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
             const Level expected = Level.Parent;
@@ -164,8 +164,8 @@ namespace Tests
         {
             var group = CreateGroup();
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItems(new List<IDislpayItem> { group }, false);
-            displayCollection.SelectedItems = new ObservableCollection<IDislpayItem> { group };
+            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
+            displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
 
             Assert.That(displayCollection.Any(x => x.UID == group.UID));
             displayCollection.Cut();

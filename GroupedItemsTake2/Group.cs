@@ -7,7 +7,7 @@ namespace GroupedItemsTake2
     public class Group : IGroup
     {
         public string Name { get; set; }
-        public IDislpayItem Parent { get; private set; }
+        public IDisplayItem Parent { get; private set; }
         public ObservableItemsCollection Items { get; private set; }
 
 	    public static IGroup CreateGroup(string name)
@@ -17,7 +17,7 @@ namespace GroupedItemsTake2
 	    }
 
 
-        public Group(string name, IDislpayItem parent)
+        public Group(string name, IDisplayItem parent)
         {
             Parent = parent;
             Name = name;
@@ -25,52 +25,52 @@ namespace GroupedItemsTake2
             Items = new ObservableItemsCollection();
         }
 
-        public void Add(IDislpayItem item)
+        public void Add(IDisplayItem item)
         {
             Items.Add(item);
             item.SetParent(this);
         }
 
-        public void Insert(IDislpayItem item, IEnumerable<IDislpayItem> selectedItems)
+        public void Insert(IDisplayItem item, IEnumerable<IDisplayItem> selectedItems)
         {
             var lowestSelectedIndex = Items.GetLowestSelectedIndex(selectedItems);
             Items.Insert(lowestSelectedIndex, item);
             item.SetParent(this);
         }
         
-        public void InsertAtParentIndex(IDislpayItem item)
+        public void InsertAtParentIndex(IDisplayItem item)
         {
             var index = Items.IndexOf(item.Parent);
             Items.Insert(index, item);
             item.SetParent(this);
         }
 
-        public void MoveItemsUp(IEnumerable<IDislpayItem> items)
+        public void MoveItemsUp(IEnumerable<IDisplayItem> items)
         {
             Items.MoveUp(items);
         }
 
-        public void MoveItemsDown(IEnumerable<IDislpayItem> items)
+        public void MoveItemsDown(IEnumerable<IDisplayItem> items)
         {
            Items.MoveDown(items);
         }
 
-        public void Remove(IDislpayItem item)
+        public void Remove(IDisplayItem item)
         {
             Items.Remove(item);
         }
 
         public int Count()
         {
-            return Items.Count;
+            return Items.Count();
         }
 
-        public bool Contains(IDislpayItem item)
+        public bool Contains(IDisplayItem item)
         {
             return Items.Contains(item);
         }
 
-        public void AddRange(IEnumerable<IDislpayItem> items)
+        public void AddRange(IEnumerable<IDisplayItem> items)
         {
             foreach (var item in items)
             {
@@ -78,7 +78,7 @@ namespace GroupedItemsTake2
             }
         }
 
-        public void SetParent(IDislpayItem parent)
+        public void SetParent(IDisplayItem parent)
         {
             Parent = parent;
             foreach (var item in Items)
@@ -87,7 +87,7 @@ namespace GroupedItemsTake2
             }
         }
 
-        public IDislpayItem Copy()
+        public IDisplayItem Copy()
         {
             var newGroup = new Group(Name, Parent) { UID = Guid.NewGuid().ToString()};
             foreach (var item in Items)

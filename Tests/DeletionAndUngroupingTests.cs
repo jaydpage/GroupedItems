@@ -29,7 +29,7 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group};
 
             var displayCollection = new DisplayCollection {group, item2};
 
@@ -50,7 +50,7 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {item0};
+            var selectedItems = new ObservableCollection<IDisplayItem> {item0};
 
             var displayCollection = new DisplayCollection {group, item2};
 
@@ -73,7 +73,7 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group};
 
             var displayCollection = new DisplayCollection {newGroup, item2};
 
@@ -90,7 +90,7 @@ namespace Tests
         {
             var item2 = CreateItem("item2");
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {item2};
+            var selectedItems = new ObservableCollection<IDisplayItem> {item2};
 
             var displayCollection = new DisplayCollection {item2};
 
@@ -106,7 +106,7 @@ namespace Tests
         {
             var item2 = CreateItem("item2");
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {item2};
+            var selectedItems = new ObservableCollection<IDisplayItem> {item2};
 
             var displayCollection = new DisplayCollection {item2};
 
@@ -127,7 +127,7 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {item0, item};
+            var selectedItems = new ObservableCollection<IDisplayItem> {item0, item};
 
             var displayCollection = new DisplayCollection {group, item2};
 
@@ -149,15 +149,15 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {item0, item};
+            var selectedItems = new ObservableCollection<IDisplayItem> {item0, item};
 
             var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(item0.Name, displayCollection[0].Name);
-            Assert.AreEqual(item.Name, displayCollection[1].Name);
+            Assert.AreEqual(item0.Name, displayCollection.Items.Items[0].Name);
+            Assert.AreEqual(item.Name, displayCollection.Items.Items[1].Name);
         }
         
         [Test]
@@ -172,7 +172,7 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {@group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {@group};
 
             var displayCollection = new DisplayCollection {newGroup, item2};
 
@@ -181,7 +181,7 @@ namespace Tests
             Assert.AreEqual(2, displayCollection.Count);
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(group.Name, displayCollection[0].Name);
+            Assert.AreEqual(group.Name, displayCollection.Items.Items[0].Name);
             Assert.AreEqual(3, displayCollection.Count);
            
         }
@@ -196,10 +196,10 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {@group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {@group};
 
             var displayCollection = new DisplayCollection {item2};
-            displayCollection.AddItems(new List<IDislpayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -222,16 +222,16 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {@group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {@group};
 
             var displayCollection = new DisplayCollection {item2};
-            displayCollection.AddItems(new List<IDislpayItem> { newGroup }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { newGroup }, false);
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.UnGroup();
 
             Assert.That(newGroup.Items.All(x => x.Name != group.Name));
-            Assert.AreEqual(2, newGroup.Items.Count);           
+            Assert.AreEqual(2, newGroup.Count());           
         }
         
         [Test]
@@ -244,18 +244,18 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group};
 
             var displayCollection = new DisplayCollection {item2};
-            displayCollection.AddItems(new List<IDislpayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
 
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(2, displayCollection.Count);
             displayCollection.UnGroup();
      
-            Assert.AreEqual(item0.Name, displayCollection[1].Name);
-            Assert.AreEqual(item.Name, displayCollection[2].Name);           
+            Assert.AreEqual(item0.Name, displayCollection.Items.Items[1].Name);
+            Assert.AreEqual(item.Name, displayCollection.Items.Items[2].Name);           
         }
         
         [Test]
@@ -274,10 +274,10 @@ namespace Tests
             group.Add(group1);
             
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {group, group1, group2, item, item1};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group, group1, group2, item, item1};
 
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItems(new List<IDislpayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -304,7 +304,7 @@ namespace Tests
             group.Add(item0);
             group.Add(item2);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {item0};
+            var selectedItems = new ObservableCollection<IDisplayItem> {item0};
 
             var displayCollection = new DisplayCollection {group};
 
@@ -313,7 +313,7 @@ namespace Tests
             Assert.AreEqual(group, item0.Parent);
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(null, displayCollection[0].Parent);         
+            Assert.AreEqual(null, displayCollection.Items.Items[0].Parent);         
         }
         
         [Test]
@@ -330,7 +330,7 @@ namespace Tests
             newGroup.Add(group);
             newerGroup.Add(newGroup);
 
-            var selectedItems = new ObservableCollection<IDislpayItem> {group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group};
 
             var displayCollection = new DisplayCollection {newerGroup, item2};
 
@@ -339,7 +339,7 @@ namespace Tests
 
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(group.Name, newerGroup.Items[0].Name);
+            Assert.AreEqual(group.Name, newerGroup.Items.Items[0].Name);
             Assert.AreEqual(2, newerGroup.Count());
             Assert.That(!newGroup.Contains(group));       
         }
