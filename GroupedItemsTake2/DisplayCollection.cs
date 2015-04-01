@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,25 +19,27 @@ namespace GroupedItemsTake2
             Items.CollectionChanged += ItemsOnCollectionChanged;
 	    }
 
-        private void ItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (CollectionChanged == null) return;
-            CollectionChanged.Invoke(sender, e);
-        }
-
         public void Add(IDisplayItem item, bool addToEmptyGroup = false)
         {
-            if (!SelectedItems.Any()) AddAsUngrouped(item);
-            else if (Items.GetTopLevelItems(SelectedItems) && !addToEmptyGroup) AddAsUngrouped(item);
-            else if (Items.AreOfTheSameGroup(SelectedItems))
+            if (!SelectedItems.Any())
             {
-                var group = Items.GetParent(SelectedItems.First());
-                if (addToEmptyGroup)
-                {
-                    group = SelectedItems.First() as IGroup;                  
-                }
-                AddToGroup(item, group);
+                AddAsUngrouped(item);
+                return;
             }
+            if (Items.GetTopLevelItems(SelectedItems) && !addToEmptyGroup)
+            {
+                AddAsUngrouped(item);
+                return;
+            }
+
+            if (!Items.AreOfTheSameGroup(SelectedItems)) { return;}
+
+            var group = Items.GetParent(SelectedItems.First());
+            if (addToEmptyGroup)
+            {
+                group = SelectedItems.First() as IGroup;                  
+            }
+            AddToGroup(item, group);
         }
 
         public void AddPrompt(IEnumerable<IDisplayItem> items)
@@ -231,6 +232,12 @@ namespace GroupedItemsTake2
         private void InsertInGroupAtParentIndex(IDisplayItem item, IGroup group)
         {
             group.InsertAtParentIndex(item);
+        }
+
+        private void ItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged == null) return;
+            CollectionChanged.Invoke(sender, e);
         }
 
         public ObservableCollection<IDisplayItem> SelectedItems
