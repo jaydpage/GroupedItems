@@ -6,15 +6,15 @@ namespace GroupedItemsTake2
     {
         bool AreAnySelectedItemsAtTheTopLevel(IEnumerable<IDislpayItem> selected);
         bool AreSelectedItemsOfTheSameGroup(IEnumerable<IDislpayItem> selectedItems);
-        IGroup GetItemGroup(IDislpayItem selectedItem);
+        IGroup GetParent(IDislpayItem selectedItem);
+        IEnumerable<IDislpayItem> CloneSelected(IEnumerable<IDislpayItem> selectedItems);
         IEnumerable<IDislpayItem> GetDistinctItems(IEnumerable<IDislpayItem> selectedItems);
-        IEnumerable<IDislpayItem> GetItemsToRemove(IEnumerable<IDislpayItem> selectedItems);
         bool IsItemAParent(IDislpayItem item);
-        bool ItemHasNoGrandParent(IDislpayItem item);
+        bool IsItemGrandParentless(IDislpayItem item);
         bool IsItemAChild(IDislpayItem item);
-        bool IsItemAtTheTopLevel(IDislpayItem item);
-        void MoveItemsDown(IEnumerable<IDislpayItem> selectedItems);
-        void MoveItemsUp(IEnumerable<IDislpayItem> selectedItems);
+        bool IsTopLevelItem(IDislpayItem item);
+        void MoveDown(IEnumerable<IDislpayItem> selectedItems);
+        void MoveUp(IEnumerable<IDislpayItem> selectedItems);
         int GetLowestSelectedIndex(IEnumerable<IDislpayItem> selectedItems);
         IEnumerable<IDislpayItem> GetTopLevelSelectedParents(IEnumerable<IDislpayItem> items);
     }

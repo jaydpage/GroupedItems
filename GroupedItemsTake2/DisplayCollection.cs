@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace GroupedItemsTake2
 {
-	public class DisplayCollection : ObservableItemsCollection, IDisplayCollection
+	public class DisplayCollection : ObservableItemsCollection
 	{
         private ObservableCollection<IDislpayItem> _selectedItems;
         private List<IDislpayItem> _cutItems;
@@ -17,7 +17,7 @@ namespace GroupedItemsTake2
             else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems) && !addToEmptyGroup) AddAsUngrouped(item);
             else if (AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                var group = GetItemGroup(SelectedItems.First());
+                var group = GetParent(SelectedItems.First());
                 if (addToEmptyGroup)
                 {
                     group = SelectedItems.First() as IGroup;                  
@@ -75,26 +75,26 @@ namespace GroupedItemsTake2
             else if (AreAnySelectedItemsAtTheTopLevel(SelectedItems)) Insert(lowestSelectedIndex, item);
             else if (AreSelectedItemsOfTheSameGroup(SelectedItems))
             {
-                InsertInGroup(item, GetItemGroup(SelectedItems.First()));
+                InsertInGroup(item, GetParent(SelectedItems.First()));
             }
         }
 
         public void MoveTo(IGroup group)
         {
-            var itemsToGroup = GetDistinctItems(SelectedItems).ToList();
+            var itemsToGroup = CloneSelected(SelectedItems).ToList();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
             }
             InsertItem(group);
-            RemoveItems(GetItemsToRemove(SelectedItems));
+            RemoveItems(GetDistinctItems(SelectedItems));
             UpdateSelectedItems(new List<IDislpayItem>{group});
         }
 
         public void CutSelected()
         {
-            _cutItems = GetDistinctItems(SelectedItems).ToList();
-            RemoveItems(GetItemsToRemove(SelectedItems));
+            _cutItems = CloneSelected(SelectedItems).ToList();
+            RemoveItems(GetDistinctItems(SelectedItems));
         }
         
         public void Paste()
@@ -119,17 +119,17 @@ namespace GroupedItemsTake2
         
         public void MoveItemsOutOfGroup(ObservableCollection<IDislpayItem> items)
         {
-            var itemsToGroup = GetDistinctItems(items).ToList();
+            var itemsToGroup = CloneSelected(items).ToList();
             RemoveItems(GetGroupedItemsToRemove(items));
             foreach (var item in itemsToGroup)
             {
-                if (IsItemAtTheTopLevel(item)) continue;
-                if (ItemHasNoGrandParent(item))
+                if (IsTopLevelItem(item)) continue;
+                if (IsItemGrandParentless(item))
                 {
                     Insert(IndexOf(item.Parent), item);
                     item.SetParent(null);
                 }
-                else InsertInGroupAtParentIndex(item, GetItemGroup(item.Parent));
+                else InsertInGroupAtParentIndex(item, GetParent(item.Parent));
             }
         }
 
@@ -183,10 +183,10 @@ namespace GroupedItemsTake2
             var childItems = SelectedItems.Where(IsItemAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
-            MoveItemsUp(ungroupedItems);
+            MoveUp(ungroupedItems);
             if (childItems.Any())
             {
-                var group = GetItemGroup(childItems.First());
+                var group = GetParent(childItems.First());
                 group.MoveItemsUp(childItems);
             }
             UpdateSelectedItems(items);
@@ -198,10 +198,10 @@ namespace GroupedItemsTake2
             var childItems = SelectedItems.Where(IsItemAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
-            MoveItemsDown(ungroupedItems);
+            MoveDown(ungroupedItems);
             if (childItems.Any())
             {
-                var group = GetItemGroup(childItems.First());
+                var group = GetParent(childItems.First());
                 group.MoveItemsDown(childItems);
             }
             UpdateSelectedItems(items);

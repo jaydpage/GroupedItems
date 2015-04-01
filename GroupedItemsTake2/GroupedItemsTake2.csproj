@@ -102,7 +102,6 @@
     <Compile Include="Group.cs" />
     <Compile Include="GroupNameGenerator.cs" />
     <Compile Include="IDislpayItem.cs" />
-    <Compile Include="IDisplayCollection.cs" />
     <Compile Include="IGroup.cs" />
     <Compile Include="IGroupingLogic.cs" />
     <Compile Include="IItem.cs" />

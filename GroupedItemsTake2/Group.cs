@@ -47,12 +47,12 @@ namespace GroupedItemsTake2
 
         public void MoveItemsUp(IEnumerable<IDislpayItem> items)
         {
-            Items.MoveItemsUp(items);
+            Items.MoveUp(items);
         }
 
         public void MoveItemsDown(IEnumerable<IDislpayItem> items)
         {
-           Items.MoveItemsDown(items);
+           Items.MoveDown(items);
         }
 
         public void Remove(IDislpayItem item)

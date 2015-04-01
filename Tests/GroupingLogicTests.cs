@@ -166,9 +166,9 @@ namespace Tests
 
             var selectedItems = new List<IDislpayItem> {group, item0, item};
 
-            Assert.AreEqual(group, _collection.GetItemGroup(selectedItems[0]));
-            Assert.AreEqual(group, _collection.GetItemGroup(selectedItems[1]));
-            Assert.AreEqual(group, _collection.GetItemGroup(selectedItems[2]));
+            Assert.AreEqual(group, _collection.GetParent(selectedItems[0]));
+            Assert.AreEqual(group, _collection.GetParent(selectedItems[1]));
+            Assert.AreEqual(group, _collection.GetParent(selectedItems[2]));
 
         }
         
@@ -189,7 +189,7 @@ namespace Tests
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             displayCollection.AddItems(new List<IDislpayItem> { group, item1, item2 }, false);
 
-            var itemsToGroup = _collection.GetDistinctItems(selectedItems).ToList();
+            var itemsToGroup = _collection.CloneSelected(selectedItems).ToList();
 
             Assert.AreEqual(3, itemsToGroup.Count());
             Assert.AreEqual(Level.Parent, itemsToGroup[0].Level);
