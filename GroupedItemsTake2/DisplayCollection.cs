@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +8,7 @@ using Microsoft.Practices.Composite;
 
 namespace GroupedItemsTake2
 {
-    public class DisplayCollection : IEnumerable<IDisplayItem>
+    public class DisplayCollection : IEnumerable<IDisplayItem>, INotifyCollectionChanged
 	{
         private ObservableCollection<IDisplayItem> _selectedItems;
         private List<IDisplayItem> _cutItems;
@@ -16,7 +17,14 @@ namespace GroupedItemsTake2
 	    public DisplayCollection()
 	    {
 	        _items = new ObservableItemsCollection();
+            Items.CollectionChanged += ItemsOnCollectionChanged;
 	    }
+
+        private void ItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged == null) return;
+            CollectionChanged.Invoke(sender, e);
+        }
 
         public void Add(IDisplayItem item, bool addToEmptyGroup = false)
         {
@@ -276,5 +284,7 @@ namespace GroupedItemsTake2
 	    {
 	        return Items.IsAChild(item);
 	    }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 	}
 }

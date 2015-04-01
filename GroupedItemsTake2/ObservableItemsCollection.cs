@@ -7,12 +7,19 @@ using System.Linq;
 
 namespace GroupedItemsTake2
 {
-    public class ObservableItemsCollection : IEnumerable<IDisplayItem>, IGroupingLogic
+    public class ObservableItemsCollection : IEnumerable<IDisplayItem>, IGroupingLogic, INotifyCollectionChanged
     {
         private ObservableCollection<IDisplayItem> _items;
         public ObservableItemsCollection()
         {
             _items = new ObservableCollection<IDisplayItem>();
+            Items.CollectionChanged +=ItemsCollectionChanged;
+        }
+
+        private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged == null) return;
+            CollectionChanged.Invoke(sender, e);
         }
 
         public void MoveDown(IEnumerable<IDisplayItem> selected)
@@ -226,5 +233,7 @@ namespace GroupedItemsTake2
         {
             Items.Remove(item);
         }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }
