@@ -51,12 +51,12 @@ namespace Tests
             Assert.That(!displayCollection.Contains(item2));
             Assert.That(displayCollection.Contains(group));
             Assert.That(group.Count() == 3);
-            Assert.AreEqual(group, group.Items.Items[0].Parent);
-            Assert.AreEqual(group, group.Items.Items[1].Parent);
-            Assert.AreEqual(group, group.Items.Items[2].Parent);
+            Assert.AreEqual(group, group.Items.ElementAt(0).Parent);
+            Assert.AreEqual(group, group.Items.ElementAt(1).Parent);
+            Assert.AreEqual(group, group.Items.ElementAt(2).Parent);
             Assert.AreEqual(group.Level, Level.Parent);
             Assert.AreEqual(group.Level, Level.Parent);
-            Assert.AreEqual(group, displayCollection.Items.Items[expectedIndex]);
+            Assert.AreEqual(group, displayCollection.ElementAt(expectedIndex));
         }
 
         [Test]
@@ -75,16 +75,19 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {@group, item1, item2, item0, item};
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
-            displayCollection.AddItems(new List<IDisplayItem> { group, item1, item2 }, false);
+            displayCollection.AddAsUngrouped(group);
+            displayCollection.AddAsUngrouped(item1);
+            displayCollection.AddAsUngrouped(item2);
+
             displayCollection.MoveTo(newgroup);
 
             Assert.That(newgroup.Count() == 3);
-            Assert.AreEqual(newgroup, newgroup.Items.Items[0].Parent);
-            Assert.AreEqual(newgroup, newgroup.Items.Items[1].Parent);
-            Assert.AreEqual(newgroup, newgroup.Items.Items[2].Parent);
-            Assert.AreEqual(newgroup.Items.Items[0].Level, Level.ParentChild);
-            Assert.AreEqual(newgroup.Items.Items[1].Level, Level.Child);
-            Assert.AreEqual(newgroup.Items.Items[2].Level, Level.Child);
+            Assert.AreEqual(newgroup, newgroup.Items.ElementAt(0).Parent);
+            Assert.AreEqual(newgroup, newgroup.Items.ElementAt(1).Parent);
+            Assert.AreEqual(newgroup, newgroup.Items.ElementAt(2).Parent);
+            Assert.AreEqual(newgroup.Items.ElementAt(0).Level, Level.ParentChild);
+            Assert.AreEqual(newgroup.Items.ElementAt(1).Level, Level.Child);
+            Assert.AreEqual(newgroup.Items.ElementAt(2).Level, Level.Child);
         }
         
         [Test]
@@ -101,16 +104,16 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {item0, item};
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
-            displayCollection.Items.Add(group);
+            displayCollection.AddAsUngrouped(group);
             displayCollection.MoveTo(newgroup);
 
-            Assert.AreEqual(newgroup, newgroup.Items.Items[0].Parent);
-            Assert.AreEqual(newgroup, newgroup.Items.Items[1].Parent);
+            Assert.AreEqual(newgroup, newgroup.Items.ElementAt(0).Parent);
+            Assert.AreEqual(newgroup, newgroup.Items.ElementAt(1).Parent);
             Assert.AreEqual(group, newgroup.Parent);
             Assert.AreEqual(group.Level, Level.Parent);
             Assert.AreEqual(newgroup.Level, Level.ParentChild);
-            Assert.AreEqual(newgroup.Items.Items[0].Level, Level.Child);
-            Assert.AreEqual(newgroup.Items.Items[1].Level, Level.Child);
+            Assert.AreEqual(newgroup.Items.ElementAt(0).Level, Level.Child);
+            Assert.AreEqual(newgroup.Items.ElementAt(1).Level, Level.Child);
         }
 
         [Test]
@@ -210,13 +213,14 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {item0, item};
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
-            displayCollection.Items.Add(group);
+
+            displayCollection.AddAsUngrouped(group);
             displayCollection.MoveTo(newgroup);
 
             Assert.AreEqual(1, group.Count());
-            Assert.AreEqual(newgroup, group.Items.Items[0]);
-            Assert.AreEqual(item0.Name, newgroup.Items.Items[0].Name);
-            Assert.AreEqual(item.Name, newgroup.Items.Items[1].Name);
+            Assert.AreEqual(newgroup, group.Items.ElementAt(0));
+            Assert.AreEqual(item0.Name, newgroup.Items.ElementAt(0).Name);
+            Assert.AreEqual(item.Name, newgroup.Items.ElementAt(1).Name);
         }
 
         [Test]

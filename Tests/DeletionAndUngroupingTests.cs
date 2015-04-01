@@ -156,8 +156,8 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(item0.Name, displayCollection.Items.Items[0].Name);
-            Assert.AreEqual(item.Name, displayCollection.Items.Items[1].Name);
+            Assert.AreEqual(item0.Name, displayCollection.ElementAt(0).Name);
+            Assert.AreEqual(item.Name, displayCollection.ElementAt(1).Name);
         }
         
         [Test]
@@ -181,7 +181,7 @@ namespace Tests
             Assert.AreEqual(2, displayCollection.Count);
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(group.Name, displayCollection.Items.Items[0].Name);
+            Assert.AreEqual(group.Name, displayCollection.ElementAt(0).Name);
             Assert.AreEqual(3, displayCollection.Count);
            
         }
@@ -254,8 +254,8 @@ namespace Tests
             Assert.AreEqual(2, displayCollection.Count);
             displayCollection.UnGroup();
      
-            Assert.AreEqual(item0.Name, displayCollection.Items.Items[1].Name);
-            Assert.AreEqual(item.Name, displayCollection.Items.Items[2].Name);           
+            Assert.AreEqual(item0.Name, displayCollection.ElementAt(1).Name);
+            Assert.AreEqual(item.Name, displayCollection.ElementAt(2).Name);           
         }
         
         [Test]
@@ -313,7 +313,7 @@ namespace Tests
             Assert.AreEqual(group, item0.Parent);
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(null, displayCollection.Items.Items[0].Parent);         
+            Assert.AreEqual(null, displayCollection.ElementAt(0).Parent);         
         }
         
         [Test]
@@ -339,7 +339,7 @@ namespace Tests
 
             displayCollection.MoveOutOfGroup();
 
-            Assert.AreEqual(group.Name, newerGroup.Items.Items[0].Name);
+            Assert.AreEqual(group.Name, newerGroup.Items.ElementAt(0).Name);
             Assert.AreEqual(2, newerGroup.Count());
             Assert.That(!newGroup.Contains(group));       
         }

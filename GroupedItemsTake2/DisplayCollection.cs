@@ -16,7 +16,7 @@ namespace GroupedItemsTake2
 	    public DisplayCollection()
 	    {
 	        _items = new ObservableItemsCollection();
-            Items.CollectionChanged += ItemsOnCollectionChanged;
+            _items.CollectionChanged += ItemsOnCollectionChanged;
 	    }
 
         public void Add(IDisplayItem item, bool addToEmptyGroup = false)
@@ -26,15 +26,15 @@ namespace GroupedItemsTake2
                 AddAsUngrouped(item);
                 return;
             }
-            if (Items.GetTopLevelItems(SelectedItems) && !addToEmptyGroup)
+            if (_items.GetTopLevelItems(SelectedItems) && !addToEmptyGroup)
             {
                 AddAsUngrouped(item);
                 return;
             }
 
-            if (!Items.AreOfTheSameGroup(SelectedItems)) { return;}
+            if (!_items.AreOfTheSameGroup(SelectedItems)) { return;}
 
-            var group = Items.GetParent(SelectedItems.First());
+            var group = _items.GetParent(SelectedItems.First());
             if (addToEmptyGroup)
             {
                 group = SelectedItems.First() as IGroup;                  
@@ -42,15 +42,15 @@ namespace GroupedItemsTake2
             AddToGroup(item, group);
         }
 
-        public void AddPrompt(IEnumerable<IDisplayItem> items)
+        public void AddPrompt(IEnumerable<IDisplayItem> _items)
         {
             var result = PromptIfEmptyParentIsSelected();
-            AddItems(items, result);
+            AddItems(_items, result);
         }
 
-        public void AddItems(IEnumerable<IDisplayItem> items, bool result)
+        public void AddItems(IEnumerable<IDisplayItem> _items, bool result)
         {
-            foreach (var item in items)
+            foreach (var item in _items)
             {
                 Add(item, result);
             }
@@ -58,19 +58,19 @@ namespace GroupedItemsTake2
 
         public void Insert(IDisplayItem item)
         {
-            var lowestSelectedIndex = Items.GetLowestSelectedIndex(SelectedItems);
-            if (!SelectedItems.Any()) Items.Insert(lowestSelectedIndex, item);
-            else if (Items.GetTopLevelItems(SelectedItems)) Items.Insert(lowestSelectedIndex, item);
-            else if (Items.AreOfTheSameGroup(SelectedItems))
+            var lowestSelectedIndex = _items.GetLowestSelectedIndex(SelectedItems);
+            if (!SelectedItems.Any()) _items.Insert(lowestSelectedIndex, item);
+            else if (_items.GetTopLevelItems(SelectedItems)) _items.Insert(lowestSelectedIndex, item);
+            else if (_items.AreOfTheSameGroup(SelectedItems))
             {
-                InsertInGroup(item, Items.GetParent(SelectedItems.First()));
+                InsertInGroup(item, _items.GetParent(SelectedItems.First()));
             }
         }
 
         public void Cut()
         {
-            _cutItems = Items.Clone(SelectedItems).ToList();
-            Remove(Items.GetDistinct(SelectedItems));
+            _cutItems = _items.Clone(SelectedItems).ToList();
+            Remove(_items.GetDistinct(SelectedItems));
         }
 
         public void Paste()
@@ -94,7 +94,7 @@ namespace GroupedItemsTake2
 
         public void UnGroup()
         {
-            var selectedParents = Items.GetTopLevelParents(SelectedItems);
+            var selectedParents = _items.GetTopLevelParents(SelectedItems);
             foreach (var selectedParent in selectedParents)
             {
                 UnGroup(selectedParent as IGroup);
@@ -108,26 +108,26 @@ namespace GroupedItemsTake2
 
         public void MoveTo(IGroup group)
         {
-            var itemsToGroup = Items.Clone(SelectedItems).ToList();
+            var itemsToGroup = _items.Clone(SelectedItems).ToList();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
             }
             Insert(group);
-            Remove(Items.GetDistinct(SelectedItems));
+            Remove(_items.GetDistinct(SelectedItems));
             UpdateSelection(new List<IDisplayItem> { group });
         }
 
         public void MoveUp()
         {
-            var items = SelectedItems.OrderBy(Items.IndexOf).ToList();
-            var childItems = SelectedItems.Where(Items.IsAChild);
+            var items = SelectedItems.OrderBy(_items.IndexOf).ToList();
+            var childItems = SelectedItems.Where(_items.IsAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
-            Items.MoveUp(ungroupedItems);
+            _items.MoveUp(ungroupedItems);
             if (childItems.Any())
             {
-                var group = Items.GetParent(childItems.First());
+                var group = _items.GetParent(childItems.First());
                 group.MoveItemsUp(childItems);
             }
             UpdateSelection(items);
@@ -135,45 +135,45 @@ namespace GroupedItemsTake2
 
         public void MoveDown()
         {
-            var items = SelectedItems.OrderBy(Items.IndexOf).ToList();
-            var childItems = SelectedItems.Where(Items.IsAChild);
+            var items = SelectedItems.OrderBy(_items.IndexOf).ToList();
+            var childItems = SelectedItems.Where(_items.IsAChild);
             var ungroupedItems = items.Except(childItems).ToList();
 
-            Items.MoveDown(ungroupedItems);
+            _items.MoveDown(ungroupedItems);
             if (childItems.Any())
             {
-                var group = Items.GetParent(childItems.First());
+                var group = _items.GetParent(childItems.First());
                 group.MoveItemsDown(childItems);
             }
-            UpdateSelection(items);
+            UpdateSelection(_items);
         }
 
         public void UpdateSelection(IEnumerable<IDisplayItem> items)
         {
             SelectedItems.Clear();
-            SelectedItems.AddRange(items);
+            SelectedItems.AddRange(_items);
         }
 
         private void MoveOutOfGroup(IEnumerable<IDisplayItem> items)
         {
-            var itemsToGroup = Items.Clone(items).ToList();
-            Remove(Items.GetMovableItems(items));
+            var itemsToGroup = _items.Clone(items).ToList();
+            Remove(_items.GetMovableItems(items));
             foreach (var item in itemsToGroup)
             {
-                if (Items.IsTopLevelItem(item)) continue;
-                if (Items.IsGrandParentless(item))
+                if (_items.IsTopLevelItem(item)) continue;
+                if (_items.IsGrandParentless(item))
                 {
-                    Items.Insert(Items.IndexOf(item.Parent), item);
+                    _items.Insert(_items.IndexOf(item.Parent), item);
                     item.SetParent(null);
                 }
-                else InsertInGroupAtParentIndex(item, Items.GetParent(item.Parent));
+                else InsertInGroupAtParentIndex(item, _items.GetParent(item.Parent));
             }
         }
 
-        private void AddAsUngrouped(IDisplayItem item)
+        public void AddAsUngrouped(IDisplayItem item)
         {
             item.SetParent(null);
-            Items.Add(item);
+            _items.Add(item);
         }
 
 	    private bool PromptIfEmptyParentIsSelected()
@@ -191,7 +191,7 @@ namespace GroupedItemsTake2
 	        get
 	        {
 	            if (SelectedItems.Count != 1) return false;
-                return SelectedItems.All(Items.IsChildlessParent);
+                return SelectedItems.All(_items.IsChildlessParent);
 	        }
 	    }
 
@@ -211,12 +211,12 @@ namespace GroupedItemsTake2
 
         private void RemoveItem(IDisplayItem item)
         {
-            if (Items.IsAChild(item))
+            if (_items.IsAChild(item))
             {
                 var group = item.Parent as IGroup;
                 if (group != null) group.Remove(item);
             }
-            else Items.Remove(item);
+            else _items.Remove(item);
         }
 
         private void AddToGroup(IDisplayItem item, IGroup group)
@@ -259,22 +259,16 @@ namespace GroupedItemsTake2
 			MoveTo(newGroup);
 		}
 
-	    public ObservableItemsCollection Items
-	    {
-	        get { return _items; }
-	        set { _items = value; }
-	    }
-
-	    public int Count { get { return Items.Count(); } }
+	    public int Count { get { return _items.Count(); } }
 
 	    public bool Contains(IDisplayItem item)
 	    {
-	        return Items.Contains(item);
+	        return _items.Contains(item);
 	    }
 
 	    public IEnumerator<IDisplayItem> GetEnumerator()
 	    {
-	        return Items.GetEnumerator();
+	        return _items.GetEnumerator();
 	    }
 
 	    IEnumerator IEnumerable.GetEnumerator()
@@ -284,12 +278,12 @@ namespace GroupedItemsTake2
 
 	    public bool IsAParent(IDisplayItem item)
 	    {
-	        return Items.IsAParent(item);
+	        return _items.IsAParent(item);
 	    }
 
 	    public bool IsAChild(IDisplayItem item)
 	    {
-	        return Items.IsAChild(item);
+	        return _items.IsAChild(item);
 	    }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;

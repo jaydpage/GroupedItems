@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 
 namespace GroupedItemsTake2
@@ -13,7 +12,7 @@ namespace GroupedItemsTake2
         public ObservableItemsCollection()
         {
             _items = new ObservableCollection<IDisplayItem>();
-            Items.CollectionChanged +=ItemsCollectionChanged;
+            _items.CollectionChanged +=ItemsCollectionChanged;
         }
 
         private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -31,8 +30,8 @@ namespace GroupedItemsTake2
                 var current = items.First();
                 items.Remove(current);
                 var index = IndexOf(current);
-                if (index >= Items.Count - 1) return;
-                Items.RemoveAt(index);
+                if (index >= _items.Count - 1) return;
+                _items.RemoveAt(index);
                 Insert(index + 1, current);
             }
         }
@@ -46,7 +45,7 @@ namespace GroupedItemsTake2
                 items.Remove(current);
                 var index = IndexOf(current);
                 if (index <= 0) return;
-                Items.RemoveAt(index);
+                _items.RemoveAt(index);
                 Insert(index - 1, current);
             }
         }
@@ -57,7 +56,7 @@ namespace GroupedItemsTake2
             foreach (var item in selected)
             {
                 var index = IndexOf(item);
-                if (!Items.Contains(item)) continue;
+                if (!_items.Contains(item)) continue;
                 if (index < lowestIndex) lowestIndex = index;
             }
             return lowestIndex < 0 ? 0 : lowestIndex;
@@ -192,16 +191,10 @@ namespace GroupedItemsTake2
             return item;
         }
 
-        public ObservableCollection<IDisplayItem> Items
-        {
-            get { return _items; }
-            set { _items = value; }
-        }
-
 
         public IEnumerator<IDisplayItem> GetEnumerator()
         {
-            return Items.GetEnumerator();
+            return _items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -211,27 +204,27 @@ namespace GroupedItemsTake2
 
         public void Add(IDisplayItem item)
         {
-            Items.Add(item);
+            _items.Add(item);
         }
 
         public int Count()
         {
-            return Items.Count;
+            return _items.Count;
         }
 
         public int IndexOf(IDisplayItem item)
         {
-            return Items.IndexOf(item);
+            return _items.IndexOf(item);
         }
 
         public void Insert(int index, IDisplayItem item)
         {
-            Items.Insert(index, item);
+            _items.Insert(index, item);
         }
 
         public void Remove(IDisplayItem item)
         {
-            Items.Remove(item);
+            _items.Remove(item);
         }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
