@@ -104,14 +104,14 @@ namespace GroupedItemsTake2
 
 		private void MoveOutOfGroup()
 		{
-			Items.MoveOutOfGroup();
+            Items.MoveSelectedItemsOutOfGroup();
 		}
 
 		private void AddItem()
 		{
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
 		    var newItems = new List<IDisplayItem> {newItem};
-			Items.AddPrompt(newItems);
+			Items.AddItems(newItems);
 		}
 
 		public DisplayCollection Items

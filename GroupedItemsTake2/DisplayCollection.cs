@@ -31,14 +31,9 @@ namespace GroupedItemsTake2
             AddToGroup(item, GetGroupToAddTo());
         }
 
-        public void AddPrompt(IEnumerable<IDisplayItem> items)
-        {
-            PromptIfEmptyParentIsSelected();
-            AddItems(items);
-        }
-
         public void AddItems(IEnumerable<IDisplayItem> items)
         {
+            PromptIfEmptyParentIsSelected();
             foreach (var item in items)
             {
                 Add(item);
@@ -47,32 +42,27 @@ namespace GroupedItemsTake2
 
         public void Insert(IDisplayItem item)
         {
-            var lowestSelectedIndex = _items.GetLowestSelectedIndex(SelectedItems);
-            if (!SelectedItems.Any())
+            if (MustInsertAtTopLevel())
             {
-                _items.Insert(lowestSelectedIndex, item);
+                InsertAtLowestSelectedIndex(item);
                 return;
             }
-            if (_items.AreAnyItemsTopLevelItems(SelectedItems))
-            {
-                _items.Insert(lowestSelectedIndex, item);
-                return;
-            }
-            if (_items.BelongToTheSameGroup(SelectedItems))
-            {
-                InsertInGroup(item, _items.GetParent(SelectedItems.First()));
-            }
+            if (InvalidSelectionForAdding()) return;
+           
+            var group = GetParentOfFirstSelectedItem();
+            InsertInGroup(item, group);          
         }
 
         public void Cut()
         {
-            _cutItems = _items.Clone(SelectedItems).ToList();
-            Remove(_items.GetDistinct(SelectedItems));
+            _cutItems = CloneSelectedItems();
+            var itemsToRemove = GetDistinctSelectedItems();
+            Remove(itemsToRemove);
         }
 
         public void Paste()
         {
-            AddPrompt(_cutItems);
+            AddItems(_cutItems);
             _cutItems.Clear();
         }
 
@@ -91,58 +81,63 @@ namespace GroupedItemsTake2
 
         public void UnGroup()
         {
-            var selectedParents = _items.GetHighestLevelParents(SelectedItems);
+            var selectedParents = GetHighestSelectedParents();
             foreach (var selectedParent in selectedParents)
             {
                 UnGroup(selectedParent as IGroup);
             }
         }
 
-        public void MoveOutOfGroup()
+        public void MoveSelectedItemsOutOfGroup()
         {
             MoveOutOfGroup(SelectedItems);
         }
 
         public void MoveTo(IGroup group)
         {
-            var itemsToGroup = _items.Clone(SelectedItems).ToList();
+            var itemsToGroup = CloneSelectedItems();
             foreach (var item in itemsToGroup)
             {
                 AddToGroup(item, group);
             }
             Insert(group);
-            Remove(_items.GetDistinct(SelectedItems));
+            Remove(GetDistinctSelectedItems());
             UpdateSelection(new List<IDisplayItem> { group });
         }
 
         public void MoveUp()
         {
-            var items = SelectedItems.OrderBy(_items.IndexOf).ToList();
-            var childItems = SelectedItems.Where(_items.IsAChild);
+            var items = GetOrderedSelectedItems();
+            var childItems = GetSelectedChildren();
             var ungroupedItems = items.Except(childItems).ToList();
 
             _items.MoveUp(ungroupedItems);
             if (childItems.Any())
             {
-                var group = _items.GetParent(childItems.First());
+                var group = GetParent(childItems.First());
                 group.MoveItemsUp(childItems);
             }
             UpdateSelection(items);
         }
 
+        private List<IDisplayItem> GetOrderedSelectedItems()
+        {
+            return SelectedItems.OrderBy(_items.IndexOf).ToList();
+        }
+
         public void MoveDown()
         {
-            var items = SelectedItems.OrderBy(_items.IndexOf).ToList();
-            var childItems = SelectedItems.Where(_items.IsAChild);
+            var items = GetOrderedSelectedItems();
+            var childItems = GetSelectedChildren();
             var ungroupedItems = items.Except(childItems).ToList();
 
             _items.MoveDown(ungroupedItems);
             if (childItems.Any())
             {
-                var group = _items.GetParent(childItems.First());
+                var group = GetParent(childItems.First());
                 group.MoveItemsDown(childItems);
             }
-            UpdateSelection(_items);
+            UpdateSelection(items);
         }
 
         public void UpdateSelection(IEnumerable<IDisplayItem> items)
@@ -153,7 +148,7 @@ namespace GroupedItemsTake2
 
         private void MoveOutOfGroup(IEnumerable<IDisplayItem> items)
         {
-            var itemsToGroup = _items.Clone(items).ToList();
+            var itemsToGroup = Clone(items).ToList();
             Remove(_items.GetMovableItems(items));
             foreach (var item in itemsToGroup)
             {
@@ -265,7 +260,7 @@ namespace GroupedItemsTake2
 
         private IGroup GetParentOfFirstSelectedItem()
         {
-            return _items.GetParent(SelectedItems.First());
+            return GetParent(SelectedItems.First());
         }
 
         private IGroup GetGroupToAddTo()
@@ -276,6 +271,53 @@ namespace GroupedItemsTake2
                 group = SelectedItems.First() as IGroup;
             }
             return group;
+        }
+
+        private bool MustInsertAtTopLevel()
+        {
+            if (NoSelectedItems()) return true;
+            return _items.AreAnyItemsTopLevelItems(SelectedItems);
+        }
+
+        private int GetLowestSelectedIndex()
+        {
+            return _items.GetLowestSelectedIndex(SelectedItems);
+        }
+
+        private void InsertAtLowestSelectedIndex(IDisplayItem item)
+        {
+            var lowestSelectedIndex = GetLowestSelectedIndex();
+            _items.Insert(lowestSelectedIndex, item);
+        }
+
+        private IEnumerable<IDisplayItem> GetDistinctSelectedItems()
+        {
+            return _items.GetDistinct(SelectedItems);
+        }
+
+        private List<IDisplayItem> CloneSelectedItems()
+        {
+            return Clone(SelectedItems);
+        }
+
+        private List<IDisplayItem> Clone(IEnumerable<IDisplayItem> items)
+        {
+            return _items.Clone(items).ToList();
+        } 
+
+        private IEnumerable<IDisplayItem> GetHighestSelectedParents()
+        {
+            return _items.GetHighestLevelParents(SelectedItems);
+        }
+
+        private IGroup GetParent(IDisplayItem item)
+        {
+            return _items.GetParent(item);
+        }
+
+        private IEnumerable<IDisplayItem> GetSelectedChildren()
+        {
+            return SelectedItems.Where(_items.IsAChild);
         }
 
         public ObservableCollection<IDisplayItem> SelectedItems
