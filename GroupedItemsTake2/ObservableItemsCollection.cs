@@ -66,7 +66,7 @@ namespace GroupedItemsTake2
         {
             if (!selected.Any()) return false;
             var group = GetParent(selected.First());
-            return selected.All(selectedItem => @group == GetParent(selectedItem));
+            return selected.All(selectedItem => group == GetParent(selectedItem));
         }
 
         public IGroup GetParent(IDisplayItem selected)
@@ -172,12 +172,12 @@ namespace GroupedItemsTake2
                 if (IsAChild(item))
                 {
                     if (allSelectedGroups.All(x => x.UID != item.Parent.UID))
-                        itemsWithoutSelectedGroups.Add(item);
+                    {
+                        itemsWithoutSelectedGroups.Add(item);                        
+                    }
+                    continue;
                 }
-                else
-                {
-                    itemsWithoutSelectedGroups.Add(item);
-                }
+                itemsWithoutSelectedGroups.Add(item);            
             }
             return itemsWithoutSelectedGroups;
         }
@@ -186,8 +186,9 @@ namespace GroupedItemsTake2
         {
             if (item.Parent == null) return item;
             if (selectedItems.Any(x => x.UID == item.Parent.UID))
-                return GetHighestLevelItem(item.Parent, selectedItems);
-
+            {
+                return GetHighestLevelItem(item.Parent, selectedItems);                
+            }
             return item;
         }
 

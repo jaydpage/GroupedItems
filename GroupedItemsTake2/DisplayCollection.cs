@@ -11,7 +11,7 @@ namespace GroupedItemsTake2
 	{
         private ObservableCollection<IDisplayItem> _selectedItems;
         private List<IDisplayItem> _cutItems;
-	    private ObservableItemsCollection _items;
+	    private readonly ObservableItemsCollection _items;
 
 	    public DisplayCollection()
 	    {
@@ -31,9 +31,7 @@ namespace GroupedItemsTake2
                 AddAsUngrouped(item);
                 return;
             }
-
-            if (!_items.AreOfTheSameGroup(SelectedItems)) { return;}
-
+            if (!_items.AreOfTheSameGroup(SelectedItems)) return;
             var group = _items.GetParent(SelectedItems.First());
             if (addToEmptyGroup)
             {
@@ -42,15 +40,15 @@ namespace GroupedItemsTake2
             AddToGroup(item, group);
         }
 
-        public void AddPrompt(IEnumerable<IDisplayItem> _items)
+        public void AddPrompt(IEnumerable<IDisplayItem> items)
         {
             var result = PromptIfEmptyParentIsSelected();
-            AddItems(_items, result);
+            AddItems(items, result);
         }
 
-        public void AddItems(IEnumerable<IDisplayItem> _items, bool result)
+        public void AddItems(IEnumerable<IDisplayItem> items, bool result)
         {
-            foreach (var item in _items)
+            foreach (var item in items)
             {
                 Add(item, result);
             }
@@ -59,9 +57,17 @@ namespace GroupedItemsTake2
         public void Insert(IDisplayItem item)
         {
             var lowestSelectedIndex = _items.GetLowestSelectedIndex(SelectedItems);
-            if (!SelectedItems.Any()) _items.Insert(lowestSelectedIndex, item);
-            else if (_items.GetTopLevelItems(SelectedItems)) _items.Insert(lowestSelectedIndex, item);
-            else if (_items.AreOfTheSameGroup(SelectedItems))
+            if (!SelectedItems.Any())
+            {
+                _items.Insert(lowestSelectedIndex, item);
+                return;
+            }
+            if (_items.GetTopLevelItems(SelectedItems))
+            {
+                _items.Insert(lowestSelectedIndex, item);
+                return;
+            }
+            if (_items.AreOfTheSameGroup(SelectedItems))
             {
                 InsertInGroup(item, _items.GetParent(SelectedItems.First()));
             }
@@ -165,8 +171,9 @@ namespace GroupedItemsTake2
                 {
                     _items.Insert(_items.IndexOf(item.Parent), item);
                     item.SetParent(null);
+                    continue;
                 }
-                else InsertInGroupAtParentIndex(item, _items.GetParent(item.Parent));
+                InsertInGroupAtParentIndex(item, _items.GetParent(item.Parent));
             }
         }
 
@@ -214,9 +221,13 @@ namespace GroupedItemsTake2
             if (_items.IsAChild(item))
             {
                 var group = item.Parent as IGroup;
-                if (group != null) group.Remove(item);
+                if (group != null)
+                {
+                    group.Remove(item);
+                }
+                return;
             }
-            else _items.Remove(item);
+            _items.Remove(item);
         }
 
         private void AddToGroup(IDisplayItem item, IGroup group)
