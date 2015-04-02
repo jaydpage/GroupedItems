@@ -26,7 +26,7 @@ namespace Tests
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItems(new List<IDisplayItem>{item}, false);
+            displayCollection.AddItems(new List<IDisplayItem>{item});
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -38,7 +38,7 @@ namespace Tests
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item = CreateItem();
             Assert.That(displayCollection.Count == 0);
-            displayCollection.AddItems(new List<IDisplayItem> { item }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { item });
             Assert.That(displayCollection.Count ==1);
             Assert.That(item.Level == Level.Ungrouped);
         }
@@ -63,7 +63,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item1 = CreateItem();
-            displayCollection.AddItems(new List<IDisplayItem> { item1 }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { item1 });
             Assert.AreEqual(Level.Child, item1.Level);
             Assert.AreEqual(item1.Parent, group);
 
@@ -96,7 +96,7 @@ namespace Tests
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             var item1 = CreateItem();
-            displayCollection.AddItems(new List<IDisplayItem> { item1 }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { item1 });
             Assert.AreEqual(Level.Ungrouped, item1.Level);
         }
 
@@ -164,7 +164,7 @@ namespace Tests
         {
             var group = CreateGroup();
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group });
             displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
 
             Assert.That(displayCollection.Any(x => x.UID == group.UID));

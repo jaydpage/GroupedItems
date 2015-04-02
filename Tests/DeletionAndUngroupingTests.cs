@@ -199,7 +199,7 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {@group};
 
             var displayCollection = new DisplayCollection {item2};
-            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group });
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -222,10 +222,10 @@ namespace Tests
             group.Add(item);
             newGroup.Add(group);
 
-            var selectedItems = new ObservableCollection<IDisplayItem> {@group};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group};
 
             var displayCollection = new DisplayCollection {item2};
-            displayCollection.AddItems(new List<IDisplayItem> { newGroup }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { newGroup });
 
             displayCollection.SelectedItems = selectedItems;
             displayCollection.UnGroup();
@@ -247,7 +247,7 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {group};
 
             var displayCollection = new DisplayCollection {item2};
-            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group });
 
             displayCollection.SelectedItems = selectedItems;
 
@@ -277,7 +277,7 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {group, group1, group2, item, item1};
 
             var displayCollection = new DisplayCollection();
-            displayCollection.AddItems(new List<IDisplayItem> { group }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group });
 
             displayCollection.SelectedItems = selectedItems;
 

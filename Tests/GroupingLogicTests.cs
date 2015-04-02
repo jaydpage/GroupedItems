@@ -132,8 +132,8 @@ namespace Tests
 
             var selectedItems2 = new List<IDisplayItem> {item0};
 
-            Assert.AreEqual(true, _collection.GetTopLevelItems(selectedItems));
-            Assert.AreEqual(false, _collection.GetTopLevelItems(selectedItems2));
+            Assert.AreEqual(true, _collection.AreAnyItemsTopLevelItems(selectedItems));
+            Assert.AreEqual(false, _collection.AreAnyItemsTopLevelItems(selectedItems2));
 
         }
 
@@ -153,8 +153,8 @@ namespace Tests
 
             var selectedItems = new List<IDisplayItem> {group, item1, item2, item0, item};
 
-            Assert.AreEqual(false, _collection.AreOfTheSameGroup(selectedItems));
-            Assert.AreEqual(true, _collection.AreOfTheSameGroup(selectedItems2));
+            Assert.AreEqual(false, _collection.BelongToTheSameGroup(selectedItems));
+            Assert.AreEqual(true, _collection.BelongToTheSameGroup(selectedItems2));
         }
         
         [Test]
@@ -190,7 +190,7 @@ namespace Tests
             var selectedItems = new ObservableCollection<IDisplayItem> {group, item1, item2, item0, item};
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
-            displayCollection.AddItems(new List<IDisplayItem> { group, item1, item2 }, false);
+            displayCollection.AddItems(new List<IDisplayItem> { group, item1, item2 });
 
             var itemsToGroup = _collection.Clone(selectedItems).ToList();
 

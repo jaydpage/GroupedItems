@@ -4,8 +4,8 @@ namespace GroupedItemsTake2
 {
     public interface IGroupingLogic
     {
-        bool GetTopLevelItems(IEnumerable<IDisplayItem> selected);
-        bool AreOfTheSameGroup(IEnumerable<IDisplayItem> selected);
+        bool AreAnyItemsTopLevelItems(IEnumerable<IDisplayItem> selected);
+        bool BelongToTheSameGroup(IEnumerable<IDisplayItem> selected);
         IGroup GetParent(IDisplayItem selected);
         IEnumerable<IDisplayItem> Clone(IEnumerable<IDisplayItem> selected);
         IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected);
@@ -16,6 +16,6 @@ namespace GroupedItemsTake2
         void MoveDown(IEnumerable<IDisplayItem> selected);
         void MoveUp(IEnumerable<IDisplayItem> selected);
         int GetLowestSelectedIndex(IEnumerable<IDisplayItem> selected);
-        IEnumerable<IDisplayItem> GetTopLevelParents(IEnumerable<IDisplayItem> selected);
+        IEnumerable<IDisplayItem> GetHighestLevelParents(IEnumerable<IDisplayItem> selected);
     }
 }

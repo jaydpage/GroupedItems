@@ -12,6 +12,7 @@ namespace GroupedItemsTake2
         private ObservableCollection<IDisplayItem> _selectedItems;
         private List<IDisplayItem> _cutItems;
 	    private readonly ObservableItemsCollection _items;
+        private bool _addToEmptyGroup;
 
 	    public DisplayCollection()
 	    {
@@ -19,38 +20,28 @@ namespace GroupedItemsTake2
             _items.CollectionChanged += ItemsOnCollectionChanged;
 	    }
 
-        public void Add(IDisplayItem item, bool addToEmptyGroup = false)
+        public void Add(IDisplayItem item)
         {
-            if (!SelectedItems.Any())
+            if (MustAddToTopLevel())
             {
                 AddAsUngrouped(item);
                 return;
             }
-            if (_items.GetTopLevelItems(SelectedItems) && !addToEmptyGroup)
-            {
-                AddAsUngrouped(item);
-                return;
-            }
-            if (!_items.AreOfTheSameGroup(SelectedItems)) return;
-            var group = _items.GetParent(SelectedItems.First());
-            if (addToEmptyGroup)
-            {
-                group = SelectedItems.First() as IGroup;                  
-            }
-            AddToGroup(item, group);
+            if (InvalidSelectionForAdding()) return;
+            AddToGroup(item, GetGroupToAddTo());
         }
 
         public void AddPrompt(IEnumerable<IDisplayItem> items)
         {
-            var result = PromptIfEmptyParentIsSelected();
-            AddItems(items, result);
+            PromptIfEmptyParentIsSelected();
+            AddItems(items);
         }
 
-        public void AddItems(IEnumerable<IDisplayItem> items, bool result)
+        public void AddItems(IEnumerable<IDisplayItem> items)
         {
             foreach (var item in items)
             {
-                Add(item, result);
+                Add(item);
             }
         }
 
@@ -62,12 +53,12 @@ namespace GroupedItemsTake2
                 _items.Insert(lowestSelectedIndex, item);
                 return;
             }
-            if (_items.GetTopLevelItems(SelectedItems))
+            if (_items.AreAnyItemsTopLevelItems(SelectedItems))
             {
                 _items.Insert(lowestSelectedIndex, item);
                 return;
             }
-            if (_items.AreOfTheSameGroup(SelectedItems))
+            if (_items.BelongToTheSameGroup(SelectedItems))
             {
                 InsertInGroup(item, _items.GetParent(SelectedItems.First()));
             }
@@ -100,7 +91,7 @@ namespace GroupedItemsTake2
 
         public void UnGroup()
         {
-            var selectedParents = _items.GetTopLevelParents(SelectedItems);
+            var selectedParents = _items.GetHighestLevelParents(SelectedItems);
             foreach (var selectedParent in selectedParents)
             {
                 UnGroup(selectedParent as IGroup);
@@ -157,7 +148,7 @@ namespace GroupedItemsTake2
         public void UpdateSelection(IEnumerable<IDisplayItem> items)
         {
             SelectedItems.Clear();
-            SelectedItems.AddRange(_items);
+            SelectedItems.AddRange(items);
         }
 
         private void MoveOutOfGroup(IEnumerable<IDisplayItem> items)
@@ -183,14 +174,14 @@ namespace GroupedItemsTake2
             _items.Add(item);
         }
 
-	    private bool PromptIfEmptyParentIsSelected()
+	    private void PromptIfEmptyParentIsSelected()
 	    {
-	        if (!SelectedIsANotAEmptyParent) return false;
+	        if (!SelectedIsANotAEmptyParent) return;
 	        var view = new AddToParentPromptDialog();
 	        var vm = new AddToParentPromptDialogViewModel(view);
 	        view.DataContext = vm;
 	        view.ShowDialog();
-	        return vm.Result;
+	        _addToEmptyGroup = vm.Result;
 	    }
 
 	    private bool SelectedIsANotAEmptyParent
@@ -249,6 +240,42 @@ namespace GroupedItemsTake2
         {
             if (CollectionChanged == null) return;
             CollectionChanged.Invoke(sender, e);
+        }
+
+        private bool InvalidSelectionForAdding()
+        {
+            return !_items.BelongToTheSameGroup(SelectedItems);
+        }
+
+        private bool MustAddToTopLevel()
+        {
+            if (NoSelectedItems()) return true;
+            return SelectedItemsHaveTopLevelItemsThatAreNotEmptyGroups();
+        }
+
+        private bool NoSelectedItems()
+        {
+            return !SelectedItems.Any();
+        }
+
+        private bool SelectedItemsHaveTopLevelItemsThatAreNotEmptyGroups()
+        {
+            return _items.AreAnyItemsTopLevelItems(SelectedItems) && !_addToEmptyGroup;
+        }
+
+        private IGroup GetParentOfFirstSelectedItem()
+        {
+            return _items.GetParent(SelectedItems.First());
+        }
+
+        private IGroup GetGroupToAddTo()
+        {
+            var group = GetParentOfFirstSelectedItem();
+            if (_addToEmptyGroup)
+            {
+                group = SelectedItems.First() as IGroup;
+            }
+            return group;
         }
 
         public ObservableCollection<IDisplayItem> SelectedItems

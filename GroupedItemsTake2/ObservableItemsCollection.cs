@@ -9,29 +9,23 @@ namespace GroupedItemsTake2
     public class ObservableItemsCollection : IEnumerable<IDisplayItem>, IGroupingLogic, INotifyCollectionChanged
     {
         private ObservableCollection<IDisplayItem> _items;
+
         public ObservableItemsCollection()
         {
             _items = new ObservableCollection<IDisplayItem>();
             _items.CollectionChanged +=ItemsCollectionChanged;
         }
 
-        private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (CollectionChanged == null) return;
-            CollectionChanged.Invoke(sender, e);
-        }
-
         public void MoveDown(IEnumerable<IDisplayItem> selected)
         {
             var items = selected.OrderByDescending(IndexOf).ToList();
-
             while (items.Any())
             {
                 var current = items.First();
                 items.Remove(current);
                 var index = IndexOf(current);
                 if (index >= _items.Count - 1) return;
-                _items.RemoveAt(index);
+                Remove(index);
                 Insert(index + 1, current);
             }
         }
@@ -45,7 +39,7 @@ namespace GroupedItemsTake2
                 items.Remove(current);
                 var index = IndexOf(current);
                 if (index <= 0) return;
-                _items.RemoveAt(index);
+                Remove(index);
                 Insert(index - 1, current);
             }
         }
@@ -56,13 +50,15 @@ namespace GroupedItemsTake2
             foreach (var item in selected)
             {
                 var index = IndexOf(item);
-                if (!_items.Contains(item)) continue;
-                if (index < lowestIndex) lowestIndex = index;
+                if (index < lowestIndex)
+                {
+                    lowestIndex = index;
+                }
             }
             return lowestIndex < 0 ? 0 : lowestIndex;
         }
 
-        public bool AreOfTheSameGroup(IEnumerable<IDisplayItem> selected)
+        public bool BelongToTheSameGroup(IEnumerable<IDisplayItem> selected)
         {
             if (!selected.Any()) return false;
             var group = GetParent(selected.First());
@@ -86,12 +82,12 @@ namespace GroupedItemsTake2
 
         public IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected)
         {
-            var topSelectedParents = GetTopLevelParents(selected);
+            var topSelectedParents = GetHighestLevelParents(selected);
             var itemsWithNoSelectedParents = GetItemsWithoutSelectedParents(selected);
             return topSelectedParents.Concat(itemsWithNoSelectedParents).Distinct();
         }
 
-        public IEnumerable<IDisplayItem> GetTopLevelParents(IEnumerable<IDisplayItem> selected)
+        public IEnumerable<IDisplayItem> GetHighestLevelParents(IEnumerable<IDisplayItem> selected)
         {
             var itemGroups = new List<IDisplayItem>();
             foreach (var item in selected)
@@ -108,7 +104,7 @@ namespace GroupedItemsTake2
             return GetDistinct(selected).Where(x => !IsTopLevelItem(x)).ToList();
         }
 
-        public bool GetTopLevelItems(IEnumerable<IDisplayItem> selected)
+        public bool AreAnyItemsTopLevelItems(IEnumerable<IDisplayItem> selected)
         {
             return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
         }
@@ -192,6 +188,11 @@ namespace GroupedItemsTake2
             return item;
         }
 
+        private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged == null) return;
+            CollectionChanged.Invoke(sender, e);
+        }
 
         public IEnumerator<IDisplayItem> GetEnumerator()
         {
@@ -221,6 +222,11 @@ namespace GroupedItemsTake2
         public void Insert(int index, IDisplayItem item)
         {
             _items.Insert(index, item);
+        }
+
+        private void Remove(int index)
+        {
+            _items.RemoveAt(index);
         }
 
         public void Remove(IDisplayItem item)
