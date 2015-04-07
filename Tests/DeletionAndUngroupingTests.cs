@@ -111,7 +111,7 @@ namespace Tests
             var displayCollection = new DisplayCollection {item2};
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.MoveSelectedItemsOutOfGroup();
+            displayCollection.MoveItemsOutOfGroup();
 
             Assert.AreEqual(1, displayCollection.Count());
             Assert.That(displayCollection.Contains(item2));
@@ -132,7 +132,7 @@ namespace Tests
             var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.MoveSelectedItemsOutOfGroup();
+            displayCollection.MoveItemsOutOfGroup();
 
             Assert.AreEqual(0, group.Count());
             Assert.That(!group.Contains(item0));
@@ -154,7 +154,7 @@ namespace Tests
             var displayCollection = new DisplayCollection {group, item2};
 
             displayCollection.SelectedItems = selectedItems;
-            displayCollection.MoveSelectedItemsOutOfGroup();
+            displayCollection.MoveItemsOutOfGroup();
 
             Assert.AreEqual(item0.Name, displayCollection.ElementAt(0).Name);
             Assert.AreEqual(item.Name, displayCollection.ElementAt(1).Name);
@@ -179,7 +179,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(2, displayCollection.Count);
-            displayCollection.MoveSelectedItemsOutOfGroup();
+            displayCollection.MoveItemsOutOfGroup();
 
             Assert.AreEqual(group.Name, displayCollection.ElementAt(0).Name);
             Assert.AreEqual(3, displayCollection.Count);
@@ -289,10 +289,7 @@ namespace Tests
 
             displayCollection.UnGroup();
 
-            //Assert.That(group2.Parent.UID == group1.UID);
             Assert.That(group2.Parent.Parent == null);
-
-
         }
         
         [Test]
@@ -311,7 +308,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
 
             Assert.AreEqual(group, item0.Parent);
-            displayCollection.MoveSelectedItemsOutOfGroup();
+            displayCollection.MoveItemsOutOfGroup();
 
             Assert.AreEqual(null, displayCollection.ElementAt(0).Parent);         
         }
@@ -337,7 +334,7 @@ namespace Tests
             displayCollection.SelectedItems = selectedItems;
             Assert.That(newGroup.Contains(group));
 
-            displayCollection.MoveSelectedItemsOutOfGroup();
+            displayCollection.MoveItemsOutOfGroup();
 
             Assert.AreEqual(group.Name, newerGroup.Items.ElementAt(0).Name);
             Assert.AreEqual(2, newerGroup.Count());

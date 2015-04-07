@@ -84,9 +84,9 @@ namespace GroupedItemsTake2
             }
         }
 
-        public void MoveSelectedItemsOutOfGroup(IEnumerable<IDisplayItem> items)
+        public void MoveItemsOutOfGroup()
         {
-            MoveOutOfGroup(items);
+            MoveOutOfGroup(SelectedItems);
         }
 
         public void MoveTo(IGroup group)
@@ -157,6 +157,7 @@ namespace GroupedItemsTake2
             Remove(_items.GetMovableItems(items));
             foreach (var item in itemsToMove)
             {
+                if (_items.IsTopLevelItem(item)) continue;
                 InsertAtParentLevel(item);
             }
         }
@@ -165,7 +166,7 @@ namespace GroupedItemsTake2
         {
             if (_items.IsGrandParentless(item))
             {
-                _items.Insert(IndexOf(item), item);
+                _items.Insert(IndexOf(item.Parent), item);
                 item.SetParent(null);
                 return;
             }

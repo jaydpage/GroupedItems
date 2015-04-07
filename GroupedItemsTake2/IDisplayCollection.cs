@@ -14,7 +14,7 @@ namespace GroupedItemsTake2
         void Duplicate();
         void Delete();
         void UnGroup();
-        void MoveSelectedItemsOutOfGroup();
+        void MoveItemsOutOfGroup();
         void MoveTo(IGroup group);
         void MoveUp();
         void MoveDown();
