@@ -36,12 +36,12 @@ namespace GroupedItemsTake2
 			_groupNameGenerator = new GroupNameGenerator();
 			_items = new DisplayCollection(); ;
 			AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
-            DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => IsItemSelected);
-            MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => IsItemSelected);
-            GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => IsItemSelected);
+            DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => BelongToSameGroup);
+            MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => BelongToSameGroup);
+            MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => BelongToSameGroup);
+            GroupCommand = new DelegateCommand<object>(obj => GroupItems(), x => BelongToSameGroup);
             UnGroupCommand = new DelegateCommand<object>(obj => UngroupItems(), x => OnlyParentsSelected);
             MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => OnlyChildrenSelected);
-            MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => IsItemSelected);
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => IsItemSelected);
             CutCommand = new DelegateCommand<object>(obj => Cut(), x => IsItemSelected);
             PasteCommand = new DelegateCommand<object>(obj => Paste(), x => IsItemSelected);
@@ -148,7 +148,15 @@ namespace GroupedItemsTake2
                 return SelectedItems.All(x => Items.IsAChild(x));
             }	      
 	    }
-
+        
+        public bool BelongToSameGroup
+	    {
+            get
+            {
+                if (!SelectedItems.Any()) return false;
+                return Items.BelongToSameGroup();
+            }	      
+	    }
 
 	    public IDisplayItem SelectedItem
 		{
