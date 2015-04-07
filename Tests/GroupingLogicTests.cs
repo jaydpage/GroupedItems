@@ -72,7 +72,7 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems = new ObservableCollection<IDisplayItem> {@group, item1, item2, item0, item};
+            var selectedItems = new ObservableCollection<IDisplayItem> {group, item1, item2, item0, item};
 
             var displayCollection = new DisplayCollection {SelectedItems = selectedItems};
             displayCollection.AddAsUngrouped(group);
@@ -149,11 +149,11 @@ namespace Tests
             group.Add(item0);
             group.Add(item);
 
-            var selectedItems2 = new List<IDisplayItem> {group, item0, item};
+            var selectedItems2 = new List<IDisplayItem> {item0, item};
 
             var selectedItems = new List<IDisplayItem> {group, item1, item2, item0, item};
 
-            Assert.AreEqual(false, _collection.BelongToTheSameGroup(selectedItems));
+            Assert.AreEqual(true, _collection.BelongToTheSameGroup(selectedItems));
             Assert.AreEqual(true, _collection.BelongToTheSameGroup(selectedItems2));
         }
         
@@ -169,7 +169,6 @@ namespace Tests
 
             var selectedItems = new List<IDisplayItem> {group, item0, item};
 
-            Assert.AreEqual(group, _collection.GetParent(selectedItems[0]));
             Assert.AreEqual(group, _collection.GetParent(selectedItems[1]));
             Assert.AreEqual(group, _collection.GetParent(selectedItems[2]));
 

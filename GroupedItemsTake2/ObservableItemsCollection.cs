@@ -62,12 +62,13 @@ namespace GroupedItemsTake2
         {
             if (!selected.Any()) return false;
             var group = GetParent(selected.First());
-            return selected.All(selectedItem => group == GetParent(selectedItem));
+            return GetDistinct(selected).All(selectedItem => group == GetParent(selectedItem));
         }
 
         public IGroup GetParent(IDisplayItem selected)
         {
-            if (selected.Level == Level.Ungrouped) return null;
+            if (IsUngrouped(selected)) return null;
+            if (IsOnlyAParent(selected)) return null;
             if (IsAChild(selected)) return selected.Parent as IGroup;
             return selected as IGroup;
         }
@@ -77,14 +78,14 @@ namespace GroupedItemsTake2
             var itemsToGroup = new List<IDisplayItem>();
             var selectedDistinct = GetDistinct(selected);
             itemsToGroup.AddRange(selectedDistinct.Select(item => (IDisplayItem)item.Clone()));
-            return itemsToGroup;
+            return itemsToGroup;        
         }
-
+        
         public IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected)
         {
             var topSelectedParents = GetHighestLevelParents(selected);
             var itemsWithNoSelectedParents = GetItemsWithoutSelectedParents(selected);
-            return topSelectedParents.Concat(itemsWithNoSelectedParents).Distinct();
+            return itemsWithNoSelectedParents.Concat(topSelectedParents).Distinct();
         }
 
         public IEnumerable<IDisplayItem> GetHighestLevelParents(IEnumerable<IDisplayItem> selected)
