@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using GroupedItemsTake2.Annotations;
 using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Win32;
 using NUnit.Framework;
 
 namespace GroupedItemsTake2
@@ -13,6 +15,7 @@ namespace GroupedItemsTake2
 	public class MainViewModel : INotifyPropertyChanged
 	{
 		public DelegateCommand<object> AddCommand { get; private set; }
+		public DelegateCommand<object> SaveCommand { get; private set; }
 		public DelegateCommand<object> RemoveCommand { get; private set; }
 		public DelegateCommand<object> DuplicateCommand { get; private set; }
 		public DelegateCommand<object> EditCommand { get; private set; }
@@ -29,13 +32,16 @@ namespace GroupedItemsTake2
 		private IDisplayItem _selectedItem;
 		private readonly GroupNameGenerator _groupNameGenerator;
 		private readonly ItemNameGenerator _itemNameGenerator;
+		private readonly RepositoryWriter _repositoryWriter;
 
 	    public MainViewModel()
 		{
 			_itemNameGenerator = new ItemNameGenerator();
 			_groupNameGenerator = new GroupNameGenerator();
+			_repositoryWriter = new RepositoryWriter();
 			_items = new DisplayCollection(); ;
 			AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
+			SaveCommand = new DelegateCommand<object>(obj => Save(), x => true);
             DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => BelongToSameGroup);
             MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => BelongToSameGroup);
             MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => BelongToSameGroup);
@@ -48,6 +54,21 @@ namespace GroupedItemsTake2
 
             SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
 		}
+
+	    private void Save()
+	    {
+            const string fileName = "New";
+
+            var dlg = new SaveFileDialog
+            {
+                Filter = "Items" + " (*.gi)|*.gi|" + "All Files" + "|*.*",
+                DefaultExt = "gi",
+                FileName = Path.GetFileName(fileName),
+            };
+
+            if((bool)!dlg.ShowDialog()) return;
+	        _repositoryWriter.Write(_items, dlg.FileName);
+	    }
 
 	    private void SelectedItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
