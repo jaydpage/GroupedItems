@@ -7,6 +7,7 @@ namespace GroupedItemsTake2
     {
         ObservableItemsCollection Items { get; }
         void Add(IDisplayItem item);
+        void Add(IEnumerable<IDisplayItem> items);
         void Insert(IDisplayItem item, IEnumerable<IDisplayItem> selectedItems);
         void InsertAtParentIndex(IDisplayItem item);
         void MoveItemsUp(IEnumerable<IDisplayItem> items);

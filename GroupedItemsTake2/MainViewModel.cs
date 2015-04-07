@@ -104,7 +104,7 @@ namespace GroupedItemsTake2
 
 		private void MoveOutOfGroup()
 		{
-            Items.MoveSelectedItemsOutOfGroup();
+            Items.MoveSelectedItemsOutOfGroup(SelectedItems);
 		}
 
 		private void AddItem()
