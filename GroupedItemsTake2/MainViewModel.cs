@@ -16,6 +16,7 @@ namespace GroupedItemsTake2
 	{
 		public DelegateCommand<object> AddCommand { get; private set; }
 		public DelegateCommand<object> SaveCommand { get; private set; }
+		public DelegateCommand<object> LoadCommand { get; private set; }
 		public DelegateCommand<object> RemoveCommand { get; private set; }
 		public DelegateCommand<object> DuplicateCommand { get; private set; }
 		public DelegateCommand<object> EditCommand { get; private set; }
@@ -33,15 +34,18 @@ namespace GroupedItemsTake2
 		private readonly GroupNameGenerator _groupNameGenerator;
 		private readonly ItemNameGenerator _itemNameGenerator;
 		private readonly RepositoryWriter _repositoryWriter;
+		private readonly RepositoryReader _repositoryReader;
 
 	    public MainViewModel()
 		{
 			_itemNameGenerator = new ItemNameGenerator();
 			_groupNameGenerator = new GroupNameGenerator();
 			_repositoryWriter = new RepositoryWriter();
+            _repositoryReader = new RepositoryReader();
 			_items = new DisplayCollection(); ;
 			AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
 			SaveCommand = new DelegateCommand<object>(obj => Save(), x => true);
+			LoadCommand = new DelegateCommand<object>(obj => Load(), x => true);
             DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => BelongToSameGroup);
             MoveUpCommand = new DelegateCommand<object>(obj => MoveUp(), x => BelongToSameGroup);
             MoveDownCommand = new DelegateCommand<object>(obj => MoveDown(), x => BelongToSameGroup);
@@ -54,6 +58,24 @@ namespace GroupedItemsTake2
 
             SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
 		}
+
+	    private void Load()
+	    {
+            const string fileName = "New";
+            var dlg = new OpenFileDialog
+            {
+                Filter = "Items" + " (*.gi)|*.gi|" + "All Files" + "|*.*",
+                DefaultExt = "gi",
+                FileName = Path.GetFileName(fileName),
+                Multiselect = false,
+                CheckFileExists = true
+            };
+
+            if((bool)!dlg.ShowDialog()) return;
+	        var items = _repositoryReader.Read(dlg.FileName);
+            Items.Clear();
+            Items.AddItems(items);
+	    }
 
 	    private void Save()
 	    {

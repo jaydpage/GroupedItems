@@ -16,7 +16,7 @@
         <Grid>
             <StackPanel Orientation="Horizontal">
                 <telerik:RadButton Content="Save" Command="{Binding SaveCommand}" Width="50"/>
-                <!--<telerik:RadButton Content="Load" Command="{Binding AddCommand}" Width="50"/>-->
+                <telerik:RadButton Content="Load" Command="{Binding LoadCommand}" Width="50"/>
                 <telerik:RadButton Content="Add" Command="{Binding AddCommand}" Width="50" Margin="30,0,0,0"/>
                 <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}" Width="60"/>
                 <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}" Width="50"/>

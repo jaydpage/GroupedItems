@@ -110,6 +110,11 @@ namespace GroupedItemsTake2
             return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
         }
 
+        public void Clear()
+        {
+            _items.Clear();
+        }
+
         public bool IsTopLevelItem(IDisplayItem item)
         {
             return IsUngrouped(item) || IsOnlyAParent(item);

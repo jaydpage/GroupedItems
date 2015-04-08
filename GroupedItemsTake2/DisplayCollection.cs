@@ -62,6 +62,11 @@ namespace GroupedItemsTake2
             _cutItems.Clear();
         }
 
+        public void Clear()
+        {
+            _items.Clear();
+        }
+
         public void Duplicate()
         {
             foreach (var item in SelectedItems)

@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RepositoryReader.cs" />
     <Compile Include="RepositoryWriter.cs" />
     <Page Include="AddToParentPromptDialog.xaml">
       <SubType>Designer</SubType>
