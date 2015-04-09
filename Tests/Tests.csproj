@@ -44,10 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddingLogicTests.cs" />
-    <Compile Include="DeletionAndUngroupingTests.cs" />
+    <Compile Include="MovingOutOfGroupTests.cs" />
+    <Compile Include="DeletionTests.cs" />
     <Compile Include="GroupingLogicTests.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnclassifiedTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GroupedItemsTake2\GroupedItemsTake2.csproj">
