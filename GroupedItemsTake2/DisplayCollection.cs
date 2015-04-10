@@ -10,7 +10,7 @@ namespace GroupedItemsTake2
     public class DisplayCollection : IEnumerable<IDisplayItem>, INotifyCollectionChanged, IDisplayCollection
     {
         private ObservableCollection<IDisplayItem> _selectedItems;
-        private List<IDisplayItem> _cutItems;
+        private List<IDisplayItem> _clipboardItems;
 	    private readonly ObservableItemsCollection _items;
         private bool _addToEmptyGroup;
 
@@ -51,15 +51,22 @@ namespace GroupedItemsTake2
 
         public void Cut()
         {
-            _cutItems = CloneSelectedItems();
+            _clipboardItems = CloneSelectedItems();
             var itemsToRemove = GetDistinctSelectedItems();
             Remove(itemsToRemove);
+        }
+        
+        public void Copy()
+        {
+            _clipboardItems = CloneSelectedItems();
         }
 
         public void Paste()
         {
-            AddItems(_cutItems);
-            _cutItems.Clear();
+            foreach (var item in _clipboardItems)
+            {
+                Add(item.Copy());
+            }
         }
 
         public void Clear()
@@ -263,7 +270,7 @@ namespace GroupedItemsTake2
             return GetParent(SelectedItems.First());
         }
 
-        private void AddSelectedToGroup(IGroup @group)
+        private void AddSelectedToGroup(IGroup group)
         {
             var items = CloneSelectedItems();
             group.Add(items);

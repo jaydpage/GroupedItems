@@ -26,6 +26,7 @@ namespace GroupedItemsTake2
 		public DelegateCommand<object> MoveOutOfGroupCommand { get; private set; }
 		public DelegateCommand<object> MoveDownCommand { get; private set; }
 		public DelegateCommand<object> DeleteCommand { get; private set; }
+		public DelegateCommand<object> CopyCommand { get; private set; }
 		public DelegateCommand<object> CutCommand { get; private set; }
 		public DelegateCommand<object> PasteCommand { get; private set; }
 
@@ -53,6 +54,7 @@ namespace GroupedItemsTake2
             UnGroupCommand = new DelegateCommand<object>(obj => UngroupItems(), x => OnlyParentsSelected);
             MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => OnlyChildrenSelected);
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => IsItemSelected);
+            CopyCommand = new DelegateCommand<object>(obj => Copy(), x => BelongToSameGroup);
             CutCommand = new DelegateCommand<object>(obj => Cut(), x => BelongToSameGroup);
             PasteCommand = new DelegateCommand<object>(obj => Paste(), x => IsItemSelected);
 
@@ -103,6 +105,7 @@ namespace GroupedItemsTake2
             DeleteCommand.RaiseCanExecuteChanged();
             CutCommand.RaiseCanExecuteChanged();
             PasteCommand.RaiseCanExecuteChanged();
+            CopyCommand.RaiseCanExecuteChanged();
         }
 
 	    private void Paste()
@@ -113,6 +116,11 @@ namespace GroupedItemsTake2
 		private void Cut()
 		{
 			Items.Cut();
+		}
+        
+        private void Copy()
+		{
+			Items.Copy();
 		}
 
 		private void DuplicateItem()

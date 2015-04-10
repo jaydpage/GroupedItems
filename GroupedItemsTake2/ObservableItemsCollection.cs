@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -80,7 +81,7 @@ namespace GroupedItemsTake2
             itemsToGroup.AddRange(selectedDistinct.Select(item => (IDisplayItem)item.Clone()));
             return itemsToGroup;        
         }
-        
+
         public IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected)
         {
             var topSelectedParents = GetHighestLevelParents(selected);

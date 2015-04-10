@@ -7,7 +7,7 @@
         xmlns:groupedItemsTake2="clr-namespace:GroupedItemsTake2"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         d:DataContext="{d:DesignInstance Type=groupedItemsTake2:MainViewModel}"
-        Title="MainWindow" Height="500" Width="600">
+        Title="MainWindow" Height="500" Width="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height ="50"/>
@@ -20,11 +20,11 @@
                 <telerik:RadButton Content="Add" Command="{Binding AddCommand}" Width="50" Margin="30,0,0,0"/>
                 <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}" Width="60"/>
                 <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}" Width="50"/>
+                <telerik:RadButton Content="Copy" Command="{Binding CopyCommand}" Width="50" Margin="30,0,0,0"/>
                 <telerik:RadButton Content="Cut" Command="{Binding CutCommand}" Width="50"/>
                 <telerik:RadButton Content="Paste" Command="{Binding PasteCommand}" Width="50"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <telerik:RadButton Content="Group" Command="{Binding GroupCommand}" Width="50"/>
+
+                <telerik:RadButton Content="Group" Command="{Binding GroupCommand}" Width="50" Margin="30,0,0,0"/>
                 <telerik:RadButton Content="Ungroup" Command="{Binding UnGroupCommand}" Width="60"/>
                 <telerik:RadButton Content="Move Out" Command="{Binding MoveOutOfGroupCommand}" Width="60"/>
             </StackPanel>
