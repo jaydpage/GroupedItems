@@ -53,7 +53,7 @@ namespace GroupedItemsTake2
             UnGroupCommand = new DelegateCommand<object>(obj => UngroupItems(), x => OnlyParentsSelected);
             MoveOutOfGroupCommand = new DelegateCommand<object>(obj => MoveOutOfGroup(), x => OnlyChildrenSelected);
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => IsItemSelected);
-            CutCommand = new DelegateCommand<object>(obj => Cut(), x => IsItemSelected);
+            CutCommand = new DelegateCommand<object>(obj => Cut(), x => BelongToSameGroup);
             PasteCommand = new DelegateCommand<object>(obj => Paste(), x => IsItemSelected);
 
             SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
