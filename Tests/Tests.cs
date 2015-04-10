@@ -6,17 +6,8 @@ using GroupedItemsTake2;
 namespace Tests
 {
     [TestFixture]
-    public class Tests
+    public class Tests : TestBase
     {
-        private static Item CreateItem()
-        {
-            return new Item("item", null);
-        }
-
-        private static Group CreateGroup()
-        {
-            return new Group("group", null);
-        }
 
         [Test]
         public void CanAddItemToGroup()
@@ -28,23 +19,7 @@ namespace Tests
             Assert.AreEqual(expected, group.Count());
         }
 
-        [Test]
-        public void RemovingFromAGroupTest()
-        {
-            var item = CreateItem();
-            var group = CreateGroup();
-            group.Add(item);
-
-            Assert.That(group.Contains(item));
-
-            group.Remove(item);
-
-            Assert.That(!group.Contains(item));
-            Assert.That(group.Count() == 0);
-
-        }
-
-        [Test]
+	    [Test]
         public void GroupedItemKnowsItsParent()
         {
             var item = CreateItem();
@@ -65,9 +40,9 @@ namespace Tests
         [Test]
         public void CanAddGroupToGroup()
         {
-            var group1 = CreateItem();
+            var item = CreateItem();
             var group = CreateGroup();
-            group.Add(group1);
+            group.Add(item);
             const int expected = 1;
             Assert.AreEqual(expected, group.Count());
         }

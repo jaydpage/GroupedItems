@@ -7,19 +7,9 @@ using NUnit.Framework;
 namespace Tests
 {
     [TestFixture]
-    public class GroupingLogicTests
+    public class GroupingLogicTests : TestBase
     {
         readonly ObservableItemsCollection _collection = new ObservableItemsCollection();
-
-        private static Item CreateItem(string name = "item")
-        {
-            return new Item(name, null);
-        }
-
-        private static Group CreateGroup(string name = "group")
-        {
-            return new Group(name, null);
-        }
 
         [Test]
         public void GivenUngroupedSelectedItemsGroupWillBeAddedAsParentAtFirstSelectedIndex()
@@ -332,5 +322,21 @@ namespace Tests
                 }
             }
         }
+
+	    [Test]
+	    public void RemovingFromAGroupTest()
+	    {
+		    var item = CreateItem();
+		    var group1 = CreateGroup();
+		    group1.Add(item);
+
+		    Assert.That(group1.Contains(item));
+
+		    group1.Remove(item);
+
+		    Assert.That(!group1.Contains(item));
+		    Assert.That(group1.Count() == 0);
+
+	    }
     }
 }

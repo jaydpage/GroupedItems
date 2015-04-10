@@ -7,18 +7,8 @@ using NUnit.Framework;
 namespace Tests
 {
     [TestFixture]
-    public class AddingLogicTests
+    public class AddingLogicTests : TestBase
     {
-        private static Item CreateItem()
-        {
-            return new Item("item", null);
-        }
-
-        private static Group CreateGroup()
-        {
-            return new Group("group", null);
-        }
-
         [Test]
         public void GivenNoSelectedItemsItemThatIsAddedShouldBeUngrouped()
         {
@@ -101,14 +91,6 @@ namespace Tests
         }
 
 
-        [Test]
-        public void GivenItemWithNoParentOrChildrenShouldReturnItemLevelUngrouped()
-        {
-            var item = CreateItem();
-            const Level expected = Level.Ungrouped;
-            Assert.AreEqual(expected, item.Level);
-        }
-        
         [Test]
         public void GivenItemInAGroupShouldReturnItemLevelChild()
         {
