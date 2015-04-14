@@ -141,20 +141,36 @@ namespace Tests
             Assert.AreEqual(expected, group.Level);
         }
 
-        //[Test]
-        //public void CutAndPasteTest()
-        //{
-        //    var group = CreateGroup();
-        //    var displayCollection = new DisplayCollection();
-        //    displayCollection.AddItems(new List<IDisplayItem> { group });
-        //    displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
+        [Test]
+        public void CutAndPasteTest()
+        {
+            var group = CreateGroup("TestGroup");
+            var displayCollection = new DisplayCollection();
+            displayCollection.AddItems(new List<IDisplayItem> { group });
+            displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
 
-        //    Assert.That(displayCollection.Any(x => x.UID == group.UID));
-        //    displayCollection.Cut();
-        //    Assert.That(displayCollection.All(x => x.UID != group.UID));
-        //    displayCollection.SelectedItems.Clear();
-        //    displayCollection.Paste();
-        //    Assert.That(displayCollection.Any(x => x.UID == group.UID));
-        //}
+            Assert.That(displayCollection.Any(x => x.UID == group.UID));
+            displayCollection.Cut();
+            Assert.That(displayCollection.All(x => x.UID != group.UID));
+            displayCollection.SelectedItems.Clear();
+            displayCollection.Paste();
+            Assert.That(displayCollection.Any(x => x.Name == "TestGroup"));
+        }
+        
+        [Test]
+        public void CopyAndPasteTest()
+        {
+            var group = CreateGroup("TestGroup");
+            var displayCollection = new DisplayCollection();
+            displayCollection.AddItems(new List<IDisplayItem> { group });
+            displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
+
+            Assert.That(displayCollection.Any(x => x.UID == group.UID));
+            displayCollection.Copy();
+            displayCollection.SelectedItems.Clear();
+            displayCollection.Paste();
+            Assert.That(displayCollection.Count(x => x.Name == "TestGroup") == 2);
+        }
     }
 }
+  

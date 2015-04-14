@@ -399,6 +399,12 @@ namespace GroupedItemsTake2
         {
             return _items.BelongToTheSameGroup(SelectedItems);
         }
+
+        public bool OnlyChildrenSelected()
+        {
+            if (!SelectedItems.Any()) return false;
+            return SelectedItems.All(IsAChild);
+        }
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 	}
 }

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using GroupedItemsTake2.Annotations;
+using log4net;
 using Microsoft.Practices.Composite.Presentation.Commands;
 using Microsoft.Win32;
 using NUnit.Framework;
@@ -30,6 +31,7 @@ namespace GroupedItemsTake2
 		public DelegateCommand<object> CutCommand { get; private set; }
 		public DelegateCommand<object> PasteCommand { get; private set; }
 
+        private readonly ILog _logger;
 		private DisplayCollection _items;
 		private IDisplayItem _selectedItem;
 		private readonly GroupNameGenerator _groupNameGenerator;
@@ -39,6 +41,7 @@ namespace GroupedItemsTake2
 
 	    public MainViewModel()
 		{
+            _logger = new LogFactory().Create();
 			_itemNameGenerator = new ItemNameGenerator();
 			_groupNameGenerator = new GroupNameGenerator();
 			_repositoryWriter = new RepositoryWriter();
@@ -74,6 +77,7 @@ namespace GroupedItemsTake2
             };
 
             if((bool)!dlg.ShowDialog()) return;
+            Log("Load File: " + dlg.FileName);
 	        var items = _repositoryReader.Read(dlg.FileName);
             Items.Clear();
             Items.AddItems(items);
@@ -91,6 +95,7 @@ namespace GroupedItemsTake2
             };
 
             if((bool)!dlg.ShowDialog()) return;
+            Log("Save File: " + dlg.FileName);
 	        _repositoryWriter.Write(_items, dlg.FileName);
 	    }
 
@@ -110,56 +115,67 @@ namespace GroupedItemsTake2
 
 	    private void Paste()
 		{
+            Log("Paste");
 			Items.Paste();
 		}
 
 		private void Cut()
 		{
+            Log("Cut");
 			Items.Cut();
 		}
         
         private void Copy()
 		{
+            Log("Copy");
 			Items.Copy();
 		}
 
 		private void DuplicateItem()
 		{
+            Log("Duplicate");
 			Items.Duplicate();
 		}
 
 		private void MoveDown()
 		{
+            Log("Move Down");
 			Items.MoveDown();
 		}
 
 		private void MoveUp()
 		{
+            Log("Move Up");
 			Items.MoveUp();
 		}
 
 		private void Delete()
 		{
+            Log("Delete");
 			Items.Delete();
 		}
 
 		private void GroupItems()
 		{
+            Log("Group");
 			Items.Group(_groupNameGenerator.GenerateName());
 		}
 
 		private void UngroupItems()
 		{
+            Log("Ungroup");
 			Items.UnGroup();
 		}
 
 		private void MoveOutOfGroup()
 		{
+            Log("Move out of group");
             Items.MoveItemsOutOfGroup();
 		}
 
 		private void AddItem()
 		{
+            Log("Add");
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
 		    var newItems = new List<IDisplayItem> {newItem};
 			Items.AddItems(newItems);
@@ -193,11 +209,7 @@ namespace GroupedItemsTake2
         
         public bool OnlyChildrenSelected
 	    {
-            get
-            {
-                if (!SelectedItems.Any()) return false;
-                return SelectedItems.All(x => Items.IsAChild(x));
-            }	      
+            get { return Items.OnlyChildrenSelected(); }	      
 	    }
         
         public bool BelongToSameGroup
@@ -221,15 +233,25 @@ namespace GroupedItemsTake2
 
 		public ObservableCollection<IDisplayItem> SelectedItems
 		{
-			get { return Items.SelectedItems; }
-			set
+		    get
+		    {
+		        return Items.SelectedItems;
+		    }
+		    set
 			{
 				Items.SelectedItems = value;
 				OnPropertyChanged("SelectedItems");
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
+	    private void Log(string action)
+	    {
+	        var selectedText = Items.SelectedItems.Aggregate("SelectedItems: ", (current, item) => current + (item.Name + ", "));
+	        _logger.Info(selectedText);
+            _logger.Info(action);
+	    }
+
+	    public event PropertyChangedEventHandler PropertyChanged;
 
 		[NotifyPropertyChangedInvocator]
 		protected virtual void OnPropertyChanged(string propertyName)

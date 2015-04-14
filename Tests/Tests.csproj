@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddingLogicTests.cs" />
+    <Compile Include="CommandRestrictionTests.cs" />
     <Compile Include="MovingOutOfGroupTests.cs" />
     <Compile Include="DeletionTests.cs" />
     <Compile Include="GroupingLogicTests.cs" />
