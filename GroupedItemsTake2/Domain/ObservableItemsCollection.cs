@@ -47,15 +47,7 @@ namespace GroupedItemsTake2.Domain
 
         public int GetLowestSelectedIndex(IEnumerable<IDisplayItem> selected)
         {
-            var lowestIndex = int.MaxValue;
-            foreach (var item in selected)
-            {
-                var index = IndexOf(item);
-                if (index < lowestIndex)
-                {
-                    lowestIndex = index;
-                }
-            }
+            var lowestIndex = selected.Select(IndexOf).Concat(new[] {int.MaxValue}).Min();
             return lowestIndex < 0 ? 0 : lowestIndex;
         }
 

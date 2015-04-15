@@ -69,18 +69,10 @@ namespace GroupedItemsTake2.ViewModels
 	    private void Load()
 	    {
             const string fileName = "New";
-            var dlg = new OpenFileDialog
-            {
-                Filter = "Items" + " (*.gi)|*.gi|" + "All Files" + "|*.*",
-                DefaultExt = "gi",
-                FileName = Path.GetFileName(fileName),
-                Multiselect = false,
-                CheckFileExists = true
-            };
-
-            if((bool)!dlg.ShowDialog()) return;
-            Log("Load File: " + dlg.FileName);
-	        var items = _repositoryReader.Read(dlg.FileName);
+	        var result = PromptOpenFileDialog(fileName);
+	        if (string.IsNullOrEmpty(result)) return;
+	        Log("Load File: " + result);
+	        var items = _repositoryReader.Read(result);
             Items.Clear();
             Items.AddItems(items);
 	    }
@@ -88,32 +80,11 @@ namespace GroupedItemsTake2.ViewModels
 	    private void Save()
 	    {
             const string fileName = "New";
-
-            var dlg = new SaveFileDialog
-            {
-                Filter = "Items" + " (*.gi)|*.gi|" + "All Files" + "|*.*",
-                DefaultExt = "gi",
-                FileName = Path.GetFileName(fileName),
-            };
-
-            if((bool)!dlg.ShowDialog()) return;
-            Log("Save File: " + dlg.FileName);
-	        _repositoryWriter.Write(_items, dlg.FileName);
+	        var result = PromptSaveFileDialog(fileName); 
+            if(string.IsNullOrEmpty(result)) return;
+	        Log("Save File: " + result);
+	        _repositoryWriter.Write(_items, result);
 	    }
-
-	    private void SelectedItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-            UnGroupCommand.RaiseCanExecuteChanged();
-            DuplicateCommand.RaiseCanExecuteChanged();
-            MoveUpCommand.RaiseCanExecuteChanged();
-            GroupCommand.RaiseCanExecuteChanged();
-            MoveOutOfGroupCommand.RaiseCanExecuteChanged();
-            MoveDownCommand.RaiseCanExecuteChanged();
-            DeleteCommand.RaiseCanExecuteChanged();
-            CutCommand.RaiseCanExecuteChanged();
-            PasteCommand.RaiseCanExecuteChanged();
-            CopyCommand.RaiseCanExecuteChanged();
-        }
 
 	    private void Paste()
 		{
@@ -182,6 +153,48 @@ namespace GroupedItemsTake2.ViewModels
 		    var newItems = new List<IDisplayItem> {newItem};
 			Items.AddItems(newItems);
 		}
+
+        private void SelectedItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            UnGroupCommand.RaiseCanExecuteChanged();
+            DuplicateCommand.RaiseCanExecuteChanged();
+            MoveUpCommand.RaiseCanExecuteChanged();
+            GroupCommand.RaiseCanExecuteChanged();
+            MoveOutOfGroupCommand.RaiseCanExecuteChanged();
+            MoveDownCommand.RaiseCanExecuteChanged();
+            DeleteCommand.RaiseCanExecuteChanged();
+            CutCommand.RaiseCanExecuteChanged();
+            PasteCommand.RaiseCanExecuteChanged();
+            CopyCommand.RaiseCanExecuteChanged();
+        }
+
+        private string PromptSaveFileDialog(string fileName)
+        {
+            var dlg = new SaveFileDialog
+            {
+                Filter = "Items" + " (*.gi)|*.gi|" + "All Files" + "|*.*",
+                DefaultExt = "gi",
+                FileName = Path.GetFileName(fileName),
+            };
+
+            if ((bool)!dlg.ShowDialog()) return null;
+            return dlg.FileName;
+        }
+
+        private string PromptOpenFileDialog(string fileName)
+        {
+            var dlg = new OpenFileDialog
+            {
+                Filter = "Items" + " (*.gi)|*.gi|" + "All Files" + "|*.*",
+                DefaultExt = "gi",
+                FileName = Path.GetFileName(fileName),
+                Multiselect = false,
+                CheckFileExists = true
+            };
+
+            if ((bool)!dlg.ShowDialog()) return null;
+            return dlg.FileName;
+        }
 
 		public DisplayCollection Items
 		{

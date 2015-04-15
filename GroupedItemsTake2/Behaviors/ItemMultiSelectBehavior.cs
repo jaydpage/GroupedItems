@@ -32,21 +32,17 @@ namespace GroupedItemsTake2.Behaviors
             var grid = dependencyObject as RadTreeListView;
             var selectedItems = e.NewValue as INotifyCollectionChanged;
 
-            if (grid != null && selectedItems != null && !_isAttached)
-            {
-                var behavior = new ItemMultiSelectBehavior(grid, selectedItems);
-                behavior.Attach();
-                _isAttached = true;
-            }
+            if (grid == null || selectedItems == null || _isAttached) return;
+            var behavior = new ItemMultiSelectBehavior(grid, selectedItems);
+            behavior.Attach();
+            _isAttached = true;
         }
 
         private void Attach()
         {
-            if (_grid != null && _selectedItems != null)
-            {
-                Transfer(GetSelectedItems(_grid) as IList, _grid.SelectedItems);
-                SubscribeToEvents();
-            }
+            if (_grid == null || _selectedItems == null) return;
+            Transfer(GetSelectedItems(_grid) as IList, _grid.SelectedItems);
+            SubscribeToEvents();
         }
 
         public ItemMultiSelectBehavior(RadTreeListView grid, INotifyCollectionChanged selectedItems)
@@ -75,30 +71,26 @@ namespace GroupedItemsTake2.Behaviors
 
         private void SubscribeToEvents()
         {
-            if (!_isSubscribedToEvents)
-            {
-                _grid.SelectedItems.CollectionChanged += GridSelectedItemsCollectionChanged;
+            if (_isSubscribedToEvents) return;
+            _grid.SelectedItems.CollectionChanged += GridSelectedItemsCollectionChanged;
 
-                if (GetSelectedItems(_grid) != null)
-                {
-                    GetSelectedItems(_grid).CollectionChanged += ContextSelectedItemsCollectionChanged;
-                }
-                _isSubscribedToEvents = true;
+            if (GetSelectedItems(_grid) != null)
+            {
+                GetSelectedItems(_grid).CollectionChanged += ContextSelectedItemsCollectionChanged;
             }
+            _isSubscribedToEvents = true;
         }
 
         private void UnsubscribeFromEvents()
         {
-            if (_isSubscribedToEvents)
-            {
-                _grid.SelectedItems.CollectionChanged -= GridSelectedItemsCollectionChanged;
+            if (!_isSubscribedToEvents) return;
+            _grid.SelectedItems.CollectionChanged -= GridSelectedItemsCollectionChanged;
 
-                if (GetSelectedItems(_grid) != null)
-                {
-                    GetSelectedItems(_grid).CollectionChanged -= ContextSelectedItemsCollectionChanged;
-                }
-                _isSubscribedToEvents = false;
+            if (GetSelectedItems(_grid) != null)
+            {
+                GetSelectedItems(_grid).CollectionChanged -= ContextSelectedItemsCollectionChanged;
             }
+            _isSubscribedToEvents = false;
         }
 
         public static void Transfer(IList source, IList target)

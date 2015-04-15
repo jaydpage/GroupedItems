@@ -150,14 +150,20 @@ namespace GroupedItemsTake2.Domain
 	    private void PromptIfEmptyParentIsSelected()
 	    {
 	        if (!SelectedIsANotAEmptyParent) return;
-	        var view = new AddToParentPromptDialog();
-	        var vm = new AddToParentPromptDialogViewModel(view);
-	        view.DataContext = vm;
-	        view.ShowDialog();
+	        var vm = PromptAddToParentDialog();
 	        _addToEmptyGroup = vm.Result;
 	    }
 
-	    private bool SelectedIsANotAEmptyParent
+        private static AddToParentPromptDialogViewModel PromptAddToParentDialog()
+        {
+            var view = new AddToParentPromptDialog();
+            var vm = new AddToParentPromptDialogViewModel(view);
+            view.DataContext = vm;
+            view.ShowDialog();
+            return vm;
+        }
+
+        private bool SelectedIsANotAEmptyParent
 	    {
 	        get
 	        {
