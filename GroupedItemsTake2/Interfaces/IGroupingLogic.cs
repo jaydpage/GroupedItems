@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Interfaces
 {
     public interface IGroupingLogic
     {

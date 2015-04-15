@@ -1,4 +1,4 @@
-﻿<Window x:Class="GroupedItemsTake2.MainWindow"
+﻿<Window x:Class="GroupedItemsTake2.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,9 @@
         mc:Ignorable="d"  
         xmlns:groupedItemsTake2="clr-namespace:GroupedItemsTake2"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        d:DataContext="{d:DesignInstance Type=groupedItemsTake2:MainViewModel}"
+        xmlns:viewModels="clr-namespace:GroupedItemsTake2.ViewModels"
+        xmlns:behaviors="clr-namespace:GroupedItemsTake2.Behaviors"
+        d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
         Title="MainWindow" Height="500" Width="700">
     <Grid>
         <Grid.RowDefinitions>
@@ -37,7 +39,7 @@
                           AutoGenerateColumns="False"
                           SelectionMode="Extended"
                           ColumnWidth="Auto"
-                          groupedItemsTake2:ItemMultiSelectBehavior.SelectedItems="{Binding SelectedItems}">
+                          behaviors:ItemMultiSelectBehavior.SelectedItems="{Binding SelectedItems}">
             <telerik:RadTreeListView.ChildTableDefinitions>
                 <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}">
                 </telerik:TreeListViewTableDefinition>

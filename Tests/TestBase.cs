@@ -1,4 +1,4 @@
-using GroupedItemsTake2;
+using GroupedItemsTake2.Domain;
 
 namespace Tests
 {

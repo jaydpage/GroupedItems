@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GroupedItemsTake2.Domain;
+using GroupedItemsTake2.Interfaces;
 using NUnit.Framework;
 using GroupedItemsTake2;
 

@@ -1,6 +1,7 @@
 using System;
+using GroupedItemsTake2.Interfaces;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Domain
 {
     public class Item : IItem
     {

@@ -1,7 +1,7 @@
 ﻿using log4net;
 using log4net.Config;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Logging
 {
     public class LogFactory
     {

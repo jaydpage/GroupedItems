@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using Telerik.Windows.Controls;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Behaviors
 {
     public class ItemMultiSelectBehavior
     {

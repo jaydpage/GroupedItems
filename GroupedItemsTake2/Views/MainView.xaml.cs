@@ -1,7 +1,7 @@
 ﻿using System.Windows;
+using GroupedItemsTake2.ViewModels;
 
-
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

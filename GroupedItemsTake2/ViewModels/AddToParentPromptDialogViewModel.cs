@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Practices.Composite.Presentation.Commands;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.ViewModels
 {
     public class AddToParentPromptDialogViewModel
     {

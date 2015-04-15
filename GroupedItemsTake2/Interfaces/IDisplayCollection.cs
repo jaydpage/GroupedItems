@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Interfaces
 {
     public interface IDisplayCollection
     {

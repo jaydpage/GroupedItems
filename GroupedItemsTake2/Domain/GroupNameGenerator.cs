@@ -1,4 +1,4 @@
-﻿namespace GroupedItemsTake2
+﻿namespace GroupedItemsTake2.Domain
 {
 	public class GroupNameGenerator
 	{

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using GroupedItemsTake2.Domain;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Interfaces
 {
     public interface IGroup : IDisplayItem
     {

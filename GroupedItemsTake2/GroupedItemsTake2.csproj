@@ -85,44 +85,44 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="LogFactory.cs" />
-    <Compile Include="RepositoryReader.cs" />
-    <Compile Include="RepositoryWriter.cs" />
-    <Page Include="AddToParentPromptDialog.xaml">
+    <Compile Include="Logging\LogFactory.cs" />
+    <Compile Include="Repository\RepositoryReader.cs" />
+    <Compile Include="Repository\RepositoryWriter.cs" />
+    <Page Include="Views\AddToParentPromptDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainView.xaml">
+    <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddToParentPromptDialog.xaml.cs">
+    <Compile Include="Views\AddToParentPromptDialog.xaml.cs">
       <DependentUpon>AddToParentPromptDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddToParentPromptDialogViewModel.cs" />
+    <Compile Include="ViewModels\AddToParentPromptDialogViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DisplayCollection.cs" />
-    <Compile Include="Group.cs" />
-    <Compile Include="GroupNameGenerator.cs" />
-    <Compile Include="IDislpayItem.cs" />
-    <Compile Include="IDisplayCollection.cs" />
-    <Compile Include="IGroup.cs" />
-    <Compile Include="IGroupingLogic.cs" />
-    <Compile Include="IItem.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemMultiSelectBehavior.cs" />
-    <Compile Include="ItemNameGenerator.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="MainView.xaml.cs">
+    <Compile Include="Domain\DisplayCollection.cs" />
+    <Compile Include="Domain\Group.cs" />
+    <Compile Include="Domain\GroupNameGenerator.cs" />
+    <Compile Include="Interfaces\IDislpayItem.cs" />
+    <Compile Include="Interfaces\IDisplayCollection.cs" />
+    <Compile Include="Interfaces\IGroup.cs" />
+    <Compile Include="Interfaces\IGroupingLogic.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Domain\Item.cs" />
+    <Compile Include="Behaviors\ItemMultiSelectBehavior.cs" />
+    <Compile Include="Domain\ItemNameGenerator.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObservableItemsCollection.cs" />
+    <Compile Include="Domain\ObservableItemsCollection.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -149,6 +149,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

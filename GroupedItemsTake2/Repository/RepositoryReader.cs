@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using GroupedItemsTake2.Domain;
+using GroupedItemsTake2.Interfaces;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Repository
 {
     public class RepositoryReader
     {

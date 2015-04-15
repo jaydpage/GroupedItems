@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using GroupedItemsTake2.Interfaces;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Domain
 {
     public class Group : IGroup
     {

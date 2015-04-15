@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using GroupedItemsTake2.Interfaces;
+using GroupedItemsTake2.ViewModels;
+using GroupedItemsTake2.Views;
 using Microsoft.Practices.Composite;
 
-namespace GroupedItemsTake2
+namespace GroupedItemsTake2.Domain
 {
     public class DisplayCollection : IEnumerable<IDisplayItem>, INotifyCollectionChanged, IDisplayCollection
     {
@@ -364,7 +367,7 @@ namespace GroupedItemsTake2
 
         public void Group(string groupName)
         {
-            var newGroup = GroupedItemsTake2.Group.CreateGroup(groupName);
+            var newGroup = Domain.Group.CreateGroup(groupName);
             MoveTo(newGroup);
         }
 
