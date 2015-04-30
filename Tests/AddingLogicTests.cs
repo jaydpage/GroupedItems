@@ -173,6 +173,17 @@ namespace Tests
             displayCollection.Paste();
             Assert.That(displayCollection.Count(x => x.Name == "TestGroup") == 2);
         }
+
+        [Test]
+        public void AddingWithTopLevelSelectedItemWhenAllTopLevelItemsAreGroupsShouldPrompt()
+        {
+            var group = CreateGroup("TestGroup");
+            var displayCollection = new DisplayCollection();
+            displayCollection.AddItems(new List<IDisplayItem> { group });
+            displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
+
+            Assert.AreEqual(true, displayCollection.IsPositionNotApparent());
+        }
     }
 }
   

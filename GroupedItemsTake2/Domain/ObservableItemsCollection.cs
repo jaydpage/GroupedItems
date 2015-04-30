@@ -54,8 +54,8 @@ namespace GroupedItemsTake2.Domain
         public bool BelongToTheSameGroup(IEnumerable<IDisplayItem> selected)
         {
             if (!selected.Any()) return false;
-            var group = GetParent(selected.First());
-            return GetDistinct(selected).All(selectedItem => group == GetParent(selectedItem));
+            var group = GetParent(GetHighestSelectedItems(selected).First());
+            return GetDistinct(selected).All(item => group == GetParent(item));
         }
 
         public IGroup GetParent(IDisplayItem selected)

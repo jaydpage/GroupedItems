@@ -66,10 +66,8 @@ namespace GroupedItemsTake2.Domain
 
         public void Paste()
         {
-            foreach (var item in _clipboardItems)
-            {
-                Add(item.Copy());
-            }
+            var itemsToPaste = _clipboardItems.Select(item => item.Copy()).ToList();
+            AddItems(itemsToPaste);
         }
 
         public void Clear()
@@ -79,10 +77,8 @@ namespace GroupedItemsTake2.Domain
 
         public void Duplicate()
         {
-            foreach (var item in SelectedItems)
-            {
-                Add(item.Copy());
-            }
+            var itemsToPaste = SelectedItems.Select(item => item.Copy()).ToList();
+            AddItems(itemsToPaste);
         }
 
         public void Delete()
@@ -150,7 +146,7 @@ namespace GroupedItemsTake2.Domain
 	    private void PromptIfAddPositionIsNotApparent()
 	    {
 	        _addToEmptyGroup = false;
-            if ((SelectedIsAParent && AllTopLevelItemsAreParents) || SelectedItemIsAnEmptyParent)
+            if (IsPositionNotApparent())
             {
                 DisplayPrompt();
             }      
@@ -430,6 +426,11 @@ namespace GroupedItemsTake2.Domain
         public bool BelongToSameGroup()
         {
             return _items.BelongToTheSameGroup(SelectedItems);
+        }
+
+        public bool IsPositionNotApparent()
+        {
+            return (SelectedIsAParent && AllTopLevelItemsAreParents) || SelectedItemIsAnEmptyParent;
         }
 
         public bool OnlyChildrenSelected()
