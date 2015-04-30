@@ -16,6 +16,6 @@ namespace GroupedItemsTake2.Interfaces
         void MoveDown(IEnumerable<IDisplayItem> selected);
         void MoveUp(IEnumerable<IDisplayItem> selected);
         int GetLowestSelectedIndex(IEnumerable<IDisplayItem> selected);
-        IEnumerable<IDisplayItem> GetHighestLevelParents(IEnumerable<IDisplayItem> selected);
+        IEnumerable<IDisplayItem> GetHighestSelectedItems(IEnumerable<IDisplayItem> selected);
     }
 }

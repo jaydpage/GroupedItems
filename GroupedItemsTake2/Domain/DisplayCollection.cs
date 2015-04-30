@@ -260,7 +260,7 @@ namespace GroupedItemsTake2.Domain
 
         private void InsertInGroupOfSelectedItem(IDisplayItem item)
         {
-            var group = GetParentOfFirstSelectedItem();
+            var group = GetParentOfHighestLevelSelectedItem();
             group.Insert(item, SelectedItems);
         }
         
@@ -296,9 +296,10 @@ namespace GroupedItemsTake2.Domain
             return _items.AreAnyItemsTopLevelItems(SelectedItems) && !_addToEmptyGroup;
         }
 
-        private IGroup GetParentOfFirstSelectedItem()
+        private IGroup GetParentOfHighestLevelSelectedItem()
         {
-            return GetParent(SelectedItems.First());
+            var item = _items.GetHighestSelectedItems(SelectedItems).First();
+            return GetParent(item);
         }
 
         private void AddSelectedToGroup(IGroup group)
@@ -315,7 +316,7 @@ namespace GroupedItemsTake2.Domain
 
         private IGroup GetGroupToAddTo()
         {
-            var group = GetParentOfFirstSelectedItem();
+            var group = GetParentOfHighestLevelSelectedItem();
             if (_addToEmptyGroup)
             {
                 group = SelectedItems.First() as IGroup;
@@ -357,7 +358,7 @@ namespace GroupedItemsTake2.Domain
 
         private IEnumerable<IDisplayItem> GetHighestSelectedParents()
         {
-            return _items.GetHighestLevelParents(SelectedItems);
+            return _items.GetHighestSelectedItems(SelectedItems.Where(IsAParent));
         }
 
         private IGroup GetParent(IDisplayItem item)

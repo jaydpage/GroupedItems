@@ -76,21 +76,20 @@ namespace GroupedItemsTake2.Domain
 
         public IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected)
         {
-            var topSelectedParents = GetHighestLevelParents(selected);
+            var topSelectedParents = GetHighestSelectedItems(selected.Where(IsAParent));
             var itemsWithNoSelectedParents = GetItemsWithoutSelectedParents(selected);
             return itemsWithNoSelectedParents.Concat(topSelectedParents).Distinct();
         }
 
-        public IEnumerable<IDisplayItem> GetHighestLevelParents(IEnumerable<IDisplayItem> selected)
+        public IEnumerable<IDisplayItem> GetHighestSelectedItems(IEnumerable<IDisplayItem> selected)
         {
-            var itemGroups = new List<IDisplayItem>();
+            var items = new List<IDisplayItem>();
             foreach (var item in selected)
             {
-                if (!IsAParent(item)) continue;
-                var topGroup = GetHighestLevelItem(item, selected);
-                if (itemGroups.All(x => x.UID != topGroup.UID)) itemGroups.Add(topGroup);
+                var topItem = GetHighestLevelItem(item, selected);
+                if (items.All(x => x.UID != topItem.UID)) items.Add(topItem);
             }
-            return itemGroups;
+            return items;
         }
 
         public IEnumerable<IDisplayItem> GetMovableItems(IEnumerable<IDisplayItem> selected)
