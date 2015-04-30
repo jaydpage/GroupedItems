@@ -35,7 +35,7 @@ namespace GroupedItemsTake2.Domain
 
         public void AddItems(IEnumerable<IDisplayItem> items)
         {
-            PromptIfEmptyParentIsSelected();
+            PromptIfAddPositionIsNotApparent();
             foreach (var item in items)
             {
                 Add(item);
@@ -147,11 +147,13 @@ namespace GroupedItemsTake2.Domain
             _items.Add(item);
         }
 
-	    private void PromptIfEmptyParentIsSelected()
+	    private void PromptIfAddPositionIsNotApparent()
 	    {
-	        if (!SelectedIsANotAEmptyParent) return;
-	        var vm = PromptAddToParentDialog();
-	        _addToEmptyGroup = vm.Result;
+	        if (SelectedIsAParent && AllTopLevelItemsAreParents)
+	        {
+                var vm = PromptAddToParentDialog();
+                _addToEmptyGroup = vm.Result;
+	        }
 	    }
 
         private static AddToParentPromptDialogViewModel PromptAddToParentDialog()
@@ -163,13 +165,18 @@ namespace GroupedItemsTake2.Domain
             return vm;
         }
 
-        private bool SelectedIsANotAEmptyParent
+        private bool SelectedIsAParent
 	    {
 	        get
 	        {
 	            if (SelectedItems.Count != 1) return false;
-                return SelectedItems.All(_items.IsChildlessParent);
+                return SelectedItems.All(_items.IsAParent);
 	        }
+	    }
+
+        private bool AllTopLevelItemsAreParents
+	    {
+	        get { return _items.AreAllTopLevelItemsParents(); }
 	    }
 
         private void MoveOutOfGroup(IEnumerable<IDisplayItem> items)

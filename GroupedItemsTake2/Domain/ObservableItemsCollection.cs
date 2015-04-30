@@ -102,6 +102,12 @@ namespace GroupedItemsTake2.Domain
         {
             return selected.Any(x => x.Level == Level.Ungrouped || x.Level == Level.Parent);
         }
+        
+        public bool AreAllTopLevelItemsParents()
+        {
+            if (!_items.Any()) return false;
+            return _items.All(IsAParent);
+        }
 
         public void Clear()
         {
@@ -117,13 +123,6 @@ namespace GroupedItemsTake2.Domain
         {
             if (IsOnlyAParent(item)) return true;
             return IsAParentChild(item);
-        }      
-        
-        public bool IsChildlessParent(IDisplayItem item)
-        {
-            if (!IsAParent(item)) return false;
-            var group = item as IGroup;
-            return group != null && group.Count() == 0;
         }      
 
         public bool IsGrandParentless(IDisplayItem item)
