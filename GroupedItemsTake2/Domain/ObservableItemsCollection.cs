@@ -222,6 +222,13 @@ namespace GroupedItemsTake2.Domain
             _items.Insert(index, item);
         }
 
+        public bool IsChildlessParent(IDisplayItem item)
+        {
+            if (!IsAParent(item)) return false;
+            var group = item as IGroup;
+            return group != null && group.Count() == 0;
+        }      
+
         private void Remove(int index)
         {
             _items.RemoveAt(index);

@@ -149,12 +149,18 @@ namespace GroupedItemsTake2.Domain
 
 	    private void PromptIfAddPositionIsNotApparent()
 	    {
-	        if (SelectedIsAParent && AllTopLevelItemsAreParents)
-	        {
-                var vm = PromptAddToParentDialog();
-                _addToEmptyGroup = vm.Result;
-	        }
+	        _addToEmptyGroup = false;
+            if ((SelectedIsAParent && AllTopLevelItemsAreParents) || SelectedItemIsAnEmptyParent)
+            {
+                DisplayPrompt();
+            }      
 	    }
+
+        private void DisplayPrompt()
+        {
+            var vm = PromptAddToParentDialog();
+            _addToEmptyGroup = vm.Result;
+        }
 
         private static AddToParentPromptDialogViewModel PromptAddToParentDialog()
         {
@@ -173,6 +179,15 @@ namespace GroupedItemsTake2.Domain
                 return SelectedItems.All(_items.IsAParent);
 	        }
 	    }
+
+        private bool SelectedItemIsAnEmptyParent
+        {
+            get
+            {
+                if (SelectedItems.Count != 1) return false;
+                return SelectedItems.All(_items.IsChildlessParent);
+            }
+        }
 
         private bool AllTopLevelItemsAreParents
 	    {
@@ -268,7 +283,7 @@ namespace GroupedItemsTake2.Domain
         private bool MustAddToTopLevel()
         {
             if (NoSelectedItems()) return true;
-            return SelectedItemsHaveTopLevelItemsThatAreNotEmptyGroups();
+            return SelectedItemsContainTopLevelItemsThatAreNotEmptyGroups();
         }
 
         private bool NoSelectedItems()
@@ -276,7 +291,7 @@ namespace GroupedItemsTake2.Domain
             return !SelectedItems.Any();
         }
 
-        private bool SelectedItemsHaveTopLevelItemsThatAreNotEmptyGroups()
+        private bool SelectedItemsContainTopLevelItemsThatAreNotEmptyGroups()
         {
             return _items.AreAnyItemsTopLevelItems(SelectedItems) && !_addToEmptyGroup;
         }
