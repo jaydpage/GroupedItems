@@ -173,6 +173,21 @@ namespace Tests
             displayCollection.Paste();
             Assert.That(displayCollection.Count(x => x.Name == "TestGroup") == 2);
         }
+        
+        [Test]
+        public void ShouldBeAbleToPasteIfList()
+        {
+            var group = CreateGroup("TestGroup");
+            var displayCollection = new DisplayCollection();
+            displayCollection.AddItems(new List<IDisplayItem> { group });
+            displayCollection.SelectedItems = new ObservableCollection<IDisplayItem> { group };
+
+            Assert.That(displayCollection.Any(x => x.UID == group.UID));
+            displayCollection.Cut();
+            displayCollection.SelectedItems.Clear();
+            displayCollection.Paste();
+            Assert.That(displayCollection.Count(x => x.Name == "TestGroup") == 1);
+        }
 
         [Test]
         public void AddingWithTopLevelSelectedItemWhenAllTopLevelItemsAreGroupsShouldPrompt()

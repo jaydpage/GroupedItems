@@ -61,7 +61,7 @@ namespace GroupedItemsTake2.ViewModels
             DeleteCommand = new DelegateCommand<object>(obj => Delete(), x => IsItemSelected);
             CopyCommand = new DelegateCommand<object>(obj => Copy(), x => BelongToSameGroup);
             CutCommand = new DelegateCommand<object>(obj => Cut(), x => BelongToSameGroup);
-            PasteCommand = new DelegateCommand<object>(obj => Paste(), x => IsItemSelected);
+            PasteCommand = new DelegateCommand<object>(obj => Paste(), x => CanPaste);
 
             SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
 		}
@@ -211,6 +211,15 @@ namespace GroupedItemsTake2.ViewModels
         public bool IsItemSelected
         {
             get { return SelectedItems.Any(); }
+        }
+        
+        public bool CanPaste
+        {
+            get
+            {
+                if (IsItemSelected) return true;
+                return !Items.Any();
+            }
         }
 
 	    public bool OnlyParentsSelected
