@@ -238,11 +238,6 @@ namespace GroupedItemsTake2.Domain
             _items.Remove(item);
         }
 
-        public IEnumerable<IDisplayItem> Items
-        {
-            get { return _items;}
-        }
-
         public event NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }

@@ -5,10 +5,11 @@ using GroupedItemsTake2.Interfaces;
 
 namespace GroupedItemsTake2.Domain
 {
-    public class Group : ObservableItemsCollection, IGroup
+    public class Group : IGroup
     {
         public string Name { get; set; }
         public IDisplayItem Parent { get; private set; }
+        public ObservableItemsCollection Items { get; private set; }
 
 	    public static IGroup CreateGroup(string name)
 	    {
@@ -16,16 +17,18 @@ namespace GroupedItemsTake2.Domain
 		    return result;
 	    }
 
+
         public Group(string name, IDisplayItem parent)
         {
             Parent = parent;
             Name = name;
             UID = Guid.NewGuid().ToString();
+            Items = new ObservableItemsCollection();
         }
 
-        public void AddItem(IDisplayItem item)
+        public void Add(IDisplayItem item)
         {
-            Add(item);
+            Items.Add(item);
             item.SetParent(this);
         }
 
@@ -33,46 +36,61 @@ namespace GroupedItemsTake2.Domain
         {
             foreach (var item in items)
             {
-                AddItem(item);
+                Add(item);
             }
         }
 
         public void Insert(IDisplayItem item, IEnumerable<IDisplayItem> selectedItems)
         {
-            var lowestSelectedIndex = GetLowestSelectedIndex(selectedItems);
-            Insert(lowestSelectedIndex, item);
+            var lowestSelectedIndex = Items.GetLowestSelectedIndex(selectedItems);
+            Items.Insert(lowestSelectedIndex, item);
             item.SetParent(this);
         }
         
         public void InsertAtParentIndex(IDisplayItem item)
         {
-            var index = IndexOf(item.Parent);
-            Insert(index, item);
+            var index = Items.IndexOf(item.Parent);
+            Items.Insert(index, item);
             item.SetParent(this);
         }
 
         public void MoveItemsUp(IEnumerable<IDisplayItem> items)
         {
-            MoveUp(items);
+            Items.MoveUp(items);
         }
 
         public void MoveItemsDown(IEnumerable<IDisplayItem> items)
         {
-           MoveDown(items);
+           Items.MoveDown(items);
+        }
+
+        public void Remove(IDisplayItem item)
+        {
+            Items.Remove(item);
+        }
+
+        public int Count()
+        {
+            return Items.Count();
+        }
+
+        public bool Contains(IDisplayItem item)
+        {
+            return Items.Contains(item);
         }
 
         public void AddRange(IEnumerable<IDisplayItem> items)
         {
             foreach (var item in items)
             {
-                AddItem(item);
+                Add(item);
             }
         }
 
         public void SetParent(IDisplayItem parent)
         {
             Parent = parent;
-            foreach (var item in this)
+            foreach (var item in Items)
             {
                 item.SetParent(this);
             }
@@ -81,16 +99,16 @@ namespace GroupedItemsTake2.Domain
         public IDisplayItem Copy()
         {
             var newGroup = new Group(Name, Parent) { UID = Guid.NewGuid().ToString()};
-            foreach (var item in this)
+            foreach (var item in Items)
             {
-                newGroup.AddItem(item.Copy());
+                newGroup.Add(item.Copy());
             }
             return newGroup;
         }
 
         private bool HasNoChildren()
         {
-            return !this.Any();
+            return !Items.Any();
         }
 
         private static bool HasNoParent(Group parent)
@@ -100,7 +118,7 @@ namespace GroupedItemsTake2.Domain
 
         private bool HasChildren()
         {
-            return this.Any();
+            return Items.Any();
         }
 
         private static bool HasParent(Group parent)

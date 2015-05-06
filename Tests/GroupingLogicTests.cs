@@ -60,8 +60,8 @@ namespace Tests
             var item1 = CreateItem();
             var item2 = CreateItem();
 
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems = new ObservableCollection<IDisplayItem> {group, item1, item2, item0, item};
 
@@ -89,8 +89,8 @@ namespace Tests
             var item0 = CreateItem();
             var item = CreateItem();
 
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems = new ObservableCollection<IDisplayItem> {item0, item};
 
@@ -116,8 +116,8 @@ namespace Tests
             var item1 = CreateItem();
             var item2 = CreateItem();
 
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems = new List<IDisplayItem> {group, item1, item2, item0, item};
 
@@ -137,8 +137,8 @@ namespace Tests
             var item1 = CreateItem();
             var item2 = CreateItem();
 
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems2 = new List<IDisplayItem> {item0, item};
 
@@ -155,8 +155,8 @@ namespace Tests
             var item0 = CreateItem();
             var item = CreateItem();
 
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems = new List<IDisplayItem> {group, item0, item};
 
@@ -174,8 +174,8 @@ namespace Tests
             var item1 = CreateItem();
             var item2 = CreateItem();
 
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems = new ObservableCollection<IDisplayItem> {group, item1, item2, item0, item};
 
@@ -197,8 +197,8 @@ namespace Tests
             var group = CreateGroup();
             var item0 = CreateItem("item0");
             var item = CreateItem();
-            group.AddItem(item0);
-            group.AddItem(item);
+            group.Add(item0);
+            group.Add(item);
 
             var selectedItems = new ObservableCollection<IDisplayItem> {item0, item};
 
@@ -219,8 +219,8 @@ namespace Tests
             var group = CreateGroup();
             var item0 = CreateItem();
             var item1 = CreateItem();
-            group.AddItem(item0);
-            group.AddItem(item1);
+            group.Add(item0);
+            group.Add(item1);
 
             Assert.AreEqual(group, item0.Parent);
             Assert.AreEqual(group, item1.Parent);
@@ -329,7 +329,7 @@ namespace Tests
 	    {
 		    var item = CreateItem();
 		    var group1 = CreateGroup();
-		    group1.AddItem(item);
+		    group1.Add(item);
 
 		    Assert.That(group1.Contains(item));
 

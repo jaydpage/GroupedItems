@@ -307,7 +307,7 @@ namespace GroupedItemsTake2.Domain
          private void AddToGroupOfSelectedItem(IDisplayItem item)
         {
             var group = GetGroupToAddTo();
-            group.AddItem(item);
+            group.Add(item);
         }
 
         private IGroup GetGroupToAddTo()

@@ -148,7 +148,7 @@ namespace GroupedItemsTake2.ViewModels
 
 		private void AddItem()
 		{
-            Log("AddItem");
+            Log("Add");
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());
 		    var newItems = new List<IDisplayItem> {newItem};
 			Items.AddItems(newItems);
@@ -244,6 +244,16 @@ namespace GroupedItemsTake2.ViewModels
                 return Items.BelongToSameGroup();
             }	      
 	    }
+
+	    public IDisplayItem SelectedItem
+		{
+			get { return _selectedItem; }
+			set
+			{
+				_selectedItem = value;
+				OnPropertyChanged("SelectedItem");
+			}
+		}
 
 		public ObservableCollection<IDisplayItem> SelectedItems
 		{

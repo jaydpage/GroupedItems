@@ -19,8 +19,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 			newGroup.Add(group);
 			newerGroup.Add(newGroup);
 
@@ -61,8 +61,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 
 			var selectedItems = new ObservableCollection<IDisplayItem> { item0, item };
 
@@ -83,8 +83,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 
 			var selectedItems = new ObservableCollection<IDisplayItem> { item0, item };
 
@@ -105,8 +105,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 			newGroup.Add(group);
 
 			var selectedItems = new ObservableCollection<IDisplayItem> { @group };
@@ -130,8 +130,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 
 			var selectedItems = new ObservableCollection<IDisplayItem> { @group };
 
@@ -155,8 +155,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 			newGroup.Add(group);
 
 			var selectedItems = new ObservableCollection<IDisplayItem> { group };
@@ -178,8 +178,8 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			group.AddItem(item0);
-			group.AddItem(item);
+			group.Add(item0);
+			group.Add(item);
 
 			var selectedItems = new ObservableCollection<IDisplayItem> { group };
 
