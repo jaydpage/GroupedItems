@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GroupedItemsTake2.Controls;
@@ -68,12 +67,12 @@ namespace GroupedItemsTake2.AttachedProperties
             element.SetValue(IsItemSelectedProperty, value);
         }
 
-       public static readonly DependencyProperty SelectedItemsProperty =
-       DependencyProperty.RegisterAttached(
-           "SelectedItems",
-           typeof(IList),
-           typeof(TreeListViewMultipleSelectionAttached),
-           new PropertyMetadata());
+        public static readonly DependencyProperty SelectedItemsProperty =
+        DependencyProperty.RegisterAttached(
+            "SelectedItems",
+            typeof(IList),
+            typeof(TreeListViewMultipleSelectionAttached),
+            new PropertyMetadata());
 
         public static IList GetSelectedItems(TreeListView element)
         {

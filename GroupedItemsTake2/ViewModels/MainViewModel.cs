@@ -49,7 +49,7 @@ namespace GroupedItemsTake2.ViewModels
 			_repositoryWriter = new RepositoryWriter();
             _repositoryReader = new RepositoryReader();
 			_items = new DisplayCollection(); ;
-			AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
+			AddCommand = new DelegateCommand<object>(obj => Add(), x => true);
 			SaveCommand = new DelegateCommand<object>(obj => Save(), x => true);
 			LoadCommand = new DelegateCommand<object>(obj => Load(), x => true);
             DuplicateCommand = new DelegateCommand<object>(obj => DuplicateItem(), x => BelongToSameGroup);
@@ -146,7 +146,7 @@ namespace GroupedItemsTake2.ViewModels
             Items.MoveItemsOutOfGroup();
 		}
 
-		private void AddItem()
+		private void Add()
 		{
             Log("Add");
 			var newItem = Item.Create(_itemNameGenerator.GenerateItemName());

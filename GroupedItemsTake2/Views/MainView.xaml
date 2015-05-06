@@ -9,17 +9,12 @@
         xmlns:converters="clr-namespace:GroupedItemsTake2.Converters"
         xmlns:controls="clr-namespace:GroupedItemsTake2.Controls"
         xmlns:attachedProperties="clr-namespace:GroupedItemsTake2.AttachedProperties"
+        xmlns:domain="clr-namespace:GroupedItemsTake2.Domain"
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
         Title="MainWindow" Height="500" Width="700">
     <Window.Resources>
-        <HierarchicalDataTemplate x:Key="ChildTemplate" >
-            <TextBlock Text="{Binding}"/>
-        </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate x:Key="NameTemplate" 
-            ItemsSource="{Binding Path=Items}" 
-            ItemTemplate="{StaticResource ChildTemplate}">
-            <TextBlock Text="{Binding}"/>
-        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type domain:Group}" 
+                              ItemsSource="{Binding Path=Items}"/>
         <Style x:Key="ExpandCollapseToggleStyle"
            TargetType="{x:Type ToggleButton}">
             <Setter Property="Focusable"
@@ -225,7 +220,7 @@
             <StackPanel Orientation="Horizontal">
                 <telerik:RadButton Content="Save" Command="{Binding SaveCommand}" Width="50"/>
                 <telerik:RadButton Content="Load" Command="{Binding LoadCommand}" Width="50"/>
-                <telerik:RadButton Content="AddItem" Command="{Binding AddCommand}" Width="50" Margin="30,0,0,0"/>
+                <telerik:RadButton Content="Add" Command="{Binding AddCommand}" Width="50" Margin="30,0,0,0"/>
                 <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}" Width="60"/>
                 <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}" Width="50"/>
                 <telerik:RadButton Content="Copy" Command="{Binding CopyCommand}" Width="50" Margin="30,0,0,0"/>
@@ -240,7 +235,6 @@
         </Grid>
         <controls:TreeListView x:Name="InputItemsList"
 						  Grid.Row="1"           
-                          ItemTemplate="{StaticResource NameTemplate}"
 						  ItemsSource="{Binding Items}"
                           attachedProperties:TreeListViewMultipleSelectionAttached.IsMultipleSelection="True"
                           attachedProperties:TreeListViewMultipleSelectionAttached.SelectedItems= "{Binding SelectedItems}"/>
