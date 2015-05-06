@@ -110,7 +110,9 @@
                    Property="attachedProperties:TreeListViewMultipleSelectionAttached.IsItemSelected"
                          Value="True">
                     <Setter Property="Background"
-                            Value="LightGreen" />
+                            Value="DodgerBlue" />
+                    <Setter Property="Foreground"
+                            Value="White" />
                 </Trigger>
             </Style.Triggers>
             <Setter Property="Template">

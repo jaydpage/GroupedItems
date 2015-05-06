@@ -57,11 +57,13 @@ namespace GroupedItemsTake2.Domain
             _clipboardItems = CloneSelectedItems();
             var itemsToRemove = GetDistinctSelectedItems();
             Remove(itemsToRemove);
+            SelectedItems.Clear();
         }
         
         public void Copy()
         {
             _clipboardItems = CloneSelectedItems();
+            SelectedItems.Clear();
         }
 
         public void Paste()
@@ -93,6 +95,7 @@ namespace GroupedItemsTake2.Domain
             {
                 UnGroup(selectedParent as IGroup);
             }
+            SelectedItems.Clear();
         }
 
         public void MoveItemsOutOfGroup()
@@ -394,6 +397,7 @@ namespace GroupedItemsTake2.Domain
         {
             var newGroup = Domain.Group.CreateGroup(groupName);
             MoveTo(newGroup);
+            SelectedItems.Clear();
         }
 
         public int Count { get { return _items.Count(); } }
