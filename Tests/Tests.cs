@@ -16,7 +16,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
-            group.Add(item);
+            group.AddItem(item);
             const int expected = 1;
             Assert.AreEqual(expected, group.Count());
         }
@@ -26,7 +26,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
-            group.Add(item);
+            group.AddItem(item);
             Assert.AreEqual(group, item.Parent);
         }
         
@@ -35,7 +35,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
-            group.Add(item);
+            group.AddItem(item);
             Assert.AreEqual(group.Items.First(), item);
         }
 
@@ -44,7 +44,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
-            group.Add(item);
+            group.AddItem(item);
             const int expected = 1;
             Assert.AreEqual(expected, group.Count());
         }
@@ -54,7 +54,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
-            group.Add(item);
+            group.AddItem(item);
             const string expectedItemName = "item";
             const string expectedGroupName = "group";
             Assert.AreEqual(expectedItemName, item.Name);
@@ -102,16 +102,16 @@ namespace Tests
             var item2 = CreateItem();
             var item3 = CreateItem();
             var group = CreateGroup();
-            group.Add(item);
-            group.Add(item2);
-            group.Add(item3);
+            group.AddItem(item);
+            group.AddItem(item2);
+            group.AddItem(item3);
 
 
             var item4 = CreateItem();
             var item5 = CreateItem();
             var group2 = CreateGroup();
-            group2.Add(item4);
-            group2.Add(item5);
+            group2.AddItem(item4);
+            group2.AddItem(item5);
 
             group.Add(group2);
 

@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedProperties\TreeViewMultipleSelectionAttached.cs" />
+    <Compile Include="Controls\TreeListView.cs" />
+    <Compile Include="Converters\LevelIndentConverter.cs" />
     <Compile Include="Logging\LogFactory.cs" />
     <Compile Include="Repository\RepositoryReader.cs" />
     <Compile Include="Repository\RepositoryWriter.cs" />
@@ -113,7 +116,6 @@
     <Compile Include="Interfaces\IGroupingLogic.cs" />
     <Compile Include="Interfaces\IItem.cs" />
     <Compile Include="Domain\Item.cs" />
-    <Compile Include="Behaviors\ItemMultiSelectBehavior.cs" />
     <Compile Include="Domain\ItemNameGenerator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">

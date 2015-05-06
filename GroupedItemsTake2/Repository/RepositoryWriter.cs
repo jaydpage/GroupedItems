@@ -28,9 +28,9 @@ namespace GroupedItemsTake2.Repository
 
             if (item.Level == Level.Parent || item.Level == Level.ParentChild)
             {
-                var group = item as IGroup;
+                var group = item as Group;
                 var items = new XElement("Items");
-                foreach (var child in group.Items)
+                foreach (var child in group)
                 {
                     items.Add(SerializeItem(child));                    
                 }

@@ -4,12 +4,210 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"  
-        xmlns:groupedItemsTake2="clr-namespace:GroupedItemsTake2"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:viewModels="clr-namespace:GroupedItemsTake2.ViewModels"
-        xmlns:behaviors="clr-namespace:GroupedItemsTake2.Behaviors"
+        xmlns:converters="clr-namespace:GroupedItemsTake2.Converters"
+        xmlns:controls="clr-namespace:GroupedItemsTake2.Controls"
+        xmlns:attachedProperties="clr-namespace:GroupedItemsTake2.AttachedProperties"
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
         Title="MainWindow" Height="500" Width="700">
+    <Window.Resources>
+        <Style x:Key="ExpandCollapseToggleStyle"
+           TargetType="{x:Type ToggleButton}">
+            <Setter Property="Focusable"
+              Value="False"/>
+            <Setter Property="Width"
+              Value="19"/>
+            <Setter Property="Height"
+              Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Width="19"
+                    Height="13"
+                    Background="Transparent">
+                            <Border Width="9"
+                      Height="9"
+                      BorderThickness="1"
+                      BorderBrush="#FF7898B5"
+                      CornerRadius="1"
+                      SnapsToDevicePixels="true">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                       EndPoint="1,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Color="White"
+                                    Offset=".2"/>
+                                            <GradientStop Color="#FFC0B7A6"
+                                    Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Path x:Name="ExpandPath"
+                      Margin="1,1,1,1"
+                      Fill="Black"
+                      Data="M 0 2 L 0 3 L 2 3 L 2 5 L 3 5 L 3 3 
+                            L 5 3 L 5 2 L 3 2 L 3 0 L 2 0 L 2 2 Z"/>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked"
+                       Value="True">
+                                <Setter Property="Data"
+                        TargetName="ExpandPath"
+                        Value="M 0 2 L 0 3 L 5 3 L 5 2 Z"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <converters:LevelToIndentConverter x:Key="LevelToIndentConverter"/>
+
+        <DataTemplate x:Key="CellTemplate_Name">
+            <DockPanel>
+                <ToggleButton x:Name="Expander" 
+                      Style="{StaticResource ExpandCollapseToggleStyle}" 
+                      Margin="{Binding Level,
+                             Converter={StaticResource 
+                                        LevelToIndentConverter},
+                             RelativeSource={RelativeSource 
+                                             AncestorType=
+                                             {x:Type controls:TreeListViewItem}}}"
+                      IsChecked="{Binding Path=IsExpanded,
+                                 RelativeSource={RelativeSource 
+                                                 AncestorType=
+                                                  {x:Type controls:TreeListViewItem}}}"
+                      ClickMode="Press"/>
+                <TextBlock Text="{Binding Name}"/>
+            </DockPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=HasItems,
+                               RelativeSource={RelativeSource 
+                               AncestorType={x:Type controls:TreeListViewItem}}}" 
+                     Value="False">
+                    <Setter TargetName="Expander"
+                  Property="Visibility"
+                  Value="Hidden"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <GridViewColumnCollection x:Key="gvcc">
+            <GridViewColumn Header="Name"  
+                      CellTemplate="{StaticResource CellTemplate_Name}" Width="Auto"/>
+            <GridViewColumn Header="Level" Width="Auto" DisplayMemberBinding="{Binding Level}"/>
+            <GridViewColumn Header="UID" Width="Auto" DisplayMemberBinding="{Binding UID}"/>
+        </GridViewColumnCollection>
+
+        <Style TargetType="{x:Type controls:TreeListViewItem}">
+            <Style.Triggers>
+                <Trigger 
+                   Property="attachedProperties:TreeListViewMultipleSelectionAttached.IsItemSelected"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="LightGreen" />
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:TreeListViewItem}">
+                        <StackPanel>
+                            <Border Name="Bd"
+                      Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      Padding="{TemplateBinding Padding}">
+                                <GridViewRowPresenter x:Name="PART_Header" 
+                                      Content="{TemplateBinding Header}" 
+                                      Columns="{StaticResource gvcc}" />
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded"
+                       Value="false">
+                                <Setter TargetName="ItemsHost"
+                        Property="Visibility"
+                        Value="Collapsed"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="HasHeader"
+                             Value="false"/>
+                                    <Condition Property="Width"
+                             Value="Auto"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Header"
+                        Property="MinWidth"
+                        Value="75"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="HasHeader"
+                             Value="false"/>
+                                    <Condition Property="Height"
+                             Value="Auto"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Header"
+                        Property="MinHeight"
+                        Value="19"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsSelected"
+                       Value="true">
+                                <Setter TargetName="Bd"
+                        Property="Background"
+                        Value="{DynamicResource 
+                          {x:Static SystemColors.HighlightBrushKey}}"/>
+                                <Setter Property="Foreground"
+                        Value="{DynamicResource 
+                          {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                             Value="true"/>
+                                    <Condition Property="IsSelectionActive"
+                             Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd"
+                        Property="Background"
+                        Value="{DynamicResource 
+                          {x:Static SystemColors.ControlBrushKey}}"/>
+                                <Setter Property="Foreground"
+                        Value="{DynamicResource 
+                          {x:Static SystemColors.ControlTextBrushKey}}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled"
+                       Value="false">
+                                <Setter Property="Foreground"
+                        Value="{DynamicResource 
+                          {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type controls:TreeListView}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:TreeListView}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                            <DockPanel>
+                                <GridViewHeaderRowPresenter Columns="{StaticResource gvcc}"
+                                            DockPanel.Dock="Top"/>
+                                <ItemsPresenter/>
+                            </DockPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height ="50"/>
@@ -19,7 +217,7 @@
             <StackPanel Orientation="Horizontal">
                 <telerik:RadButton Content="Save" Command="{Binding SaveCommand}" Width="50"/>
                 <telerik:RadButton Content="Load" Command="{Binding LoadCommand}" Width="50"/>
-                <telerik:RadButton Content="Add" Command="{Binding AddCommand}" Width="50" Margin="30,0,0,0"/>
+                <telerik:RadButton Content="AddItem" Command="{Binding AddCommand}" Width="50" Margin="30,0,0,0"/>
                 <telerik:RadButton Content="Duplicate" Command="{Binding DuplicateCommand}" Width="60"/>
                 <telerik:RadButton Content="Delete" Command="{Binding DeleteCommand}" Width="50"/>
                 <telerik:RadButton Content="Copy" Command="{Binding CopyCommand}" Width="50" Margin="30,0,0,0"/>
@@ -32,59 +230,11 @@
             </StackPanel>
            
         </Grid>
-        <telerik:RadTreeListView x:Name="InputItemsList"
+        <controls:TreeListView x:Name="InputItemsList"
 						  Grid.Row="1"                                                                                                      
-						  ItemsSource="{Binding Items}"                                                                                                      
-						  SelectedItem="{Binding SelectedItem}"
-                          AutoGenerateColumns="False"
-                          SelectionMode="Extended"
-                          ColumnWidth="Auto"
-                          behaviors:ItemMultiSelectBehavior.SelectedItems="{Binding SelectedItems}">
-            <telerik:RadTreeListView.ChildTableDefinitions>
-                <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}">
-                </telerik:TreeListViewTableDefinition>
-            </telerik:RadTreeListView.ChildTableDefinitions>
+						  ItemsSource="{Binding Items}"
+                          attachedProperties:TreeListViewMultipleSelectionAttached.IsMultipleSelection="True"
+                          attachedProperties:TreeListViewMultipleSelectionAttached.SelectedItems= "{Binding SelectedItems}"/>
 
-            <telerik:RadTreeListView.InputBindings>
-                <KeyBinding Key="INSERT" Command="{Binding AddCommand}" />
-                <KeyBinding Key="ENTER" Command="{Binding AddCommand}" />
-                <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
-                <KeyBinding Key="ENTER" Modifiers="Control" Command="{Binding EditCommand}" />
-                <KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
-                <KeyBinding Key="D" Modifiers="Control" Command="{Binding DuplicateCommand}" />
-                <KeyBinding Key="X" Modifiers="Control" Command="{Binding CutCommand}" />
-                <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteCommand}" />
-            </telerik:RadTreeListView.InputBindings>
-            <telerik:RadTreeListView.Columns>
-                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Name}">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Name"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-
-                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding Level}">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Level"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-
-                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" DataMemberBinding="{Binding UID}">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Uid"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-
-            </telerik:RadTreeListView.Columns>
-            <telerik:RadContextMenu.ContextMenu>
-                <telerik:RadContextMenu>
-                    <telerik:RadMenuItem Header="Group" Command="{Binding GroupCommand}"/>
-                    <telerik:RadMenuItem Header="Ungroup" Command="{Binding UnGroupCommand}"/>
-                    <telerik:RadMenuItem Header="Move Out" Command="{Binding MoveOutOfGroupCommand}"/>
-                    <telerik:RadMenuSeparatorItem/>
-                    <telerik:RadMenuItem Header="Move Up" Command="{Binding MoveUpCommand}"/>
-                    <telerik:RadMenuItem Header="Move Down" Command="{Binding MoveDownCommand}"/>
-                </telerik:RadContextMenu>
-            </telerik:RadContextMenu.ContextMenu>
-        </telerik:RadTreeListView>
     </Grid>
 </Window>
