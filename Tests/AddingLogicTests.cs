@@ -44,10 +44,10 @@ namespace Tests
             var item4 = CreateItem();
             var item5 = CreateItem();
             var item6 = CreateItem();
-            group.AddItem(item);
-            group.AddItem(item4);
-            group.AddItem(item5);
-            group.AddItem(item6);
+            group.Add(item);
+            group.Add(item4);
+            group.Add(item5);
+            group.Add(item6);
             selectedItems.Add(item);
             selectedItems.Add(item4);
             selectedItems.Add(item5);
@@ -78,8 +78,8 @@ namespace Tests
             var item4 = CreateItem();
             var item5 = CreateItem();
             var item6 = CreateItem();
-            group.AddItem(item);
-            group.AddItem(item6);
+            group.Add(item);
+            group.Add(item6);
             selectedItems.Add(item);
             selectedItems.Add(item4);
             selectedItems.Add(item5);
@@ -98,7 +98,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
-            group.AddItem(item);
+            group.Add(item);
             const Level expected = Level.Child;
             Assert.AreEqual(expected, item.Level);
         }
@@ -108,7 +108,7 @@ namespace Tests
         {
              var item = CreateItem();
             var group = CreateGroup();
-            group.AddItem(item);
+            group.Add(item);
             const Level expected = Level.Parent;
             Assert.AreEqual(expected, group.Level);
         }
@@ -119,7 +119,7 @@ namespace Tests
             var item = CreateItem();
             var group = CreateGroup();
             var group1 = CreateGroup();
-            group.AddItem(item);
+            group.Add(item);
             group1.Add(group);
             const Level expected = Level.ParentChild;
             Assert.AreEqual(expected, group.Level);

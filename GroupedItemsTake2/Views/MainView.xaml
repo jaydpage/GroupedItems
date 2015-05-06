@@ -12,6 +12,14 @@
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
         Title="MainWindow" Height="500" Width="700">
     <Window.Resources>
+        <HierarchicalDataTemplate x:Key="ChildTemplate" >
+            <TextBlock Text="{Binding}"/>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate x:Key="NameTemplate" 
+            ItemsSource="{Binding Path=Items}" 
+            ItemTemplate="{StaticResource ChildTemplate}">
+            <TextBlock Text="{Binding}"/>
+        </HierarchicalDataTemplate>
         <Style x:Key="ExpandCollapseToggleStyle"
            TargetType="{x:Type ToggleButton}">
             <Setter Property="Focusable"
@@ -231,7 +239,8 @@
            
         </Grid>
         <controls:TreeListView x:Name="InputItemsList"
-						  Grid.Row="1"                                                                                                      
+						  Grid.Row="1"           
+                          ItemTemplate="{StaticResource NameTemplate}"
 						  ItemsSource="{Binding Items}"
                           attachedProperties:TreeListViewMultipleSelectionAttached.IsMultipleSelection="True"
                           attachedProperties:TreeListViewMultipleSelectionAttached.SelectedItems= "{Binding SelectedItems}"/>
