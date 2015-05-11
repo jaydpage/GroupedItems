@@ -24,11 +24,11 @@ namespace Tests
             var item2 = CreateItem();
             var item3 = CreateItem();
 
-            displayCollection.Add(item0);
-            displayCollection.Add(item);
-            displayCollection.Add(item1);
-            displayCollection.Add(item2);
-            displayCollection.Add(item3);
+            displayCollection.AddItem(item0);
+            displayCollection.AddItem(item);
+            displayCollection.AddItem(item1);
+            displayCollection.AddItem(item2);
+            displayCollection.AddItem(item3);
 
 
             var selectedItems = new ObservableCollection<IDisplayItem> {item, item1, item2};

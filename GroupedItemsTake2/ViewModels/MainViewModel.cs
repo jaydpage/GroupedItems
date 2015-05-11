@@ -6,7 +6,8 @@ using System.IO;
 using System.Linq;
 using GroupedItemsTake2.Annotations;
 using GroupedItemsTake2.Domain;
-using GroupedItemsTake2.Logging;using GroupedItemsTake2.Interfaces;
+using GroupedItemsTake2.Logging;
+using GroupedItemsTake2.Interfaces;
 
 using GroupedItemsTake2.Repository;
 using log4net;
@@ -63,6 +64,10 @@ namespace GroupedItemsTake2.ViewModels
             CutCommand = new DelegateCommand<object>(obj => Cut(), x => BelongToSameGroup);
             PasteCommand = new DelegateCommand<object>(obj => Paste(), x => CanPaste);
 
+            //var item = new Item("Test",null);
+            //var group = new Group("Test",null);
+            //group.Add(item);
+            //Items.Add(group);
             SelectedItems.CollectionChanged += SelectedItemsOnCollectionChanged;
 		}
 

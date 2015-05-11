@@ -64,7 +64,7 @@ namespace Tests
             var item2 = CreateItem();
             var selectedItems1 = new ObservableCollection<IDisplayItem> {group1};
             displayCollection1.SelectedItems = selectedItems1;
-            displayCollection1.Add(group1);
+            displayCollection1.AddItem(group1);
             displayCollection1.Insert(item2);
             Assert.AreEqual(Level.Ungrouped, item2.Level);
         }

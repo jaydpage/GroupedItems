@@ -7,7 +7,9 @@
         xmlns:groupedItemsTake2="clr-namespace:GroupedItemsTake2"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:viewModels="clr-namespace:GroupedItemsTake2.ViewModels"
-        xmlns:behaviors="clr-namespace:GroupedItemsTake2.Behaviors"
+        xmlns:views="clr-namespace:GroupedItemsTake2.Views"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:local="clr-namespace:GroupedItemsTake2.Domain"
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
         Title="MainWindow" Height="500" Width="700">
     <Grid>
@@ -32,7 +34,22 @@
             </StackPanel>
            
         </Grid>
-        <telerik:RadTreeListView x:Name="InputItemsList"
+        <dxg:TreeListControl Grid.Row="1"
+            Name="InputItemsList" EnableSmartColumnsGeneration="True" ItemsSource="{Binding Items}"
+                             SelectionMode="MultipleRow" SelectedItems="{Binding SelectedItems}">
+            <dxg:TreeListControl.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:Group}" ItemsSource="{Binding Items}"/>
+            </dxg:TreeListControl.Resources>
+            <dxg:TreeListControl.View>
+                <dxg:TreeListView NavigationStyle="Row" TreeDerivationMode="HierarchicalDataTemplate"/>
+            </dxg:TreeListControl.View>
+            <dxg:TreeListControl.Columns>
+                <dxg:TreeListColumn FieldName="Name"/>
+                <dxg:TreeListColumn FieldName="Level"/>
+                <dxg:TreeListColumn FieldName="UID"/>
+            </dxg:TreeListControl.Columns>
+        </dxg:TreeListControl>
+        <!--<telerik:RadTreeListView x:Name="InputItemsList"
 						  Grid.Row="1"                                                                                                      
 						  ItemsSource="{Binding Items}"                                                                                                      
 						  SelectedItem="{Binding SelectedItem}"
@@ -85,6 +102,6 @@
                     <telerik:RadMenuItem Header="Move Down" Command="{Binding MoveDownCommand}"/>
                 </telerik:RadContextMenu>
             </telerik:RadContextMenu.ContextMenu>
-        </telerik:RadTreeListView>
+        </telerik:RadTreeListView>-->
     </Grid>
 </Window>

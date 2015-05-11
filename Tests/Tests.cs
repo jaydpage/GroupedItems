@@ -66,7 +66,7 @@ namespace Tests
         {
             var displayCollection = new DisplayCollection();
             var group = CreateGroup();
-            displayCollection.Add(group);
+            displayCollection.AddItem(group);
             const int expected = 1;
             Assert.AreEqual(expected, displayCollection.Count);
         }
@@ -76,7 +76,7 @@ namespace Tests
         {
             var displayCollection = new DisplayCollection();
             var item = CreateGroup();
-            displayCollection.Add(item);
+            displayCollection.AddItem(item);
             const int expected = 1;
             Assert.AreEqual(expected, displayCollection.Count);
         }
@@ -87,8 +87,8 @@ namespace Tests
             var displayCollection = new DisplayCollection();
             var item = CreateItem();
             var group = CreateGroup();
-            displayCollection.Add(item);
-            displayCollection.Add(group);
+            displayCollection.AddItem(item);
+            displayCollection.AddItem(group);
             const int expected = 2;
             Assert.AreEqual(expected, displayCollection.Count);
         }

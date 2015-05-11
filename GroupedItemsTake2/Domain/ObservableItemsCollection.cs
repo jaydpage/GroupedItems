@@ -1,22 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using GroupedItemsTake2.Interfaces;
 
 namespace GroupedItemsTake2.Domain
 {
-    public class ObservableItemsCollection : IEnumerable<IDisplayItem>, IGroupingLogic, INotifyCollectionChanged
+    public class ObservableItemsCollection : ObservableCollection<IDisplayItem>, IGroupingLogic
     {
-        private ObservableCollection<IDisplayItem> _items;
-
-        public ObservableItemsCollection()
-        {
-            _items = new ObservableCollection<IDisplayItem>();
-            _items.CollectionChanged +=ItemsCollectionChanged;
-        }
-
         public void MoveDown(IEnumerable<IDisplayItem> selected)
         {
             var items = selected.OrderByDescending(IndexOf).ToList();
@@ -25,8 +15,8 @@ namespace GroupedItemsTake2.Domain
                 var current = items.First();
                 items.Remove(current);
                 var index = IndexOf(current);
-                if (index >= _items.Count - 1) return;
-                Remove(index);
+                if (index >= Count - 1) return;
+                RemoveAt(index);
                 Insert(index + 1, current);
             }
         }
@@ -40,7 +30,7 @@ namespace GroupedItemsTake2.Domain
                 items.Remove(current);
                 var index = IndexOf(current);
                 if (index <= 0) return;
-                Remove(index);
+                RemoveAt(index);
                 Insert(index - 1, current);
             }
         }
@@ -104,13 +94,8 @@ namespace GroupedItemsTake2.Domain
         
         public bool AreAllTopLevelItemsParents()
         {
-            if (!_items.Any()) return false;
-            return _items.All(IsAParent);
-        }
-
-        public void Clear()
-        {
-            _items.Clear();
+            if (!this.Any()) return false;
+            return this.All(IsAParent);
         }
 
         public bool IsTopLevelItem(IDisplayItem item)
@@ -185,59 +170,11 @@ namespace GroupedItemsTake2.Domain
             return item;
         }
 
-        private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (CollectionChanged == null) return;
-            CollectionChanged.Invoke(sender, e);
-        }
-
-        public IEnumerator<IDisplayItem> GetEnumerator()
-        {
-            return _items.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Add(IDisplayItem item)
-        {
-            _items.Add(item);
-        }
-
-        public int Count()
-        {
-            return _items.Count;
-        }
-
-        public int IndexOf(IDisplayItem item)
-        {
-            return _items.IndexOf(item);
-        }
-
-        public void Insert(int index, IDisplayItem item)
-        {
-            _items.Insert(index, item);
-        }
-
         public bool IsChildlessParent(IDisplayItem item)
         {
             if (!IsAParent(item)) return false;
             var group = item as IGroup;
             return group != null && group.Count() == 0;
         }      
-
-        private void Remove(int index)
-        {
-            _items.RemoveAt(index);
-        }
-
-        public void Remove(IDisplayItem item)
-        {
-            _items.Remove(item);
-        }
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }

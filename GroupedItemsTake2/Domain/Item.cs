@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using GroupedItemsTake2.Annotations;
 using GroupedItemsTake2.Interfaces;
 
 namespace GroupedItemsTake2.Domain

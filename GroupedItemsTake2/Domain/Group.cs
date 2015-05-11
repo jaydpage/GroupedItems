@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using GroupedItemsTake2.Annotations;
 using GroupedItemsTake2.Interfaces;
 
 namespace GroupedItemsTake2.Domain
