@@ -13,5 +13,10 @@ namespace GroupedItemsTake2.Views
             InitializeComponent();
             DataContext = new MainViewModel();
         }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            DevExpress.Xpf.Core.ThemeManager.ApplicationThemeName = "Office2007Blue";
+        }
     }
 }

@@ -11,7 +11,8 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:local="clr-namespace:GroupedItemsTake2.Domain"
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
-        Title="MainWindow" Height="500" Width="700">
+        Title="MainWindow" Height="500" Width="700"
+        Loaded="MainWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height ="50"/>
@@ -34,14 +35,14 @@
             </StackPanel>
            
         </Grid>
-        <dxg:TreeListControl Grid.Row="1"
+        <dxg:TreeListControl Grid.Row="1"  
             Name="InputItemsList" EnableSmartColumnsGeneration="True" ItemsSource="{Binding Items}"
                              SelectionMode="MultipleRow" SelectedItems="{Binding SelectedItems}">
             <dxg:TreeListControl.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type local:Group}" ItemsSource="{Binding Items}"/>
             </dxg:TreeListControl.Resources>
             <dxg:TreeListControl.View>
-                <dxg:TreeListView NavigationStyle="Row" TreeDerivationMode="HierarchicalDataTemplate"/>
+                <dxg:TreeListView  NavigationStyle="Row" TreeDerivationMode="HierarchicalDataTemplate" ShowIndicator="False"/>
             </dxg:TreeListControl.View>
             <dxg:TreeListControl.Columns>
                 <dxg:TreeListColumn FieldName="Name"/>
