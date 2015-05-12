@@ -37,7 +37,7 @@
         </Grid>
         <dxg:TreeListControl Grid.Row="1"  
             Name="InputItemsList" EnableSmartColumnsGeneration="True" ItemsSource="{Binding Items}"
-                             SelectionMode="MultipleRow" SelectedItems="{Binding SelectedItems}">
+                             SelectionMode="Row" SelectedItems="{Binding SelectedItems}">
             <dxg:TreeListControl.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type local:Group}" ItemsSource="{Binding Items}"/>
             </dxg:TreeListControl.Resources>
