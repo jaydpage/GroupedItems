@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using GroupedItemsTake2;
 using GroupedItemsTake2.Domain;
 using GroupedItemsTake2.Interfaces;
 using NUnit.Framework;
@@ -106,7 +105,7 @@ namespace Tests
         [Test]
         public void GivenAGroupWithAItemShouldReturnGroupLevelParent()
         {
-             var item = CreateItem();
+            var item = CreateItem();
             var group = CreateGroup();
             group.Add(item);
             const Level expected = Level.Parent;

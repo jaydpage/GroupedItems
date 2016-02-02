@@ -6,9 +6,6 @@ namespace GroupedItemsTake2.Interfaces
     {
         bool AreAnyItemsTopLevelItems(IEnumerable<IDisplayItem> selected);
         bool BelongToTheSameGroup(IEnumerable<IDisplayItem> selected);
-        IGroup GetParent(IDisplayItem selected);
-        IEnumerable<IDisplayItem> Clone(IEnumerable<IDisplayItem> selected);
-        IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected);
         bool IsAParent(IDisplayItem item);
         bool IsGrandParentless(IDisplayItem item);
         bool IsAChild(IDisplayItem item);
@@ -17,5 +14,8 @@ namespace GroupedItemsTake2.Interfaces
         void MoveUp(IEnumerable<IDisplayItem> selected);
         int GetLowestSelectedIndex(IEnumerable<IDisplayItem> selected);
         IEnumerable<IDisplayItem> GetHighestSelectedItems(IEnumerable<IDisplayItem> selected);
+        IEnumerable<IDisplayItem> Clone(IEnumerable<IDisplayItem> selected);
+        IEnumerable<IDisplayItem> GetDistinct(IEnumerable<IDisplayItem> selected);
+        IGroup GetParent(IDisplayItem selected);
     }
 }

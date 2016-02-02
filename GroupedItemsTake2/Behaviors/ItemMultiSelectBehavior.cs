@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Specialized;
 using System.Windows;
 using Telerik.Windows.Controls;
@@ -10,12 +9,12 @@ namespace GroupedItemsTake2.Behaviors
     {
         private readonly RadTreeListView _grid;
         private readonly INotifyCollectionChanged _selectedItems;
-        private Boolean _isSubscribedToEvents;
-        private static Boolean _isAttached;
+        private bool _isSubscribedToEvents;
+        private static bool _isAttached;
 
         public static readonly DependencyProperty SelectedItemsProperty
-            = DependencyProperty.RegisterAttached("SelectedItems", typeof(INotifyCollectionChanged), typeof(ItemMultiSelectBehavior),
-                new PropertyMetadata(OnSelectedItemsPropertyChanged));
+            = DependencyProperty.RegisterAttached("SelectedItems", typeof(INotifyCollectionChanged), 
+            typeof(ItemMultiSelectBehavior), new PropertyMetadata(OnSelectedItemsPropertyChanged));
 
         public static void SetSelectedItems(DependencyObject dependencyObject, INotifyCollectionChanged selectedItems)
         {
@@ -33,6 +32,7 @@ namespace GroupedItemsTake2.Behaviors
             var selectedItems = e.NewValue as INotifyCollectionChanged;
 
             if (grid == null || selectedItems == null || _isAttached) return;
+
             var behavior = new ItemMultiSelectBehavior(grid, selectedItems);
             behavior.Attach();
             _isAttached = true;
@@ -41,6 +41,7 @@ namespace GroupedItemsTake2.Behaviors
         private void Attach()
         {
             if (_grid == null || _selectedItems == null) return;
+
             Transfer(GetSelectedItems(_grid) as IList, _grid.SelectedItems);
             SubscribeToEvents();
         }
@@ -54,18 +55,14 @@ namespace GroupedItemsTake2.Behaviors
         void ContextSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UnsubscribeFromEvents();
-
             Transfer(GetSelectedItems(_grid) as IList, _grid.SelectedItems);
-
             SubscribeToEvents();
         }
 
         void GridSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UnsubscribeFromEvents();
-
             Transfer(_grid.SelectedItems, GetSelectedItems(_grid) as IList);
-
             SubscribeToEvents();
         }
 

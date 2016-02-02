@@ -3,7 +3,6 @@ using System.Linq;
 using GroupedItemsTake2.Domain;
 using GroupedItemsTake2.Interfaces;
 using NUnit.Framework;
-using GroupedItemsTake2;
 
 namespace Tests
 {
@@ -16,6 +15,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
+            Assert.AreEqual(0, group.Count());
             group.Add(item);
             const int expected = 1;
             Assert.AreEqual(expected, group.Count());
@@ -44,6 +44,7 @@ namespace Tests
         {
             var item = CreateItem();
             var group = CreateGroup();
+            Assert.AreEqual(0, group.Count());
             group.Add(item);
             const int expected = 1;
             Assert.AreEqual(expected, group.Count());

@@ -137,6 +137,11 @@ namespace GroupedItemsTake2.Domain
             SelectedItems.AddRange(items);
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public void AddAsUngrouped(IDisplayItem item)
         {
             item.SetParent(null);
@@ -406,11 +411,6 @@ namespace GroupedItemsTake2.Domain
         public IEnumerator<IDisplayItem> GetEnumerator()
         {
             return _items.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public bool IsAParent(IDisplayItem item)

@@ -9,7 +9,7 @@ namespace GroupedItemsTake2.Domain
 {
     public class ObservableItemsCollection : IEnumerable<IDisplayItem>, IGroupingLogic, INotifyCollectionChanged
     {
-        private ObservableCollection<IDisplayItem> _items;
+        private readonly ObservableCollection<IDisplayItem> _items;
 
         public ObservableItemsCollection()
         {

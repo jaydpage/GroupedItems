@@ -19,12 +19,12 @@ namespace GroupedItemsTake2
         public App()
         {
             _logger = new LogFactory().Create();
-            _logger.Info(string.Format("Application Started, Logger resolved"));            
+            _logger.Info("Application Started, Logger resolved");            
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            _logger.Info(string.Format("Application Exited"));
+            _logger.Info("Application Exited");
             base.OnExit(e);
         }
        

@@ -16,18 +16,18 @@ namespace Tests
 			var item0 = CreateItem("item0");
 			var item2 = CreateItem("item2");
 			var item = CreateItem();
-			@group.Add(item0);
-			@group.Add(item);
+			group.Add(item0);
+		    group.Add(item);
 
-			var selectedItems = new ObservableCollection<IDisplayItem> { @group };
+			var selectedItems = new ObservableCollection<IDisplayItem> { group };
 
-			var displayCollection = new DisplayCollection { @group, item2 };
+			var displayCollection = new DisplayCollection { group, item2 };
 
 			displayCollection.SelectedItems = selectedItems;
 			displayCollection.Delete();
 
 			Assert.AreEqual(1, displayCollection.Count());
-			Assert.That(!displayCollection.Contains(@group));
+			Assert.That(!displayCollection.Contains(group));
 		}
 
 		[Test]

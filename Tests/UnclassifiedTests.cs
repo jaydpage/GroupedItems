@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using GroupedItemsTake2;
 using GroupedItemsTake2.Domain;
 using GroupedItemsTake2.Interfaces;
 using NUnit.Framework;

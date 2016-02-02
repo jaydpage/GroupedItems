@@ -15,7 +15,7 @@ namespace GroupedItemsTake2.Repository
             return items;
         }
 
-        private IEnumerable<IDisplayItem> LoadItemsFromXmlData(XElement element, IDisplayItem parent)
+        private IEnumerable<IDisplayItem> LoadItemsFromXmlData(XContainer element, IDisplayItem parent)
         {
             var xmlItems = element.Elements("DisplayItem");
             var items = xmlItems.Select(x => CreateFromXmlString(x, parent)).ToList();
@@ -35,12 +35,12 @@ namespace GroupedItemsTake2.Repository
             return level == Level.Ungrouped.ToString() || level == Level.Child.ToString();
         }
 
-        private IDisplayItem CreateItem(XElement item, IDisplayItem parent)
+        private IDisplayItem CreateItem(XContainer item, IDisplayItem parent)
         {
             return new Item(item.Element("Name").Value, parent);
         }
 
-        private IDisplayItem CreateGroup(XElement item, IDisplayItem parent)
+        private IDisplayItem CreateGroup(XContainer item, IDisplayItem parent)
         {
            var group = new Group(item.Element("Name").Value, parent);
            var itemsToAdd = LoadItemsFromXmlData(item.Element("Items"), group);

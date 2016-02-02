@@ -6,7 +6,8 @@ using System.IO;
 using System.Linq;
 using GroupedItemsTake2.Annotations;
 using GroupedItemsTake2.Domain;
-using GroupedItemsTake2.Logging;using GroupedItemsTake2.Interfaces;
+using GroupedItemsTake2.Logging;
+using GroupedItemsTake2.Interfaces;
 
 using GroupedItemsTake2.Repository;
 using log4net;
@@ -48,7 +49,7 @@ namespace GroupedItemsTake2.ViewModels
 			_groupNameGenerator = new GroupNameGenerator();
 			_repositoryWriter = new RepositoryWriter();
             _repositoryReader = new RepositoryReader();
-			_items = new DisplayCollection(); ;
+			_items = new DisplayCollection();
 			AddCommand = new DelegateCommand<object>(obj => AddItem(), x => true);
 			SaveCommand = new DelegateCommand<object>(obj => Save(), x => true);
 			LoadCommand = new DelegateCommand<object>(obj => Load(), x => true);

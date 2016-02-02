@@ -17,7 +17,6 @@ namespace GroupedItemsTake2.Domain
 		    return result;
 	    }
 
-
         public Group(string name, IDisplayItem parent)
         {
             Parent = parent;

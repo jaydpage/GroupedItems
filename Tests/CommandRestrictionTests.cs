@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using GroupedItemsTake2;
+﻿using System.Collections.ObjectModel;
 using GroupedItemsTake2.Domain;
 using GroupedItemsTake2.Interfaces;
 using NUnit.Framework;
